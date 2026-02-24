@@ -70,3 +70,4 @@ To seed the database with dummy transactions, use the provided `seed.js` script 
 - **Frontend**: React, Tailwind CSS, Lucide-React, Recharts, Framer Motion.
 - **Backend**: Node.js, Express, Mongoose, JWT, BcryptJS.
 - **Database**: MongoDB.
+"# sampleproject" 
