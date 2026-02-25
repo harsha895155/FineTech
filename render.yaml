@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: sampleproject-fullstack
+    env: node
+    plan: free
+    buildCommand: npm install && cd server && npm install && cd .. && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false # User will need to provide this in Render dashboard
+      - key: JWT_SECRET
+        generateValue: true
+      - key: VITE_API_URL
+        value: https://sampleproject-fullstack.onrender.com # Change this to match your actual service name

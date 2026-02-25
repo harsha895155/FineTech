@@ -48,6 +48,16 @@ app.use('/api/banks', require('./routes/bankRoutes'));
 app.use('/api/payment', require('./routes/paymentRoutes'));
 app.use('/api/transfer', require('./routes/transferRoutes'));
 
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/dist')));
+    app.get('*', (req, res) => {
+        if (!req.path.startsWith('/api')) {
+            res.sendFile(path.resolve(__dirname, '../client', 'dist', 'index.html'));
+        }
+    });
+}
+
 
 // Health Check
 app.get('/', (req, res) => {
