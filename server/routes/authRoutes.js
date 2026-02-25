@@ -489,6 +489,21 @@ router.get('/me', protect, async (req, res) => {
     }
 });
 
+/**
+ * @desc    Get current user profile (Alias for /me)
+ * @route   GET /api/auth/profile
+ */
+router.get('/profile', protect, async (req, res) => {
+    try {
+        const masterDb = await connectMasterDB();
+        const User = createUserModel(masterDb);
+        const user = await User.findById(req.user._id);
+        res.json({ success: true, data: user });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
 // Helper to generate JWT
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {

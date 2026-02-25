@@ -36,6 +36,11 @@ const UserSchema = new mongoose.Schema({
         ref: 'Company',
         default: null
     },
+    phone: {
+        type: String,
+        trim: true,
+        default: '+91 98765 43210' // Default support for demo
+    },
     createdAt: {
         type: Date,
         default: Date.now

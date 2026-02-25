@@ -25,6 +25,7 @@
             width: 100%;
             max-width: 450px;
             background: rgba(255,255,255,0.03);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
             backdrop-filter: blur(40px) saturate(200%);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 3rem;
@@ -52,14 +53,53 @@
             background: rgba(255,255,255,0.08);
             box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
         }
+        .login-logo {
+            width: 60px;
+            height: 60px;
+            background: var(--aurora-gradient);
+            border-radius: 18px;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(15deg);
+        }
+        .login-logo span {
+            color: white;
+            font-weight: 800;
+            font-size: 1.5rem;
+            transform: rotate(-15deg);
+        }
+        .auth-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-aurora-4);
+            margin-bottom: 0.75rem;
+        }
+        .btn-auth-action {
+            padding: 1.25rem;
+            font-size: 1rem;
+            border-radius: 1.5rem;
+        }
+        .login-footer {
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .login-footer a {
+            color: white;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body class="creative-mode">
     <div class="auth-nebula">
         <div class="login-box">
             <div class="text-center mb-12">
-                <div style="width: 60px; height: 60px; background: var(--aurora-gradient); border-radius: 18px; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center; transform: rotate(15deg);">
-                    <span style="color: white; font-weight: 800; font-size: 1.5rem; transform: rotate(-15deg);">F</span>
+                <div class="login-logo">
+                    <span>F</span>
                 </div>
                 <h1 class="font-bold text-4xl mb-3 tracking-tight">Identity <span class="text-gradient-creative">Verified</span></h1>
                 <p class="text-slate-400">Step into your workspace.</p>
@@ -67,20 +107,20 @@
 
             <form action="/views/dashboard.html">
                 <div class="mb-6">
-                    <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-aurora-4); margin-bottom: 0.75rem;">Command Access</label>
+                    <label class="auth-label">Command Access</label>
                     <input type="email" class="creative-input" placeholder="ACCESS_EMAIL" required>
                 </div>
                 <div class="mb-10">
-                    <label style="display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-aurora-4); margin-bottom: 0.75rem;">Neural Key</label>
+                    <label class="auth-label">Neural Key</label>
                     <input type="password" class="creative-input" placeholder="••••••••••••" required>
                 </div>
                 
-                <button type="submit" class="btn-creative btn-primary-creative w-full" style="padding: 1.25rem; font-size: 1rem; border-radius: 1.5rem;">Initialize Session</button>
-                <button type="cancel" class="btn-creative btn-primary-creative w-full" style="padding: 1.25rem; font-size: 1rem; border-radius: 1.5rem;">Cancel</button>
+                <button type="submit" class="btn-creative btn-primary-creative w-full btn-auth-action">Initialize Session</button>
+                <button type="button" class="btn-creative btn-primary-creative w-full btn-auth-action">Cancel</button>
             </form>
 
-            <div style="margin-top: 3rem; text-align: center;">
-                <p class="text-sm text-slate-500">Need a new identity? <a href="/views/signup.html" class="font-bold" style="color: white; text-decoration: none;">Register Hub</a></p>
+            <div class="login-footer">
+                <p class="text-sm text-slate-500">Need a new identity? <a href="/views/signup.html" class="font-bold">Register Hub</a></p>
             </div>
         </div>
     </div>

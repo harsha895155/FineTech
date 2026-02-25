@@ -10,294 +10,83 @@
     <link rel="stylesheet" href="/css/variables.css">
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/components.css">
-    <style>
-        body { font-family: 'Outfit', sans-serif; margin: 0; background: #0F172A; color: white; }
-        
-        .sidebar {
-            width: 260px;
-            background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255,255,255,0.08);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 2.5rem 1.25rem;
-            position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-item {
-            width: 100%;
-            height: 54px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            padding: 0 1.25rem;
-            margin-bottom: 0.75rem;
-            color: #94A3B8;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            gap: 1rem;
-            box-sizing: border-box;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
-            color: #6366F1;
-            transform: translateX(5px);
-        }
-
-        .nav-item.active {
-            background: linear-gradient(135deg, #6366F1, #8B5CF6);
-            color: white;
-            box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
-        }
-
-        .content {
-            margin-left: 260px;
-            padding: 4rem;
-            min-height: 100vh;
-            background: radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.05), transparent 40%),
-                        radial-gradient(circle at 100% 100%, rgba(217, 70, 239, 0.05), transparent 40%);
-        }
-
-        .settings-container {
-            max-width: 900px;
-        }
-
-        .settings-section {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 20px;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .settings-section:hover {
-            background: rgba(255,255,255,0.03);
-            border-color: rgba(255,255,255,0.1);
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1.25rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .section-header h2 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin: 0;
-            letter-spacing: -0.02em;
-        }
-
-        .setting-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-        }
-
-        .setting-item:last-child {
-            border-bottom: none;
-        }
-
-        .setting-info {
-            flex: 1;
-        }
-
-        .setting-title {
-            font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .setting-desc {
-            font-size: 0.85rem;
-            color: #64748B;
-        }
-
-        .setting-control {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .toggle-switch {
-            position: relative;
-            width: 52px;
-            height: 28px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .toggle-switch.active {
-            background: #6366F1;
-        }
-
-        .toggle-switch::after {
-            content: '';
-            position: absolute;
-            width: 22px;
-            height: 22px;
-            background: white;
-            border-radius: 50%;
-            top: 3px;
-            left: 3px;
-            transition: all 0.3s ease;
-        }
-
-        .toggle-switch.active::after {
-            left: 27px;
-        }
-
-        .setting-select {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 0.75rem 1rem;
-            color: white;
-            font-family: inherit;
-            min-width: 180px;
-            cursor: pointer;
-        }
-
-        .setting-select:focus {
-            outline: none;
-            border-color: #6366F1;
-        }
-
-        .setting-input {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 0.75rem 1rem;
-            color: white;
-            font-family: inherit;
-            min-width: 200px;
-        }
-
-        .setting-input:focus {
-            outline: none;
-            border-color: #6366F1;
-            background: rgba(255,255,255,0.08);
-        }
-
-        .btn-setting {
-            padding: 0.625rem 1.5rem;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            color: white;
-            font-family: inherit;
-            font-weight: 700;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-setting:hover {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: #6366F1;
-        }
-
-        .btn-danger {
-            background: rgba(244, 63, 94, 0.15);
-            border-color: rgba(244, 63, 94, 0.3);
-            color: #F43F5E;
-        }
-
-        .btn-danger:hover {
-            background: rgba(244, 63, 94, 0.25);
-            border-color: #F43F5E;
-        }
-
-        .admin-only {
-            display: none;
-        }
-
-        .badge-premium {
-            padding: 0.25rem 0.75rem;
-            background: linear-gradient(135deg, #6366F1, #D946EF);
-            border-radius: 6px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/settings.css">
+    <link rel="stylesheet" href="/css/animations.css">
 </head>
 <body class="creative-mode">
-    <div class="sidebar">
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 4.5rem; padding-left: 0.5rem;">
-            <div style="width: 42px; height: 42px; background: linear-gradient(135deg, #6366F1, #D946EF); border-radius: 12px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);">
-                <span style="transform: rotate(-45deg); color: white; font-weight: 900; font-size: 1.2rem;">F</span>
+    <button class="mobile-nav-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+        ☰
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo-wrapper">
+            <div class="logo-icon">
+                <span class="logo-icon-inner">F</span>
             </div>
-            <span style="font-weight: 900; font-size: 1.5rem; letter-spacing: -0.04em;">FINTECH<span style="color: #6366F1;">PRO</span></span>
+            <span class="logo-text">FINTECH<span class="text-gradient-creative">PRO</span></span>
         </div>
         
         <a href="/views/dashboard.html" class="nav-item">
-            <span style="font-size: 1.25rem;">🏠</span>
+            <span class="nav-icon">🏠</span>
             <span>Dashboard</span>
         </a>
         <a href="/views/expenses.html" class="nav-item">
-            <span style="font-size: 1.25rem;">💸</span>
+            <span class="nav-icon">💸</span>
             <span>Expenses</span>
         </a>
+        <a href="/views/transfer.html" class="nav-item">
+            <span class="nav-icon">📤</span>
+            <span>Transfer</span>
+        </a>
         <a href="/views/transactions.html" class="nav-item">
-            <span style="font-size: 1.25rem;">📋</span>
+            <span class="nav-icon">📋</span>
             <span>Transactions</span>
         </a>
         <a href="/views/reports.html" class="nav-item">
-            <span style="font-size: 1.25rem;">📊</span>
+            <span class="nav-icon">📊</span>
             <span>Reports</span>
         </a>
         <a href="/views/admin.html" id="adminNavItem" class="nav-item">
-            <span style="font-size: 1.25rem;">👤</span>
+            <span class="nav-icon">🛡️</span>
             <span>Admin</span>
         </a>
         <a href="/views/profile.html" class="nav-item">
-            <span style="font-size: 1.25rem;">👤</span>
+            <span class="nav-icon">👤</span>
             <span>Profile</span>
         </a>
         <a href="/views/settings.html" class="nav-item active">
-            <span style="font-size: 1.25rem;">⚙️</span>
+            <span class="nav-icon">⚙️</span>
             <span>Settings</span>
         </a>
         <a href="/views/support.html" class="nav-item">
-            <span style="font-size: 1.25rem;">🎧</span>
+            <span class="nav-icon">🎧</span>
             <span>Support</span>
         </a>
         
-        <div style="flex: 1;"></div>
+        <div class="flex-1"></div>
         
-        <a href="/index.html" class="nav-item" style="margin-bottom: 0;">
-            <span style="font-size: 1.25rem;">🚪</span>
+        <a href="#" onclick="handleLogout()" class="nav-item margin-b-0">
+            <span class="nav-icon">🚪</span>
             <span>Logout</span>
         </a>
     </div>
 
     <main class="content">
-        <header style="margin-bottom: 5rem;">
-            <h1 style="font-size: 3.5rem; font-weight: 900; margin: 0; letter-spacing: -0.05em;"><span style="background: linear-gradient(to right, #6366F1, #D946EF); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Settings</span></h1>
-            <p style="color: #94A3B8; font-size: 1.1rem; font-weight: 500; margin-top: 0.5rem;">Configure your FintechPro experience and preferences.</p>
+        <header class="header-main">
+            <div>
+                <h1 class="header-title"><span class="text-gradient-creative">Settings</span></h1>
+                <p class="header-description">Configure your FintechPro experience and preferences.</p>
+            </div>
+            <a href="/views/profile.html">
+                <div id="headerAvatar" class="sidebar-user-avatar">U</div>
+            </a>
         </header>
 
         <div class="settings-container">
             <!-- 1. Account & Security -->
             <section class="settings-section">
                 <div class="section-header">
-                    <span style="font-size: 1.75rem;">🔐</span>
+                    <span class="section-icon">🔐</span>
                     <h2>Account & Security</h2>
                 </div>
 
@@ -365,7 +154,7 @@
             <!-- 2. Appearance & Preferences -->
             <section class="settings-section">
                 <div class="section-header">
-                    <span style="font-size: 1.75rem;">🎨</span>
+                    <span class="section-icon">🎨</span>
                     <h2>Appearance & Preferences</h2>
                 </div>
 
@@ -375,7 +164,8 @@
                         <div class="setting-desc">Choose your interface theme</div>
                     </div>
                     <div class="setting-control">
-                        <select id="themeSelect" class="setting-select">
+                        <label for="themeSelect" class="hide">Select Theme</label>
+                        <select id="themeSelect" class="setting-select" title="Select Theme">
                             <option value="dark">Dark (Current)</option>
                             <option value="light">Light</option>
                             <option value="system">System Default</option>
@@ -389,7 +179,8 @@
                         <div class="setting-desc">Default currency for transactions</div>
                     </div>
                     <div class="setting-control">
-                        <select id="currencySelect" class="setting-select">
+                        <label for="currencySelect" class="hide">Default Currency</label>
+                        <select id="currencySelect" class="setting-select" title="Default Currency">
                             <option value="INR">INR (₹) - Indian Rupee</option>
                             <option value="USD">USD ($) - US Dollar</option>
                             <option value="EUR">EUR (€) - Euro</option>
@@ -404,7 +195,8 @@
                         <div class="setting-desc">Interface language</div>
                     </div>
                     <div class="setting-control">
-                        <select id="languageSelect" class="setting-select">
+                        <label for="languageSelect" class="sr-only">Language</label>
+                        <select id="languageSelect" class="setting-select" title="Select Language">
                             <option value="en">English</option>
                             <option value="hi">हिन्दी (Hindi)</option>
                             <option value="es">Español (Spanish)</option>
@@ -419,7 +211,8 @@
                         <div class="setting-desc">How dates are displayed</div>
                     </div>
                     <div class="setting-control">
-                        <select id="dateFormatSelect" class="setting-select">
+                        <label for="dateFormatSelect" class="hide">Date Format</label>
+                        <select id="dateFormatSelect" class="setting-select" title="Date Format">
                             <option value="DD/MM/YYYY">DD/MM/YYYY</option>
                             <option value="MM/DD/YYYY">MM/DD/YYYY</option>
                             <option value="YYYY-MM-DD">YYYY-MM-DD</option>
@@ -433,7 +226,8 @@
                         <div class="setting-desc">Your local time zone</div>
                     </div>
                     <div class="setting-control">
-                        <select id="timezoneSelect" class="setting-select">
+                        <label for="timezoneSelect" class="hide">Time Zone</label>
+                        <select id="timezoneSelect" class="setting-select" title="Time Zone">
                             <option value="IST">IST (India Standard Time)</option>
                             <option value="EST">EST (Eastern Standard Time)</option>
                             <option value="PST">PST (Pacific Standard Time)</option>
@@ -446,7 +240,7 @@
             <!-- 3. Budget & Financial Settings -->
             <section class="settings-section">
                 <div class="section-header">
-                    <span style="font-size: 1.75rem;">💰</span>
+                    <span class="section-icon">💰</span>
                     <h2>Budget & Financial Settings</h2>
                 </div>
 
@@ -456,6 +250,7 @@
                         <div class="setting-desc">Set your overall monthly spending limit</div>
                     </div>
                     <div class="setting-control">
+                        <label for="monthlyBudget" class="hide">Monthly Budget</label>
                         <input type="number" id="monthlyBudget" class="setting-input" placeholder="₹50,000" value="50000">
                     </div>
                 </div>
@@ -466,7 +261,8 @@
                         <div class="setting-desc">Get alerted when you reach this % of budget</div>
                     </div>
                     <div class="setting-control">
-                        <select id="budgetThreshold" class="setting-select">
+                        <label for="budgetThreshold" class="sr-only">Budget Threshold</label>
+                        <select id="budgetThreshold" class="setting-select" title="Alert Threshold">
                             <option value="50">50%</option>
                             <option value="75">75%</option>
                             <option value="80" selected>80%</option>
@@ -509,7 +305,7 @@
             <!-- 4. Notifications -->
             <section class="settings-section">
                 <div class="section-header">
-                    <span style="font-size: 1.75rem;">🔔</span>
+                    <span class="section-icon">🔔</span>
                     <h2>Notifications</h2>
                 </div>
 
@@ -559,7 +355,8 @@
                         <div class="setting-desc">Receive weekly/monthly summary reports</div>
                     </div>
                     <div class="setting-control">
-                        <select id="summaryEmails" class="setting-select">
+                        <label for="summaryEmails" class="sr-only">Summary Emails Frequency</label>
+                        <select id="summaryEmails" class="setting-select" title="Summary Emails Frequency">
                             <option value="none">Never</option>
                             <option value="weekly" selected>Weekly</option>
                             <option value="monthly">Monthly</option>
@@ -571,7 +368,7 @@
             <!-- 5. Business Settings (Admin Only) -->
             <section class="settings-section admin-only" id="businessSettings">
                 <div class="section-header">
-                    <span style="font-size: 1.75rem;">👥</span>
+                    <span class="section-icon">👥</span>
                     <h2>Business & Team Settings</h2>
                     <span class="badge-premium">Admin Only</span>
                 </div>
@@ -620,7 +417,7 @@
             <!-- 6. Data & Reports -->
             <section class="settings-section">
                 <div class="section-header">
-                    <span style="font-size: 1.75rem;">📊</span>
+                    <span class="section-icon">📊</span>
                     <h2>Data & Reports</h2>
                 </div>
 
@@ -630,7 +427,7 @@
                         <div class="setting-desc">Download your complete financial data</div>
                     </div>
                     <div class="setting-control">
-                        <select class="setting-select" style="width: 120px;">
+                        <select class="setting-select export-format-select" title="Export Format">
                             <option>PDF</option>
                             <option>Excel</option>
                             <option>CSV</option>
@@ -655,7 +452,7 @@
                         <div class="setting-desc">How long to keep old transaction data</div>
                     </div>
                     <div class="setting-control">
-                        <select id="retentionPeriod" class="setting-select">
+                        <select id="retentionPeriod" class="setting-select" title="Retention Period">
                             <option value="1">1 Year</option>
                             <option value="2">2 Years</option>
                             <option value="5" selected>5 Years</option>
@@ -678,28 +475,42 @@
             <!-- 7. Integrations -->
             <section class="settings-section">
                 <div class="section-header">
-                    <span style="font-size: 1.75rem;">🔗</span>
+                    <span class="section-icon">🔗</span>
                     <h2>Integrations</h2>
                     <span class="badge-premium">Premium</span>
                 </div>
 
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">Bank Account Integration</div>
-                        <div class="setting-desc">Connect your bank for automatic transaction sync</div>
+                <div class="flex-column-start">
+                    <div class="flex-between-center">
+                        <div class="setting-info">
+                            <div class="setting-title">Bank Account Integration</div>
+                            <div class="setting-desc">Connect your bank for automatic transaction sync</div>
+                        </div>
+                        <div class="setting-control">
+                            <button class="btn-setting" onclick="openBankModal()" title="Connect bank account">Connect</button>
+                        </div>
                     </div>
-                    <div class="setting-control">
-                        <button class="btn-setting" onclick="connectBank()">Connect</button>
+                    
+                    <!-- Connected Accounts List -->
+                    <div id="bankConnectionsList" class="grid-gap-1">
+                        <!-- JS Rendered -->
                     </div>
                 </div>
 
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">UPI & Payment Apps</div>
-                        <div class="setting-desc">Link UPI, PayPal, and other payment services</div>
+                <div class="flex-column-start">
+                    <div class="flex-between-center">
+                        <div class="setting-info">
+                            <div class="setting-title">UPI & Payment Apps</div>
+                            <div class="setting-desc">Link UPI, PayPal, and other payment services</div>
+                        </div>
+                        <div class="setting-control">
+                            <button class="btn-setting" onclick="openPaymentAppModal()" title="Setup payment apps">Setup</button>
+                        </div>
                     </div>
-                    <div class="setting-control">
-                        <button class="btn-setting" onclick="connectPayment()">Setup</button>
+                    
+                    <!-- Linked Apps List -->
+                    <div id="paymentAppsList" class="grid-2-col-full">
+                        <!-- JS Rendered -->
                     </div>
                 </div>
 
@@ -717,7 +528,7 @@
             <!-- 8. Privacy & Legal -->
             <section class="settings-section">
                 <div class="section-header">
-                    <span style="font-size: 1.75rem;">⚠️</span>
+                    <span class="section-icon">⚠️</span>
                     <h2>Privacy & Legal</h2>
                 </div>
 
@@ -764,14 +575,643 @@
         </div>
 
         <!-- Save Button -->
-        <div style="position: fixed; bottom: 2rem; right: 4rem; z-index: 50;">
-            <button onclick="saveAllSettings()" class="btn-creative btn-primary-creative" style="padding: 1rem 3rem; font-size: 0.9rem; box-shadow: 0 20px 50px rgba(99, 102, 241, 0.4);">
+        <div class="settings-save-footer display-flex justify-center gap-1">
+            <button onclick="saveAllSettings()" class="btn-creative btn-primary-creative btn-save-settings flex-1">
                 💾 Save All Settings
+            </button>
+            <button onclick="location.reload()" class="btn-creative flex-1 btn-cancel">
+                🗑️ Discard Changes
             </button>
         </div>
     </main>
 
+    <!-- Bank Connection Modal -->
+    <div id="bankModal" class="modal-overlay">
+        <div class="modal-content modal-width-lg">
+            <button onclick="closeBankModal()" class="modal-close-btn">✕</button>
+            
+            <div class="step-progress">
+                <div class="progress-line" id="progressLine"></div>
+                <div class="step-dot active">1</div>
+                <div class="step-dot">2</div>
+                <div class="step-dot">3</div>
+                <div class="step-dot">4</div>
+            </div>
+
+            <div class="step-content-container">
+                <div id="modalError" class="modal-error"></div>
+                
+                <!-- Step 0: Select Bank -->
+                <div id="step-select" class="step-panel active">
+                    <h2 class="section-title-sm">Choose Bank</h2>
+                    <p class="section-desc-sm">Select your primary financial institution.</p>
+                    
+                    <input type="text" id="bankSearch" class="input-creative" placeholder="Search banks..." oninput="filterBanks(this.value)">
+
+                    <div class="bank-scroll-container">
+                        <div id="popularBanksSection">
+                            <p class="bank-group-label">Popular Banks</p>
+                            <div class="bank-grid" id="bankGridPopular"></div>
+                        </div>
+
+                        <div id="intlBanksSection" class="bank-group-intl">
+                            <p class="bank-group-label-intl">International</p>
+                            <div class="bank-grid" id="bankGridIntl"></div>
+                        </div>
+
+                        <div id="localBanksSection" class="bank-group-intl">
+                            <p class="bank-group-label-local">Local & Regional</p>
+                            <div class="bank-grid" id="bankGridLocal"></div>
+                        </div>
+
+                        <div id="noBanksFound" class="no-banks-found">
+                            <p>No banks found.</p>
+                        </div>
+                    </div>
+
+                    <div class="bank-modal-footer">
+                        <button id="stepSelectNextBtn" class="btn-creative btn-proceed" disabled onclick="proceedToDetails()" title="Continue to details">Continue →</button>
+                    </div>
+                </div>
+
+                <!-- Step 1: Bank Details -->
+                <div id="step-details" class="step-panel">
+                    <h2 class="section-title-sm">Account Details</h2>
+                    <p class="section-desc-sm">Link your account for <span id="selectedBankLabel" class="selected-bank-highlight">the selected bank</span>.</p>
+                    
+                    <form id="bankDetailsForm" onsubmit="handleBankDetailsSubmit(event)">
+                        <p class="bank-label-mini">BANK NAME (AUTO-SELECTED)</p>
+                        <input type="text" id="bankNameDisplayField" class="input-creative input-readonly" readonly title="Bank Name" placeholder="Selected Bank">
+
+                        <p class="bank-label-mini">ACCOUNT HOLDER NAME</p>
+                        <input type="text" id="accHolderName" class="input-creative" placeholder="John Doe" required title="Account Holder Name">
+
+                        <div class="grid-2-1">
+                            <div>
+                                <p class="bank-label-mini">ACCOUNT NUMBER</p>
+                                <input type="text" id="accNumber" class="input-creative" placeholder="XXXX XXXX XXXX" required pattern="\d{9,18}" title="9 to 18 digits account number">
+                            </div>
+                            <div>
+                                <p class="bank-label-mini">IFSC CODE</p>
+                                <input type="text" id="ifscCode" class="input-creative" placeholder="IFSC0000123" required pattern="[A-Z]{4}0[A-Z0-9]{6}" title="IFSC Code (e.g. HDFC0000123)">
+                            </div>
+                        </div>
+
+                        <p class="field-label-alt">OTP DELIVERY METHOD</p>
+                        <div class="otp-method-container">
+                            <label class="otp-method-label">
+                                <input type="radio" name="otpMethod" value="sms" checked title="Receive OTP via SMS">
+                                <span class="otp-method-text">SMS (+91)</span>
+                            </label>
+                            <label class="otp-method-label">
+                                <input type="radio" name="otpMethod" value="email" title="Receive OTP via Email">
+                                <span class="otp-method-text">Email ID</span>
+                            </label>
+                        </div>
+
+                        <div class="display-flex gap-1 margin-t-1">
+                            <button type="submit" class="btn-creative btn-primary-full flex-2" title="Continue to OTP verification">Continue to OTP →</button>
+                            <button type="button" onclick="goBackStep()" class="btn-creative flex-1 btn-cancel" title="Change selected bank">← Back</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 2: OTP Verification -->
+                <div id="step-otp" class="step-panel">
+                    <h2 class="section-title-sm">OTP Verification</h2>
+                    <p id="otpMessage" class="section-desc-sm">Verification code has been sent.</p>
+                    
+                    <div class="otp-container">
+                        <input type="text" maxlength="1" class="otp-box" autocomplete="one-time-code" title="OTP Digit 1" placeholder="•">
+                        <input type="text" maxlength="1" class="otp-box" title="OTP Digit 2" placeholder="•">
+                        <input type="text" maxlength="1" class="otp-box" title="OTP Digit 3" placeholder="•">
+                        <input type="text" maxlength="1" class="otp-box" title="OTP Digit 4" placeholder="•">
+                        <input type="text" maxlength="1" class="otp-box" title="OTP Digit 5" placeholder="•">
+                        <input type="text" maxlength="1" class="otp-box" title="OTP Digit 6" placeholder="•">
+                    </div>
+
+                    <div class="center-margin-t-1 margin-b-2">
+                        <p id="otpTimer" class="timer-text"></p>
+                        <button id="resendOtpBtn" onclick="resendOTP()" class="hide btn-resend-otp" title="Resend OTP code">Resend OTP</button>
+                    </div>
+
+                    <div class="display-flex gap-1 margin-t-1">
+                        <button id="verifyOtpBtn" onclick="handleOTPVerify()" class="btn-creative btn-primary-full flex-2" title="Confirm and link bank account">Confirm & Link</button>
+                        <button type="button" onclick="goBackStep()" class="btn-creative flex-1 btn-cancel" title="Go back to bank details">← Back</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Success -->
+                <div id="step-success" class="step-panel step-panel-centered">
+                    <div class="success-icon-anim">✓</div>
+                    <h2 class="section-title-sm">Bank Linked Successfully</h2>
+                    <p class="section-desc-sm">Your <span id="finalBankName" class="success-bank-name">Bank</span> account (••••<span id="finalAccLast4">0000</span>) is now ready to receive data.</p>
+                    
+                    <div class="security-badge-container">
+                        <p class="security-badge-text">Security Verified & Masked 🛡️</p>
+                        <div class="security-sweep"></div>
+                    </div>
+
+                    <button onclick="finishBankLink()" class="btn-creative btn-confirm-success" title="Finish and return to settings">Back to Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UPI & Payment App Modal -->
+    <div id="paymentAppModal" class="modal-overlay">
+        <div class="modal-content modal-width-sm">
+            <button onclick="closePaymentAppModal()" class="modal-close-btn" title="Close modal">✕</button>
+            
+            <h2 class="section-title-sm">Link Payment App</h2>
+            <p class="section-desc-sm">Connect PhonePe, Google Pay, or other UPI apps.</p>
+
+            <form id="paymentAppForm" onsubmit="handlePaymentAppSubmit(event)">
+                <p class="bank-label-mini">SELECT SERVICE</p>
+                <select id="paymentAppName" class="input-creative w-full" required title="Select Payment Service">
+                    <option value="PhonePe">PhonePe</option>
+                    <option value="Google Pay">Google Pay</option>
+                    <option value="Paytm">Paytm</option>
+                    <option value="Amazon Pay">Amazon Pay</option>
+                    <option value="PayPal">PayPal</option>
+                    <option value="Other UPI">Other UPI App</option>
+                </select>
+
+                <p class="bank-label-mini">IDENTIFIER (UPI ID / MOBILE / EMAIL)</p>
+                <input type="text" id="paymentIdentifier" class="input-creative" placeholder="e.g. user@ybl or 9999988888" required title="Payment identifier (UPI ID, phone or email)">
+
+                <p class="bank-label-mini">ACCOUNT TYPE</p>
+                <div class="otp-method-container">
+                    <label class="otp-method-label">
+                        <input type="radio" name="paymentType" value="upi" checked title="Account Type: UPI ID">
+                        <span class="otp-method-text">UPI ID</span>
+                    </label>
+                    <label class="otp-method-label">
+                        <input type="radio" name="paymentType" value="wallet" title="Account Type: Wallet">
+                        <span class="otp-method-text">Wallet</span>
+                    </label>
+                </div>
+
+                <div id="paymentAppError" class="modal-error"></div>
+
+                <div class="display-flex gap-1 margin-t-1">
+                    <button type="submit" class="btn-creative btn-primary-full flex-2" title="Link payment account">Link Account →</button>
+                    <button type="button" class="btn-creative flex-1 btn-cancel" onclick="closePaymentAppModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
+        // === BANK CONNECTION WORKFLOW ===
+        let currentBankStep = 0;
+        let activeConnectionId = null;
+        let otpTimerInterval = null;
+        let selectedBankName = '';
+
+        function openBankModal() {
+            const modal = document.getElementById('bankModal');
+            modal.classList.add('active');
+            resetBankWorkflow();
+            loadBanks();
+        }
+
+        function closeBankModal() {
+            const modal = document.getElementById('bankModal');
+            modal.classList.remove('active');
+            hideModalError();
+            clearInterval(otpTimerInterval);
+        }
+
+        function showModalError(msg) {
+            const err = document.getElementById('modalError');
+            err.textContent = msg;
+            err.classList.add('show-block');
+            err.classList.remove('hide');
+            err.classList.remove('shake');
+            void err.offsetWidth; // trigger reflow
+            err.classList.add('shake');
+        }
+
+        function hideModalError() {
+            const err = document.getElementById('modalError');
+            err.classList.add('hide');
+            err.classList.remove('show-block');
+        }
+
+        function resetBankWorkflow() {
+            currentBankStep = 0;
+            activeConnectionId = null;
+            selectedBankName = '';
+            hideModalError();
+            document.getElementById('bankDetailsForm').reset();
+            document.getElementById('bankSearch').value = '';
+            const nextBtn = document.getElementById('stepSelectNextBtn');
+            nextBtn.disabled = true;
+            nextBtn.classList.add('btn-disabled');
+            updateBankStepUI();
+        }
+
+        async function loadBanks() {
+            const token = localStorage.getItem('fintech_token');
+            try {
+                const res = await fetch('/api/banks/list', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await res.json();
+                if (result.success) {
+                    renderBankList(result.data);
+                }
+            } catch (err) {
+                console.error('Failed to load banks:', err);
+            }
+        }
+
+        function renderBankList(banks) {
+            const popular = banks.filter(b => b.category === 'popular');
+            const intl = banks.filter(b => b.category === 'international');
+            const local = banks.filter(b => b.category === 'local');
+
+            const renderGrid = (list, gridId) => {
+                const grid = document.getElementById(gridId);
+                grid.innerHTML = list.map(bank => `
+                    <div class="bank-option" onclick="selectBank('${bank.name}', this)">
+                        <div class="bank-logo-placeholder">${bank.logo}</div>
+                        <span class="bank-name-text">${bank.name}</span>
+                    </div>
+                `).join('');
+            };
+
+            renderGrid(popular, 'bankGridPopular');
+            renderGrid(intl, 'bankGridIntl');
+            renderGrid(local, 'bankGridLocal');
+        }
+
+        function selectBank(name, el) {
+            document.querySelectorAll('.bank-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedBankName = name;
+            const nextBtn = document.getElementById('stepSelectNextBtn');
+            nextBtn.disabled = false;
+            nextBtn.classList.remove('btn-disabled');
+        }
+
+        function proceedToDetails() {
+            document.getElementById('bankNameDisplayField').value = selectedBankName;
+            document.getElementById('selectedBankLabel').textContent = selectedBankName;
+            currentBankStep = 1;
+            updateBankStepUI();
+        }
+
+        function goBackStep() {
+            if (currentBankStep > 0) {
+                currentBankStep--;
+                updateBankStepUI();
+            }
+        }
+
+        function updateBankStepUI() {
+            const steps = ['step-select', 'step-details', 'step-otp', 'step-success'];
+            const dots = document.querySelectorAll('.step-dot');
+            const progressLine = document.getElementById('progressLine');
+
+            hideModalError();
+
+            steps.forEach((id, idx) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+
+                // directional transitions
+                if (idx < currentBankStep) {
+                    el.classList.remove('active', 'prev');
+                    el.classList.add('prev');
+                } else if (idx === currentBankStep) {
+                    el.classList.remove('prev');
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active', 'prev');
+                }
+
+                // Update dots
+                if (dots[idx]) {
+                    dots[idx].classList.toggle('active', idx === currentBankStep);
+                    dots[idx].classList.toggle('completed', idx < currentBankStep);
+                    dots[idx].innerHTML = idx < currentBankStep ? '✓' : (idx + 1);
+                }
+            });
+
+            // Update progress line
+            if (progressLine) {
+                const percent = (currentBankStep / (steps.length - 1)) * 100;
+                progressLine.style.width = `${percent}%`;
+            }
+        }
+
+        function filterBanks(query) {
+            const q = query.toLowerCase();
+            let found = false;
+            document.querySelectorAll('.bank-option').forEach(opt => {
+                const name = opt.textContent.toLowerCase();
+                const match = name.includes(q);
+                if (match) {
+                    opt.classList.add('show-flex');
+                    opt.classList.remove('hide');
+                    found = true;
+                } else {
+                    opt.classList.add('hide');
+                    opt.classList.remove('show-flex');
+                }
+            });
+            const noBanksFound = document.getElementById('noBanksFound');
+            if (found) {
+                noBanksFound.classList.add('hide');
+                noBanksFound.classList.remove('show-block');
+            } else {
+                noBanksFound.classList.add('show-block');
+                noBanksFound.classList.remove('hide');
+            }
+        }
+
+        async function handleBankDetailsSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const token = localStorage.getItem('fintech_token');
+            
+            const formData = {
+                bankName: selectedBankName,
+                accountHolderName: document.getElementById('accHolderName').value,
+                accountNumber: document.getElementById('accNumber').value,
+                ifscCode: document.getElementById('ifscCode').value,
+                otpMethod: document.querySelector('input[name="otpMethod"]:checked').value
+            };
+
+            btn.textContent = 'Securing...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/banks/connect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(formData)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    activeConnectionId = result.data.connectionId;
+                    const method = formData.otpMethod === 'sms' ? 'Mobile Number' : 'Email Address';
+                    const target = formData.otpMethod === 'sms' ? result.data.maskedPhone : result.data.maskedEmail;
+                    document.getElementById('otpMessage').innerHTML = `Verification code sent to your registered <b>${method}</b>: <span class="text-indigo-bold">${target}</span>`;
+                    currentBankStep = 2;
+                    updateBankStepUI();
+                    startOTPTimer();
+                    setTimeout(() => document.querySelector('.otp-box').focus(), 100);
+                } else {
+                    showModalError(result.message);
+                }
+            } catch (err) {
+                showModalError('Details submission failed.');
+            } finally {
+                btn.textContent = 'Continue to OTP →';
+                btn.disabled = false;
+            }
+        }
+
+        async function handleOTPVerify() {
+            const token = localStorage.getItem('fintech_token');
+            const btns = document.querySelectorAll('.otp-box');
+            const otp = Array.from(btns).map(b => b.value).join('');
+            if (otp.length < 6) return showModalError('Please enter 6-digit OTP');
+
+            const vBtn = document.getElementById('verifyOtpBtn');
+            vBtn.textContent = 'Verifying...';
+            vBtn.disabled = true;
+
+            try {
+                const res = await fetch('/api/banks/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ connectionId: activeConnectionId, otp })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    document.getElementById('finalBankName').textContent = result.data.bankName;
+                    document.getElementById('finalAccLast4').textContent = result.data.accountLast4;
+                    currentBankStep = 3;
+                    updateBankStepUI();
+                } else {
+                    showModalError(result.message);
+                    document.querySelectorAll('.otp-box').forEach(b => {
+                        b.classList.add('shake');
+                        setTimeout(() => b.classList.remove('shake'), 500);
+                    });
+                }
+            } catch (err) {
+                showModalError('Verification failed.');
+            } finally {
+                vBtn.textContent = 'Confirm & Link';
+                vBtn.disabled = false;
+            }
+        }
+
+        function startOTPTimer() {
+            let timeLeft = 60;
+            const timerDisplay = document.getElementById('otpTimer');
+            const resendBtn = document.getElementById('resendOtpBtn');
+            resendBtn.classList.add('hide');
+            clearInterval(otpTimerInterval);
+            otpTimerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = `Resend in ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(otpTimerInterval);
+                    timerDisplay.textContent = '';
+                    resendBtn.classList.remove('hide');
+                }
+            }, 1000);
+        }
+
+        async function resendOTP() {
+            const token = localStorage.getItem('fintech_token');
+            try {
+                const res = await fetch('/api/banks/resend-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ connectionId: activeConnectionId })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    alert('A new OTP has been sent.');
+                    startOTPTimer();
+                    document.querySelectorAll('.otp-box').forEach(b => b.value = '');
+                    document.querySelector('.otp-box').focus();
+                }
+            } catch (err) { console.error(err); }
+        }
+
+        function setupOTPInputs() {
+            const boxes = document.querySelectorAll('.otp-box');
+            boxes.forEach((box, idx) => {
+                box.oninput = () => { if (box.value.length === 1 && idx < boxes.length - 1) boxes[idx + 1].focus(); };
+                box.onkeydown = (e) => { if (e.key === 'Backspace' && !box.value && idx > 0) boxes[idx - 1].focus(); };
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', setupOTPInputs);
+
+        function finishBankLink() {
+            closeBankModal();
+            fetchBankConnections();
+        }
+
+        async function fetchBankConnections() {
+            const token = localStorage.getItem('fintech_token');
+            if (!token) return;
+            try {
+                const res = await fetch('/api/banks/connections', { headers: { 'Authorization': `Bearer ${token}` } });
+                const result = await res.json();
+                if (result.success) renderConnectedAccounts(result.data);
+            } catch (err) { console.error(err); }
+        }
+
+        function renderConnectedAccounts(connections) {
+            const list = document.getElementById('bankConnectionsList');
+            if (!list) return;
+            if (connections.length === 0) {
+                list.innerHTML = `<p class="empty-state">No banks connected yet.</p>`;
+                return;
+            }
+            list.innerHTML = connections.map(conn => `
+                <div class="connected-account-card">
+                    <div class="bank-icon-lg">🏦</div>
+                    <div class="flex-1">
+                        <p class="account-name">${conn.bankName}</p>
+                        <p class="account-details">•••• ${conn.accountNumberMasked.slice(-4)}</p>
+                    </div>
+                    <button class="btn-unlink" onclick="removeBankConnection('${conn._id}', '${conn.bankName}')" title="Unlink this bank">Unlink</button>
+                </div>
+            `).join('');
+        }
+
+        async function removeBankConnection(id, name) {
+            if (!confirm(`Unlink ${name}?`)) return;
+            const token = localStorage.getItem('fintech_token');
+            try {
+                const res = await fetch(`/api/banks/connections/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+                const result = await res.json();
+                if (result.success) fetchBankConnections();
+            } catch (err) { console.error(err); }
+        }
+
+        // === PAYMENT APP CONNECTION ===
+        function openPaymentAppModal() {
+            const modal = document.getElementById('paymentAppModal');
+            modal.classList.add('active');
+            document.getElementById('paymentAppForm').reset();
+            const errEl = document.getElementById('paymentAppError');
+            errEl.classList.add('hide');
+            errEl.classList.remove('show-block');
+        }
+
+        function closePaymentAppModal() {
+            const modal = document.getElementById('paymentAppModal');
+            modal.classList.remove('active');
+        }
+
+        async function handlePaymentAppSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const token = localStorage.getItem('fintech_token');
+            const errEl = document.getElementById('paymentAppError');
+            
+            const formData = {
+                appName: document.getElementById('paymentAppName').value,
+                identifier: document.getElementById('paymentIdentifier').value,
+                type: document.querySelector('input[name="paymentType"]:checked').value
+            };
+
+            btn.textContent = 'Linking...';
+            btn.disabled = true;
+            errEl.classList.add('hide');
+            errEl.classList.remove('show-block');
+
+            try {
+                const res = await fetch('/api/payment/apps/link', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(formData)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    alert(`✅ ${formData.appName} linked successfully!`);
+                    closePaymentAppModal();
+                    fetchPaymentApps();
+                } else {
+                    errEl.textContent = result.message;
+                    errEl.classList.add('show-block');
+                    errEl.classList.remove('hide');
+                }
+            } catch (err) {
+                errEl.textContent = 'Connection failed.';
+                errEl.classList.add('show-block');
+                errEl.classList.remove('hide');
+            } finally {
+                btn.textContent = 'Link Account →';
+                btn.disabled = false;
+            }
+        }
+
+        async function fetchPaymentApps() {
+            const token = localStorage.getItem('fintech_token');
+            if (!token) return;
+            try {
+                const res = await fetch('/api/payment/apps', { headers: { 'Authorization': `Bearer ${token}` } });
+                const result = await res.json();
+                if (result.success) renderPaymentApps(result.data);
+            } catch (err) { console.error(err); }
+        }
+
+        function renderPaymentApps(apps) {
+            const list = document.getElementById('paymentAppsList');
+            if (!list) return;
+            if (apps.length === 0) {
+                list.innerHTML = `<div class="span-all"><p class="empty-state">No payment apps linked yet.</p></div>`;
+                return;
+            }
+
+            const getIcon = (name) => {
+                if (name === 'PhonePe') return '🪻';
+                if (name === 'Google Pay') return '🌈';
+                if (name === 'PayPal') return '🅿️';
+                if (name === 'Paytm') return '🔵';
+                return '💳';
+            };
+
+            list.innerHTML = apps.map(app => `
+                <div class="connected-account-card">
+                    <div class="bank-icon-lg">${getIcon(app.appName)}</div>
+                    <div class="flex-1-min">
+                        <p class="account-name">${app.appName}</p>
+                        <p class="account-details-ellipsis">${app.identifier}</p>
+                    </div>
+                    <button class="btn-unlink btn-unlink-mini" onclick="removePaymentApp('${app._id}', '${app.appName}')" title="Unlink this app">✕</button>
+                </div>
+            `).join('');
+        }
+
+        async function removePaymentApp(id, name) {
+            if (!confirm(`Unlink ${name}?`)) return;
+            const token = localStorage.getItem('fintech_token');
+            try {
+                const res = await fetch(`/api/payment/apps/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+                const result = await res.json();
+                if (result.success) fetchPaymentApps();
+            } catch (err) { console.error(err); }
+        }
+
+        window.addEventListener('load', () => {
+            fetchBankConnections();
+            fetchPaymentApps();
+        });
+
         window.addEventListener('load', () => {
             const loggedInUser = JSON.parse(localStorage.getItem('fintech_logged_in_user')) || { name: 'User', email: 'user@example.com', role: 'Individual' };
 
@@ -788,9 +1228,9 @@
             const adminLink = document.getElementById('adminNavItem');
             if (adminLink) {
                 if (userRole === 'administrator') {
-                    adminLink.style.display = 'flex';
+                    adminLink.classList.remove('hide');
                 } else {
-                    adminLink.style.display = 'none';
+                    adminLink.classList.add('hide');
                 }
             }
             
@@ -852,11 +1292,11 @@
             
             // Apply theme immediately if needed (visual feedback)
             if (settings.theme === 'light') {
-                document.body.style.background = '#F8FAFC';
-                document.body.style.color = '#1E293B';
+                document.body.classList.add('body-light');
+                document.body.classList.remove('body-dark');
             } else {
-                document.body.style.background = '#0F172A';
-                document.body.style.color = 'white';
+                document.body.classList.add('body-dark');
+                document.body.classList.remove('body-light');
             }
 
             alert('✅ All settings saved successfully!');
@@ -864,11 +1304,24 @@
 
         function logoutUser() {
             if (confirm('Are you sure you want to logout?')) {
-                localStorage.removeItem('fintech_token');
-                localStorage.removeItem('fintech_logged_in_user');
-                localStorage.removeItem('fintech_name');
-                localStorage.removeItem('fintech_email');
-                window.location.href = '/views/login.html';
+                // Check if this is an admin-impersonated session
+                const adminToken = localStorage.getItem('fintech_admin_token');
+                const adminUser = localStorage.getItem('fintech_admin_user');
+                
+                if (adminToken && adminUser) {
+                    // Restore admin session
+                    localStorage.setItem('fintech_token', adminToken);
+                    localStorage.setItem('fintech_logged_in_user', adminUser);
+                    localStorage.removeItem('fintech_admin_token');
+                    localStorage.removeItem('fintech_admin_user');
+                    window.location.href = '/views/admin.html';
+                } else {
+                    localStorage.removeItem('fintech_token');
+                    localStorage.removeItem('fintech_logged_in_user');
+                    localStorage.removeItem('fintech_name');
+                    localStorage.removeItem('fintech_email');
+                    window.location.href = '/views/login.html';
+                }
             }
         }
 
@@ -965,10 +1418,24 @@
 
         function logoutAllDevices() {
             if (confirm('Are you sure you want to logout? (This will clear your current session)')) {
-                localStorage.removeItem('fintech_token');
-                localStorage.removeItem('fintech_logged_in_user');
-                alert('✅ Logged out successfully!');
-                window.location.href = '/views/login.html';
+                // Check if this is an admin-impersonated session
+                const adminToken = localStorage.getItem('fintech_admin_token');
+                const adminUser = localStorage.getItem('fintech_admin_user');
+                
+                if (adminToken && adminUser) {
+                    // Restore admin session
+                    localStorage.setItem('fintech_token', adminToken);
+                    localStorage.setItem('fintech_logged_in_user', adminUser);
+                    localStorage.removeItem('fintech_admin_token');
+                    localStorage.removeItem('fintech_admin_user');
+                    alert('✅ Returning to admin session.');
+                    window.location.href = '/views/admin.html';
+                } else {
+                    localStorage.removeItem('fintech_token');
+                    localStorage.removeItem('fintech_logged_in_user');
+                    alert('✅ Logged out successfully!');
+                    window.location.href = '/views/login.html';
+                }
             }
         }
 
@@ -1082,6 +1549,46 @@
                 alert('Account deactivated. See you soon!');
             }
         }
+
+        function handleLogout() {
+            // Check if this is an admin-impersonated session
+            const adminToken = localStorage.getItem('fintech_admin_token');
+            const adminUser = localStorage.getItem('fintech_admin_user');
+            
+            if (adminToken && adminUser) {
+                // Restore admin session
+                localStorage.setItem('fintech_token', adminToken);
+                localStorage.setItem('fintech_logged_in_user', adminUser);
+                localStorage.removeItem('fintech_admin_token');
+                localStorage.removeItem('fintech_admin_user');
+                window.location.href = '/views/admin.html';
+            } else {
+                localStorage.removeItem('fintech_token');
+                localStorage.removeItem('fintech_logged_in_user');
+                localStorage.removeItem('fintech_current_prefix');
+                window.location.href = '/index.html';
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar) return;
+            sidebar.classList.toggle('active');
+            const btn = document.getElementById('sidebarToggle');
+            if (btn) btn.innerHTML = sidebar.classList.contains('active') ? '✕' : '☰';
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const btn = document.getElementById('sidebarToggle');
+            if (window.innerWidth <= 1024 && 
+                sidebar && sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                e.target !== btn) {
+                toggleSidebar();
+            }
+        });
     </script>
 </body>
 </html>

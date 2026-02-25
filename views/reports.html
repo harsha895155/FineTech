@@ -34,6 +34,51 @@
             border-radius: 8px 8px 0 0;
             transition: height 0.5s ease;
         }
+        .brand-logo { 
+            width: 32px; 
+            height: 32px; 
+            background: var(--gradient-primary); 
+            border-radius: 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-weight: bold; 
+            font-size: 0.75rem; 
+        }
+        .report-subtitle { opacity: 0.9; }
+        .btn-pdf { background: white; color: var(--color-secondary); }
+        .bar-primary { height: 60%; background: var(--gradient-primary); }
+        .bar-secondary { height: 40%; background: var(--gradient-secondary); }
+        .bar-primary-85 { height: 85%; background: var(--gradient-primary); }
+        .bar-secondary-30 { height: 30%; background: var(--gradient-secondary); }
+        .bar-primary-70 { height: 70%; background: var(--gradient-primary); }
+        .bar-secondary-50 { height: 50%; background: var(--gradient-secondary); }
+        .indicator-square { width: 12px; height: 12px; border-radius: 3px; }
+        .bg-primary { background: var(--color-primary); }
+        .bg-secondary { background: var(--color-secondary); }
+        .donut-chart { 
+            width: 200px; 
+            height: 200px; 
+            border-radius: 50%; 
+            background: conic-gradient(var(--color-primary) 0% 50%, var(--color-secondary) 50% 80%, var(--color-accent) 80% 100%); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+        }
+        .donut-inner { 
+            width: 140px; 
+            height: 140px; 
+            border-radius: 50%; 
+            background: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: 800; 
+            font-size: 1.5rem; 
+            color: var(--color-navy); 
+        }
     </style>
 </head>
 <body>
@@ -42,7 +87,7 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="flex items-center gap-3">
-                    <div style="width: 32px; height: 32px; background: var(--gradient-primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.75rem;">FP</div>
+                    <div class="brand-logo">FP</div>
                     <span class="font-bold text-xl">FintechPro</span>
                 </div>
             </div>
@@ -76,9 +121,9 @@
                 <div class="flex justify-between items-center">
                     <div>
                         <h1 class="text-4xl font-bold mb-3">Enterprise Insights</h1>
-                        <p class="text-lg" style="opacity: 0.9;">Visualize your organizational spending velocity.</p>
+                        <p class="text-lg report-subtitle">Visualize your organizational spending velocity.</p>
                     </div>
-                    <button class="btn btn-primary" style="background: white; color: var(--color-secondary);">Download PDF Audit</button>
+                    <button class="btn btn-primary btn-pdf">Download PDF Audit</button>
                 </div>
             </div>
 
@@ -86,24 +131,24 @@
                 <div class="card">
                     <h3 class="font-bold text-xl mb-10">Revenue vs Expenditure</h3>
                     <div class="chart-mock flex items-baseline gap-6 px-10">
-                        <div class="bar" style="height: 60%; background: var(--gradient-primary);"></div>
-                        <div class="bar" style="height: 40%; background: var(--gradient-secondary);"></div>
-                        <div class="bar" style="height: 85%; background: var(--gradient-primary);"></div>
-                        <div class="bar" style="height: 30%; background: var(--gradient-secondary);"></div>
-                        <div class="bar" style="height: 70%; background: var(--gradient-primary);"></div>
-                        <div class="bar" style="height: 50%; background: var(--gradient-secondary);"></div>
+                        <div class="bar bar-primary"></div>
+                        <div class="bar bar-secondary"></div>
+                        <div class="bar bar-primary-85"></div>
+                        <div class="bar bar-secondary-30"></div>
+                        <div class="bar bar-primary-70"></div>
+                        <div class="bar bar-secondary-50"></div>
                     </div>
                     <div class="flex justify-center gap-10 mt-8">
-                        <div class="flex items-center gap-2"><div style="width: 12px; height: 12px; border-radius: 3px; background: var(--color-primary);"></div><span class="text-sm font-bold">Revenue</span></div>
-                        <div class="flex items-center gap-2"><div style="width: 12px; height: 12px; border-radius: 3px; background: var(--color-secondary);"></div><span class="text-sm font-bold">Expenses</span></div>
+                        <div class="flex items-center gap-2"><div class="indicator-square bg-primary"></div><span class="text-sm font-bold">Revenue</span></div>
+                        <div class="flex items-center gap-2"><div class="indicator-square bg-secondary"></div><span class="text-sm font-bold">Expenses</span></div>
                     </div>
                 </div>
 
                 <div class="card">
                     <h3 class="font-bold text-xl mb-10">Category Velocity</h3>
                     <div class="chart-mock">
-                        <div style="width: 200px; height: 200px; border-radius: 50%; background: conic-gradient(var(--color-primary) 0% 50%, var(--color-secondary) 50% 80%, var(--color-accent) 80% 100%); display: flex; align-items: center; justify-content: center; position: relative;">
-                            <div style="width: 140px; height: 140px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.5rem; color: var(--color-navy);">$3.7k</div>
+                        <div class="donut-chart">
+                            <div class="donut-inner">$3.7k</div>
                         </div>
                     </div>
                     <div class="grid grid-cols-3 gap-4 mt-8">

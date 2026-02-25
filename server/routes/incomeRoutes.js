@@ -31,6 +31,12 @@ router.post('/', async (req, res) => {
             ...req.body,
             createdBy: req.user._id
         });
+
+        // Update Master User Balance
+        const masterDb = await connectMasterDB();
+        const User = createUserModel(masterDb);
+        await User.findByIdAndUpdate(req.user._id, { $inc: { balance: req.body.amount || 0 } });
+
         res.status(201).json({ success: true, data: income });
     } catch (error) {
         res.status(400).json({ success: false, message: error.message });

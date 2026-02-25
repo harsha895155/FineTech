@@ -10,196 +10,121 @@
     <link rel="stylesheet" href="/css/variables.css">
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/components.css">
-    <script src="/js/theme.js"></script>
-    <style>
-        body { font-family: 'Outfit', sans-serif; margin: 0; background: var(--color-dark-bg); color: var(--text-primary); }
-        .sidebar {
-            width: 260px;
-            background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255,255,255,0.08);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 2rem 1.25rem;
-            position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 10;
-        }
-        .nav-item {
-            width: 100%;
-            height: 54px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 0 1.25rem;
-            margin-bottom: 0.75rem;
-            color: var(--text-secondary);
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            gap: 1rem;
-            box-sizing: border-box;
-        }
-        .nav-item:hover, .nav-item.active {
-            background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF);
-            color: white;
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
-            transform: translateX(5px);
-        }
-        .content {
-            margin-left: 260px;
-            padding: 4rem;
-            min-height: 100vh;
-            background: var(--mesh-gradient);
-        }
-        .support-input {
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            border-radius: 1rem;
-            padding: 1.25rem;
-            color: var(--text-primary);
-            width: 100%;
-            outline: none;
-            margin-bottom: 1.5rem;
-            font-family: inherit;
-            box-sizing: border-box;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .support-input::placeholder {
-            color: rgba(255, 255, 255, 0.35);
-        }
-        .support-input:hover {
-            border-color: rgba(99, 102, 241, 0.4);
-            background: rgba(255, 255, 255, 0.07);
-        }
-        .support-input:focus {
-            border-color: #6366F1;
-            background: var(--input-focus-bg);
-            box-shadow: var(--input-shadow-focus);
-            transform: translateY(-2px);
-        }
-        .faq-item {
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding: 1.5rem 0;
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-        .faq-item:hover { opacity: 0.8; }
-        .faq-question { font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
-        .faq-answer { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
-        
-        select.support-input {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236366F1' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1.25rem center;
-            padding-right: 3rem;
-            cursor: pointer;
-        }
-        
-        select.support-input option {
-            background: #1e293b;
-            color: white;
-            padding: 0.75rem;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/support.css">
 </head>
 <body class="creative-mode">
-    <div class="sidebar">
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 4rem; padding-left: 0.5rem;">
-            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF); border-radius: 10px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center;">
-                <span style="transform: rotate(-45deg); color: white; font-weight: 800;">F</span>
+    <button class="mobile-nav-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+        ☰
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo-wrapper">
+            <div class="logo-icon">
+                <span class="logo-icon-inner">F</span>
             </div>
-            <span style="font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em;">FINTECH<span class="text-gradient-creative">PRO</span></span>
+            <span class="logo-text">FINTECH<span class="text-gradient">PRO</span></span>
         </div>
         
         <a href="/views/dashboard.html" class="nav-item">
-            <span style="font-size: 1.25rem;">🏠</span>
+            <span class="nav-icon">🏠</span>
             <span>Dashboard</span>
         </a>
         <a href="/views/expenses.html" class="nav-item">
-            <span style="font-size: 1.25rem;">💸</span>
+            <span class="nav-icon">💸</span>
             <span>Expenses</span>
         </a>
+        <a href="/views/transfer.html" class="nav-item">
+            <span class="nav-icon">📤</span>
+            <span>Transfer</span>
+        </a>
         <a href="/views/transactions.html" class="nav-item">
-            <span style="font-size: 1.25rem;">📋</span>
+            <span class="nav-icon">📋</span>
             <span>Transactions</span>
         </a>
         <a href="/views/reports.html" class="nav-item">
-            <span style="font-size: 1.25rem;">📊</span>
+            <span class="nav-icon">📊</span>
             <span>Reports</span>
         </a>
         <a href="/views/admin.html" id="adminNavItem" class="nav-item">
-            <span style="font-size: 1.25rem;">👤</span>
+            <span class="nav-icon">🛡️</span>
             <span>Admin</span>
         </a>
         <a href="/views/profile.html" class="nav-item">
-            <span style="font-size: 1.25rem;">👤</span>
+            <span class="nav-icon">👤</span>
             <span>Profile</span>
         </a>
         <a href="/views/settings.html" class="nav-item">
-            <span style="font-size: 1.25rem;">⚙️</span>
+            <span class="nav-icon">⚙️</span>
             <span>Settings</span>
         </a>
         <a href="/views/support.html" class="nav-item active">
-            <span style="font-size: 1.25rem;">🎧</span>
+            <span class="nav-icon">🎧</span>
             <span>Support</span>
         </a>
         
-        <div style="flex: 1;"></div>
+        <div class="flex-1"></div>
         
-        <a href="/index.html" class="nav-item" style="margin-bottom: 0;">
-            <span style="font-size: 1.25rem;">🚪</span>
+        <a href="#" onclick="handleLogout()" class="nav-item margin-b-0">
+            <span class="nav-icon">🚪</span>
             <span>Logout</span>
         </a>
     </div>
 
     <main class="content">
-        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4rem;">
+        <header class="header-main">
             <div>
-                <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0;">Help & <span class="text-gradient-creative">Support</span></h1>
-                <p style="color: var(--text-secondary); margin-top: 0.5rem;">Our team is here to help you 24/7.</p>
+                <h1 class="header-title">Help & <span class="text-gradient">Support</span></h1>
+                <p class="header-description">Our team is here to help you 24/7.</p>
             </div>
-            <div id="headerAvatar" style="width: 50px; height: 50px; background: linear-gradient(135deg, #6366F1, #D946EF); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; color: white; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.08);">U</div>
+            <a href="/views/profile.html">
+                <div id="headerAvatar" class="sidebar-user-avatar">U</div>
+            </a>
         </header>
 
-        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem;">
+        <div class="support-layout">
             <div>
-                <div class="glass-card" style="padding: 3rem;">
-                    <h2 style="font-weight: 800; margin-bottom: 2rem; font-size: 1.5rem;">Message our team</h2>
+                <div class="glass-card support-form-card">
+                    <h2 class="support-form-title">Message our team</h2>
                     <form id="supportForm">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                            <input type="text" id="suppName" class="support-input" placeholder="Your Name" required>
-                            <input type="email" id="suppEmail" class="support-input" placeholder="Email Address" required>
+                        <div class="support-input-row">
+                            <div class="input-group">
+                                <label for="suppName" class="sr-only">Your Name</label>
+                                <input type="text" id="suppName" class="support-input" placeholder="Your Name" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="suppEmail" class="sr-only">Email Address</label>
+                                <input type="email" id="suppEmail" class="support-input" placeholder="Email Address" required>
+                            </div>
                         </div>
-                        <select id="suppSubject" class="support-input">
+                        <label for="suppSubject" class="sr-only">Subject</label>
+                        <select id="suppSubject" class="support-input" title="Subject">
                             <option>General Inquiry</option>
                             <option>Transaction Issue</option>
                             <option>Account Access</option>
                             <option>Billing Question</option>
                         </select>
-                        <textarea id="suppMessage" class="support-input" style="min-height: 150px; resize: none;" placeholder="How can we help?"></textarea>
-                        <button type="submit" id="suppBtn" class="btn-creative btn-primary-creative w-full" style="padding: 1.25rem; font-size: 1rem; border-radius: 12px;">Send Message</button>
+                        <label for="suppMessage" class="sr-only">Message</label>
+                        <textarea id="suppMessage" class="support-input support-textarea" placeholder="How can we help?"></textarea>
+                        <div class="display-flex gap-1 margin-t-1">
+                            <button type="submit" id="suppBtn" class="btn-creative btn-primary-creative flex-1 support-submit-btn">Send Message</button>
+                            <button type="button" class="btn-creative flex-1 btn-cancel" onclick="this.form.reset()">Reset</button>
+                        </div>
                     </form>
                 </div>
 
-                <div class="glass-card" style="padding: 2rem; margin-top: 2rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(217, 70, 239, 0.1)); border: 1px solid rgba(255,255,255,0.1);">
-                    <p style="margin: 0; color: var(--text-primary); font-weight: 700; font-size: 0.9rem;">Need urgent assistance?</p>
-                    <p style="margin: 0.5rem 0 0 0; color: var(--text-secondary); font-size: 0.8rem;">Email us or call our 24/7 hotline at <span style="color: #06B6D4; font-weight: 800;">1800-FIN-TECH</span></p>
+                <div class="glass-card urgent-box">
+                    <p class="urgent-text-primary">Need urgent assistance?</p>
+                    <p class="urgent-text-secondary">Email us or call our 24/7 hotline at <span class="hotline-highlight">1800-FIN-TECH</span></p>
                 </div>
             </div>
 
-            <div class="glass-card" style="padding: 2.5rem;">
-                <h2 style="font-weight: 800; margin-bottom: 2rem; font-size: 1.25rem;">Direct Help</h2>
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    <a href="mailto:fintechhelp0936@gmail.com" style="text-decoration: none; display: block; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <div class="faq-item" style="border-bottom: none;">
+            <div class="glass-card direct-help-card">
+                <h2 class="direct-help-title">Direct Help</h2>
+                <div class="direct-help-list">
+                    <a href="mailto:fintechhelp0936@gmail.com" class="email-link">
+                        <div class="faq-item email-faq-item">
                             <div class="faq-question"><span>📧</span> Official Support Email</div>
-                            <div class="faq-answer" style="color: #6366F1; font-weight: 700;">fintechhelp0936@gmail.com</div>
+                            <div class="faq-answer email-faq-answer">fintechhelp0936@gmail.com</div>
                         </div>
                     </a>
                     <div class="faq-item">
@@ -210,7 +135,7 @@
                         <div class="faq-question"><span>❓</span> Is my data secure?</div>
                         <div class="faq-answer">Yes, we use 256-bit AES encryption and Aurora-grade security protocols for all transactions.</div>
                     </div>
-                    <div class="faq-item" style="border: none;">
+                    <div class="faq-item no-border">
                         <div class="faq-question"><span>❓</span> Can I export my reports?</div>
                         <div class="faq-answer">Absolutely. Go to the Reports page and click "Download PDF" to save your data.</div>
                     </div>
@@ -236,8 +161,11 @@
             if (avatar) {
                 if (savedPhoto && savedPhoto.startsWith('data:image')) {
                     avatar.style.backgroundImage = `url(${savedPhoto})`;
+                    avatar.classList.add('has-photo');
                     avatar.textContent = '';
                 } else {
+                    avatar.classList.remove('has-photo');
+                    avatar.style.backgroundImage = 'none';
                     avatar.textContent = userInitial;
                 }
             }
@@ -245,8 +173,8 @@
             const userRole = (loggedInUser && loggedInUser.role) ? loggedInUser.role.toLowerCase() : '';
             const adminLink = document.getElementById('adminNavItem');
             if (adminLink) {
-                if (userRole === 'administrator') adminLink.style.display = 'flex';
-                else adminLink.style.display = 'none';
+                if (userRole === 'administrator') adminLink.classList.remove('hide');
+                else adminLink.classList.add('hide');
             }
         });
 
@@ -281,6 +209,45 @@
             } finally {
                 btn.textContent = 'Send Message';
                 btn.disabled = false;
+            }
+        });
+        function handleLogout() {
+            // Check if this is an admin-impersonated session
+            const adminToken = localStorage.getItem('fintech_admin_token');
+            const adminUser = localStorage.getItem('fintech_admin_user');
+            
+            if (adminToken && adminUser) {
+                // Restore admin session
+                localStorage.setItem('fintech_token', adminToken);
+                localStorage.setItem('fintech_logged_in_user', adminUser);
+                localStorage.removeItem('fintech_admin_token');
+                localStorage.removeItem('fintech_admin_user');
+                window.location.href = '/views/admin.html';
+            } else {
+                localStorage.removeItem('fintech_token');
+                localStorage.removeItem('fintech_logged_in_user');
+                localStorage.removeItem('fintech_current_prefix');
+                window.location.href = '/index.html';
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar) return;
+            sidebar.classList.toggle('active');
+            const btn = document.getElementById('sidebarToggle');
+            if (btn) btn.innerHTML = sidebar.classList.contains('active') ? '✕' : '☰';
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const btn = document.getElementById('sidebarToggle');
+            if (window.innerWidth <= 1024 && 
+                sidebar && sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                e.target !== btn) {
+                toggleSidebar();
             }
         });
     </script>

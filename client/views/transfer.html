@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Money | FintechPro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/animations.css">
+    <style>
+        /* ── TRANSFER PAGE STYLES ─────────────────────── */
+        .transfer-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .wizard-card {
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wizard-step {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .wizard-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Progress Bar */
+        .wizard-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+            padding: 0 1rem;
+        }
+
+        .wizard-progress::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 2rem;
+            right: 2rem;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            z-index: 0;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 2rem;
+            width: 0%;
+            height: 2px;
+            background: var(--gradient-creative);
+            z-index: 1;
+            transition: width 0.4s ease;
+        }
+
+        .step-node {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1e293b;
+            border: 2px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #64748b;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .step-node.active {
+            border-color: #6366f1;
+            color: white;
+            box-shadow: 0 0 15px rgba(99,102,241,0.4);
+            background: #6366f1;
+        }
+
+        .step-node.completed {
+            background: #10B981;
+            border-color: #10B981;
+            color: white;
+        }
+
+        .step-label {
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #94A3B8;
+        }
+
+        /* --- Input Styling --- */
+        .simple-form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            padding: 1rem 1.25rem;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .simple-form-input:focus {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .input-group-creative {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .label-creative {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #94A3B8;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-wrapper .search-icon {
+            position: absolute;
+            left: 1.25rem;
+            color: #64748B;
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+
+        .search-wrapper input {
+            padding-left: 3.25rem !important;
+        }
+
+        .amount-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .amount-input-wrapper::before {
+            content: '₹';
+            position: absolute;
+            left: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #6366f1;
+            pointer-events: none;
+        }
+
+        .amount-input-premium {
+            padding-left: 3.5rem !important;
+            font-size: 2rem !important;
+            height: 80px;
+            font-weight: 900 !important;
+            background: rgba(99, 102, 241, 0.05) !important;
+            border: 2px solid rgba(99, 102, 241, 0.1) !important;
+            color: white !important;
+        }
+
+        .amount-input-premium:focus {
+            border-color: #6366f1 !important;
+            background: rgba(99, 102, 241, 0.08) !important;
+        }
+
+        .recipient-preview {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(99,102,241,0.05);
+            border: 1px solid rgba(99,102,241,0.1);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .recipient-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-creative);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+        }
+
+        .balance-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Confirmation UI */
+        .confirm-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .confirm-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .confirm-row:last-child { border: none; }
+
+        /* Success UI */
+        .success-animation {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .checkmark-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #10B981;
+            color: white;
+            font-size: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            box-shadow: 0 0 30px rgba(16,185,129,0.3);
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        /* History */
+        .history-card {
+            height: auto;
+        }
+
+        .mini-trans-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.2s;
+        }
+
+        .mini-trans-item:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .mini-trans-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .mini-trans-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .icon-debit { background: rgba(244,63,94,0.15); color: #F43F5E; }
+        .icon-credit { background: rgba(16,185,129,0.15); color: #10B981; }
+        .icon-expense { background: rgba(244,63,94,0.1); color: #F43F5E; }
+        .icon-income { background: rgba(16,185,129,0.1); color: #10B981; }
+
+        @media (max-width: 900px) {
+            .transfer-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="creative-mode">
+    <button class="mobile-nav-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰</button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo-wrapper">
+            <div class="logo-icon"><span class="logo-icon-inner">F</span></div>
+            <span class="logo-text">FINTECH<span class="text-gradient-creative">PRO</span></span>
+        </div>
+        <a href="/views/dashboard.html" class="nav-item">
+            <span class="nav-icon">🏠</span><span>Dashboard</span>
+        </a>
+        <a href="/views/expenses.html" class="nav-item">
+            <span class="nav-icon">💸</span><span>Expenses</span>
+        </a>
+        <a href="/views/transfer.html" class="nav-item active">
+            <span class="nav-icon">📤</span><span>Transfer</span>
+        </a>
+        <a href="/views/transactions.html" class="nav-item">
+            <span class="nav-icon">📋</span><span>Transactions</span>
+        </a>
+        <a href="/views/reports.html" class="nav-item">
+            <span class="nav-icon">📊</span><span>Reports</span>
+        </a>
+        <a href="/views/admin.html" id="adminNavItem" class="nav-item hide">
+            <span class="nav-icon">🛡️</span><span>Admin</span>
+        </a>
+        <a href="/views/profile.html" class="nav-item">
+            <span class="nav-icon">👤</span><span>Profile</span>
+        </a>
+        <a href="/views/settings.html" class="nav-item">
+            <span class="nav-icon">⚙️</span>
+            <span>Settings</span>
+        </a>
+        <a href="/views/support.html" class="nav-item">
+            <span class="nav-icon">🎧</span>
+            <span>Support</span>
+        </a>
+        <div class="flex-1"></div>
+        <a href="#" onclick="handleLogout()" class="nav-item margin-b-0">
+            <span class="nav-icon">🚪</span><span>Logout</span>
+        </a>
+    </div>
+
+    <main class="content">
+        <header class="header-main">
+            <div>
+                <h1 class="header-title">Send <span class="text-gradient">Money</span></h1>
+                <p class="header-description">P2P transfers within the FintechPro ecosystem.</p>
+            </div>
+            <div class="balance-chip">
+                <span>💰 Available:</span>
+                <span id="currentBalanceTop" class="text-gradient font-800">₹0.00</span>
+            </div>
+        </header>
+
+        <div class="transfer-container">
+            <!-- Left: Wizard -->
+            <div class="glass-card wizard-card">
+                <div class="wizard-progress">
+                    <div class="progress-line" id="progressLine"></div>
+                    <div class="step-node active" id="node1">1 <span class="step-label">Recipient</span></div>
+                    <div class="step-node" id="node2">2 <span class="step-label">Amount</span></div>
+                    <div class="step-node" id="node3">3 <span class="step-label">Confirm</span></div>
+                    <div class="step-node" id="node4">✓ <span class="step-label">Success</span></div>
+                </div>
+
+                <!-- Step 1: Find Recipient -->
+                <div class="wizard-step active" id="step1">
+                    <h2 class="section-title">Who is the Recipient?</h2>
+                    <p class="text-secondary margin-b-2">Enter the Email, Phone Number or User ID of the receiver.</p>
+                    
+                    <div class="input-group-creative">
+                        <label class="label-creative">RECIPIENT IDENTIFIER</label>
+                        <div class="search-wrapper">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="recipientInput" class="simple-form-input" placeholder="Enter Email, Phone or User ID">
+                        </div>
+                    </div>
+
+                    <div id="recipientLoading" class="hide text-center padding-2">
+                        <div class="spinner-small"></div>
+                        <p class="margin-t-1 font-size-sm">Searching for user...</p>
+                    </div>
+
+                    <div id="recipientFound" class="recipient-preview hide">
+                        <div class="recipient-avatar" id="recAvatar">?</div>
+                        <div class="flex-1">
+                            <h3 class="margin-0 font-700" id="recName">User Name</h3>
+                            <p class="margin-0 text-secondary font-size-sm" id="recEmail">user@email.com</p>
+                            <span class="status-badge-success margin-t-0-5 display-inline-block">Verified Recipient</span>
+                        </div>
+                    </div>
+
+                    <div id="recipientError" class="hide margin-t-1 text-error font-size-sm">
+                        ⚠️ No user found with this identifier.
+                    </div>
+
+                    <div class="display-flex justify-end margin-t-auto padding-t-2">
+                        <button class="btn-creative btn-primary-creative" onclick="validateStep1()" id="btnStep1">Next Step →</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Amount & Note -->
+                <div class="wizard-step" id="step2">
+                    <h2 class="section-title">Transfer Details</h2>
+                    
+                    <div class="input-group-creative">
+                        <div class="display-flex justify-between align-center margin-b-0-5">
+                            <label class="label-creative margin-b-0">AMOUNT TO SEND</label>
+                            <span class="text-secondary font-size-xs">Available: <span id="availableBalanceStep" class="font-700 color-primary">₹0.00</span></span>
+                        </div>
+                        <div class="amount-input-wrapper">
+                            <input type="number" id="amountInput" class="simple-form-input amount-input-premium" placeholder="0.00">
+                        </div>
+                    </div>
+
+                    <div class="input-group-creative">
+                        <label class="label-creative">DESCRIPTION/NOTE (OPTIONAL)</label>
+                        <div class="search-wrapper">
+                            <span class="search-icon">📝</span>
+                            <input type="text" id="noteInput" class="simple-form-input" placeholder="What is this for?">
+                        </div>
+                    </div>
+
+                    <div id="amountError" class="hide text-error font-size-sm margin-b-1">
+                        ⚠️ Insufficient balance for this transfer.
+                    </div>
+
+                    <div class="display-flex justify-between margin-t-auto padding-t-2">
+                        <button class="btn-creative btn-cancel" onclick="goToStep(1)">← Back</button>
+                        <button class="btn-creative btn-primary-creative" onclick="validateStep2()">Review Transfer →</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Review & Confirm -->
+                <div class="wizard-step" id="step3">
+                    <h2 class="section-title">Review Transaction</h2>
+                    
+                    <div class="confirm-card">
+                        <div class="confirm-row">
+                            <span class="text-secondary">Recipient</span>
+                            <span class="font-700" id="confirmRecName">-</span>
+                        </div>
+                        <div class="confirm-row">
+                            <span class="text-secondary">Amount</span>
+                            <span class="font-800 text-gradient font-size-lg" id="confirmAmount">₹0.00</span>
+                        </div>
+                        <div class="confirm-row">
+                            <span class="text-secondary">Transaction Fee</span>
+                            <span class="text-success font-700">₹0.00 (Standard)</span>
+                        </div>
+                        <div class="confirm-row">
+                            <span class="text-secondary">Note</span>
+                            <span id="confirmNote" class="font-600">No description</span>
+                        </div>
+                    </div>
+
+                    <p class="font-size-xs text-secondary margin-t-2 text-center">
+                        🔒 Secure transaction verified by FintechPro Banking Core. 
+                        Funds will be available instantly to the recipient.
+                    </p>
+
+                    <div class="display-flex justify-between margin-t-auto padding-t-2">
+                        <button class="btn-creative btn-cancel" onclick="goToStep(2)">← Edit</button>
+                        <button class="btn-creative btn-success" onclick="executeTransfer()" id="btnConfirm">Confirm & Send Now</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Success -->
+                <div class="wizard-step" id="step4">
+                    <div class="success-animation">
+                        <div class="checkmark-circle">✓</div>
+                        <h2 class="font-900 font-size-xl">Transfer Successful!</h2>
+                        <p class="text-secondary margin-b-2">The recipient has received the funds instantly.</p>
+                        
+                        <div class="confirm-card text-left margin-b-2">
+                            <div class="confirm-row">
+                                <span class="text-secondary">Transaction ID</span>
+                                <span class="font-700" id="successTxnId">TXN12345678</span>
+                            </div>
+                            <div class="confirm-row">
+                                <span class="text-secondary">Sent To</span>
+                                <span class="font-700" id="successRec">User Name</span>
+                            </div>
+                            <div class="confirm-row">
+                                <span>New Balance</span>
+                                <span class="font-800 text-gradient" id="successBalance">₹0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="display-flex gap-1 justify-center">
+                            <button class="btn-creative btn-primary-creative" onclick="window.location='/views/dashboard.html'">Go to Dashboard</button>
+                            <button class="btn-creative border-primary color-primary" onclick="resetWizard()">New Transfer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: History -->
+            <div class="glass-card history-card">
+                <h3 class="section-title">Recent Activity</h3>
+                <div id="activityHistory" class="flex-col">
+                    <!-- Dynamic -->
+                    <div class="text-center padding-3 text-secondary font-size-sm">
+                        <div class="spinner-small margin-auto"></div>
+                        <p>Syncing transactions...</p>
+                    </div>
+                </div>
+                <a href="/views/transactions.html" class="btn-view-all w-full text-center margin-t-2">View All Transactions</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let selectedRecipient = null;
+        let transferAmount = 0;
+        let currentBalance = 0;
+
+        window.onload = async () => {
+            const user = JSON.parse(localStorage.getItem('fintech_logged_in_user'));
+            if (!user) return window.location.href = '/views/portal.html';
+            
+            // RBAC
+            const userRole = (user.role) ? user.role.toLowerCase() : '';
+            if (userRole === 'administrator' || userRole === 'admin') {
+                document.getElementById('adminNavItem').classList.remove('hide');
+            }
+
+            await loadUserData();
+            await loadRecentActivity();
+        };
+
+        async function loadUserData() {
+            const token = localStorage.getItem('fintech_token');
+            try {
+                // Fetch profile to get real current balance
+                const res = await fetch('/api/auth/profile', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await res.json();
+                if (result.success) {
+                    currentBalance = result.data.balance || 0;
+                    const formattedBalance = '₹' + currentBalance.toLocaleString('en-IN', {minimumFractionDigits: 2});
+                    
+                    document.getElementById('currentBalanceTop').textContent = formattedBalance;
+                    document.getElementById('availableBalanceStep').textContent = formattedBalance;
+                    
+                    // Update user local storage too
+                    const user = JSON.parse(localStorage.getItem('fintech_logged_in_user'));
+                    user.balance = currentBalance;
+                    localStorage.setItem('fintech_logged_in_user', JSON.stringify(user));
+                }
+            } catch (err) { console.error(err); }
+        }
+
+        async function validateStep1() {
+            const input = document.getElementById('recipientInput').value.trim();
+            if (!input) return;
+
+            const btn = document.getElementById('btnStep1');
+            const loader = document.getElementById('recipientLoading');
+            const foundCard = document.getElementById('recipientFound');
+            const errorCard = document.getElementById('recipientError');
+
+            btn.disabled = true;
+            loader.classList.remove('hide');
+            foundCard.classList.add('hide');
+            errorCard.classList.add('hide');
+
+            try {
+                const token = localStorage.getItem('fintech_token');
+                const res = await fetch('/api/transfer/validate', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ identifier: input })
+                });
+
+                const result = await res.json();
+                loader.classList.add('hide');
+                btn.disabled = false;
+
+                if (result.success) {
+                    selectedRecipient = result.data;
+                    document.getElementById('recName').textContent = selectedRecipient.fullName;
+                    document.getElementById('recEmail').textContent = selectedRecipient.email;
+                    document.getElementById('recAvatar').textContent = selectedRecipient.fullName.charAt(0);
+                    foundCard.classList.remove('hide');
+                    
+                    // Auto advance after 1s or use button? 
+                    // Let's keep button for confidence
+                    btn.textContent = 'Continue to Amount';
+                    btn.onclick = () => goToStep(2);
+                } else {
+                    errorCard.textContent = '⚠️ ' + result.message;
+                    errorCard.classList.remove('hide');
+                }
+            } catch (err) {
+                loader.classList.add('hide');
+                btn.disabled = false;
+                errorCard.textContent = '⚠️ Connection error';
+                errorCard.classList.remove('hide');
+            }
+        }
+
+        function validateStep2() {
+            const amount = parseFloat(document.getElementById('amountInput').value);
+            const err = document.getElementById('amountError');
+
+            if (isNaN(amount) || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            if (amount > currentBalance) {
+                err.classList.remove('hide');
+                return;
+            }
+
+            err.classList.add('hide');
+            transferAmount = amount;
+            
+            // Set confirmation details
+            document.getElementById('confirmRecName').textContent = selectedRecipient.fullName;
+            document.getElementById('confirmAmount').textContent = '₹' + amount.toLocaleString('en-IN', {minimumFractionDigits: 2});
+            document.getElementById('confirmNote').textContent = document.getElementById('noteInput').value || 'No description';
+            
+            goToStep(3);
+        }
+
+        async function executeTransfer() {
+            const btn = document.getElementById('btnConfirm');
+            btn.disabled = true;
+            btn.textContent = 'Processing...';
+
+            try {
+                const token = localStorage.getItem('fintech_token');
+                const body = {
+                    receiverIdentifier: selectedRecipient._id,
+                    amount: transferAmount,
+                    description: document.getElementById('noteInput').value || 'Internal Transfer'
+                };
+
+                const res = await fetch('/api/transfer', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                    document.getElementById('successTxnId').textContent = result.data.transactionId;
+                    document.getElementById('successRec').textContent = result.data.receiverName;
+                    
+                    const updatedBalStr = '₹' + result.data.updatedBalance.toLocaleString('en-IN', {minimumFractionDigits: 2});
+                    document.getElementById('successBalance').textContent = updatedBalStr;
+                    
+                    // Update global UI state
+                    currentBalance = result.data.updatedBalance;
+                    document.getElementById('currentBalanceTop').textContent = updatedBalStr;
+                    document.getElementById('availableBalanceStep').textContent = updatedBalStr;
+
+                    goToStep(4);
+                    loadRecentActivity(); // Refresh activity
+                } else {
+                    alert('Transfer failed: ' + result.message);
+                    btn.disabled = false;
+                    btn.textContent = 'Confirm & Send Now';
+                }
+            } catch (err) {
+                alert('Connection error. Please try again.');
+                btn.disabled = false;
+                btn.textContent = 'Confirm & Send Now';
+            }
+        }
+
+        function goToStep(step) {
+            document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+
+            // Update nodes
+            for (let i = 1; i <= 4; i++) {
+                const node = document.getElementById('node' + i);
+                if (i < step) {
+                    node.classList.add('completed');
+                    node.classList.remove('active');
+                } else if (i === step) {
+                    node.classList.add('active');
+                    node.classList.remove('completed');
+                } else {
+                    node.classList.remove('active', 'completed');
+                }
+            }
+
+            // Progress line
+            const progress = (step - 1) * 33;
+            document.getElementById('progressLine').style.width = progress + '%';
+        }
+
+        async function loadRecentActivity() {
+            const container = document.getElementById('activityHistory');
+            const token = localStorage.getItem('fintech_token');
+            if (!token) return;
+
+            try {
+                // Fetch all types of transactions
+                const [expRes, incRes, transferRes] = await Promise.all([
+                    fetch('/api/expenses', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('/api/income', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('/api/transfer/history', { headers: { 'Authorization': `Bearer ${token}` } })
+                ]);
+
+                const expResult = await expRes.json();
+                const incResult = await incRes.json();
+                const transferResult = await transferRes.json();
+
+                if (expResult.success && incResult.success) {
+                    const expenses = expResult.data.map(e => ({ ...e, type: 'expense', name: e.title }));
+                    const incomes = incResult.data.map(i => ({ ...i, type: 'income', name: i.source }));
+                    const transfers = transferResult.success ? transferResult.data.map(t => ({ 
+                        ...t, 
+                        name: (t.type === 'debit' ? 'Sent to ' : 'Recv from ') + t.otherParty 
+                    })) : [];
+
+                    // Combine and sort by date descending
+                    const combined = [...expenses, ...incomes, ...transfers]
+                        .sort((a, b) => new Date(b.date) - new Date(a.date))
+                        .slice(0, 6); // Top 6
+
+                    if (combined.length === 0) {
+                        container.innerHTML = '<div class="text-center padding-3 text-secondary font-size-sm">No activity found.</div>';
+                        return;
+                    }
+
+                    container.innerHTML = combined.map(item => {
+                        const isDebit = item.type === 'expense' || item.type === 'debit';
+                        const sign = isDebit ? '-' : '+';
+                        
+                        let icon = '💸';
+                        let iconClass = 'icon-expense';
+                        if (item.type === 'income') { icon = '💰'; iconClass = 'icon-income'; }
+                        if (item.type === 'debit') { icon = '↗️'; iconClass = 'icon-debit'; }
+                        if (item.type === 'credit') { icon = '↙️'; iconClass = 'icon-credit'; }
+
+                        return `
+                            <div class="mini-trans-item">
+                                <div class="mini-trans-info">
+                                    <div class="mini-trans-icon ${iconClass}">
+                                        ${icon}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="margin-0 font-700 font-size-sm text-truncate">${item.name}</p>
+                                        <p class="margin-0 text-secondary font-size-xs">${new Date(item.date).toLocaleDateString('en-IN', {day:'2-digit', month:'short'})}</p>
+                                    </div>
+                                </div>
+                                <span class="font-800 ${isDebit ? 'text-expense' : 'text-income'} text-nowrap">
+                                    ${sign}₹${item.amount.toLocaleString('en-IN')}
+                                </span>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (err) { 
+                console.error(err);
+                container.innerHTML = '<div class="text-center padding-3 text-error font-size-sm">Failed to load activity.</div>';
+            }
+        }
+
+        function resetWizard() {
+            document.getElementById('recipientInput').value = '';
+            document.getElementById('amountInput').value = '';
+            document.getElementById('noteInput').value = '';
+            
+            const btn = document.getElementById('btnStep1');
+            btn.textContent = 'Next Step →';
+            btn.onclick = validateStep1;
+            
+            document.getElementById('recipientFound').classList.add('hide');
+            goToStep(1);
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('fintech_token');
+            localStorage.removeItem('fintech_logged_in_user');
+            window.location.href = '/views/portal.html';
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

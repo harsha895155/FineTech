@@ -3,378 +3,1043 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Portal | FintechPro</title>
+    <title>Login | FintechPro</title>
+    <meta name="description" content="Login to your FintechPro account — Business, Organisation, or Admin.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/auth.css">
+    <link rel="stylesheet" href="/css/animations.css">
     <style>
-        body { 
-            font-family: 'Outfit', sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            background: #030712; 
-            background-image: var(--mesh-gradient, radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(217, 70, 239, 0.1) 0%, transparent 40%));
-            color: white; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            justify-content: center; 
-            overflow: hidden; 
-        }
-
-        .back-nav {
-            position: absolute;
-            top: 2rem;
-            left: 2rem;
-            color: #94A3B8;
-            text-decoration: none;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.3s;
-            z-index: 20;
-        }
-        .back-nav:hover { color: white; }
-
-        .cards-container {
-            display: flex;
-            gap: 3rem;
-            perspective: 1000px;
-            padding: 2rem;
-            z-index: 10;
-        }
-
-        /* CARD STYLES */
-        .portal-card {
-            width: 380px;
-            height: 500px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(40px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 2.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            box-shadow: 0 20px 50px -10px rgba(0,0,0,0.5);
-        }
-
-        .portal-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        /* Colors for specific roles */
-        .card-admin::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(239, 68, 68, 0.08) 0%, transparent 60%);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .card-business::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 60%);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* INTERNAL SLIDING MECHANISM */
-        .card-inner {
-            width: 200%;
-            height: 100%;
-            display: flex;
-            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .card-face {
-            width: 50%;
-            height: 100%;
-            padding: 3rem;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* FRONT FACE: SELECTION */
-        .icon-box {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .admin-icon { background: linear-gradient(135deg, #EF4444, #F59E0B); }
-        .business-icon { background: linear-gradient(135deg, #6366F1, #D946EF); }
-
-        .role-title { font-size: 1.75rem; font-weight: 800; margin: 0 0 1rem 0; text-align: center; }
-        .role-desc { color: #94A3B8; text-align: center; line-height: 1.6; margin-bottom: 2.5rem; font-size: 1rem; }
-
-        .btn-action {
-            width: 100%;
-            padding: 1rem;
-            border-radius: 1rem;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            border: none;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-bottom: 1rem;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            display: block;
-        }
-        
-        .btn-login-dashboard { background: #EF4444; }
-        .btn-login-dashboard:hover { box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); transform: translateY(-2px); }
-
-        .btn-login-biz { background: #6366F1; }
-        .btn-login-biz:hover { box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); transform: translateY(-2px); }
-
-        .btn-create-biz { 
-            background: transparent; 
-            border: 1px solid rgba(255,255,255,0.2); 
-            color: #94A3B8; 
+        /* =============================================
+           PORTAL PAGE — FULL REDESIGN
+           ============================================= */
+        html, body {
             font-family: 'Outfit', sans-serif;
-        }
-        .btn-create-biz:hover { background: rgba(255,255,255,0.05); color: white; }
-
-        /* BACK FACE: LOGIN FORM */
-        .login-back-btn {
-            position: absolute;
-            top: 2rem;
-            left: 2rem;
-            background: none;
-            border: none;
-            color: #94A3B8;
-            font-size: 1.5rem;
-            cursor: pointer;
+            min-height: 100vh;
+            background: #030712;
+            margin: 0;
             padding: 0;
         }
-        .login-back-btn:hover { color: white; }
 
-        .form-group { width: 100%; margin-bottom: 1.25rem; }
-        .form-label { display: block; color: #94A3B8; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase; }
-        .form-input {
+        /* ── SPLIT LAYOUT ── */
+        .portal-split {
+            display: flex;
+            min-height: 100vh;
             width: 100%;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 1rem;
-            border-radius: 0.75rem;
-            color: white;
-            font-family: inherit;
-            outline: none;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        .form-input:focus { border-color: rgba(255,255,255,0.5); }
-
-        /* Animation Trigger Class */
-        .portal-card.show-form .card-inner {
-            transform: translateX(-50%);
+            align-items: stretch;
         }
 
-        /* Loading Overlay */
-        .loading-overlay {
-            position: absolute;
-            top:0; left:0; width:100%; height:100%;
-            background: rgba(3,7,18,0.9);
-            display: none;
+        /* ── LEFT: ANIMATED BRANDING PANEL ── */
+        .portal-left {
+            width: 55%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
+            padding: 9rem 8rem;
+            background: #030712;
             z-index: 10;
         }
-        .spinner {
-            width: 40px; height: 40px;
-            border: 4px solid rgba(255,255,255,0.1);
-            border-top-color: #6366F1;
+        .portal-right {
+            margin-left: 55%;
+            width: 45%;
+            min-height: 100vh;
+            background: #030712;
+            border-left: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 2rem 3rem 9rem 8rem;
+            position: relative;
+        }
+        /* Aurora mesh background layers - Full Screen (Matching Signup) */
+        .portal-split::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 90% 70% at 15% 15%, rgba(99,102,241,0.30) 0%, transparent 55%),
+                radial-gradient(ellipse 70% 55% at 85% 85%, rgba(217,70,239,0.24) 0%, transparent 55%),
+                radial-gradient(ellipse 55% 45% at 55% 45%, rgba(6,182,212,0.13) 0%, transparent 55%);
+            pointer-events: none;
+            z-index: 0;
+            animation: aurora-breathe 10s ease-in-out infinite alternate;
+        }
+        .portal-left::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 52px 52px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes aurora-breathe {
+            0%   { opacity: 1;    transform: scale(1) rotate(0deg); }
+            50%  { opacity: 0.82; transform: scale(1.05) rotate(1.5deg); }
+            100% { opacity: 1;    transform: scale(1.1) rotate(-1deg); }
+        }
+
+        /* Floating particles */
+        .portal-particle {
+            position: absolute;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+            animation: p-rise linear infinite;
+        }
+        @keyframes p-rise {
+            0%   { transform: translateY(0) scale(1);   opacity: 0.7; }
+            100% { transform: translateY(-140px) scale(0.3); opacity: 0; }
+        }
+
+        /* Content column */
+        .portal-left-col {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            max-width: 460px;
+            gap: 0;
+        }
+
+        /* Brand */
+        .portal-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+        .portal-brand .logo-icon { width: 46px; height: 46px; font-size: 1.2rem; }
+
+        /* Headline */
+        .portal-headline {
+            font-size: clamp(1.8rem, 2.8vw, 2.8rem);
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 0.85rem;
+        }
+        .portal-sub {
+            font-size: 0.92rem;
+            color: #64748B;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            max-width: 380px;
+        }
+
+        /* Role selector pills (left panel) */
+        .role-pills {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+        .role-pill {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 1rem;
+            padding: 0.9rem 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            text-align: left;
+        }
+        .role-pill:hover, .role-pill.active {
+            background: rgba(99,102,241,0.1);
+            border-color: rgba(99,102,241,0.3);
+            transform: translateX(6px);
+        }
+        .role-pill-icon {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        .role-pill-icon.indigo { background: rgba(99,102,241,0.15); }
+        .role-pill-icon.purple { background: rgba(139,92,246,0.15); }
+        .role-pill-badge {
+            flex: 1;
+        }
+        .role-pill-name { font-size: 0.9rem; font-weight: 800; color: white; }
+        .role-pill-desc { font-size: 0.72rem; color: #475569; margin-top: 0.15rem; }
+        .role-pill-arrow { font-size: 0.85rem; color: #334155; transition: color 0.2s; }
+        .role-pill:hover .role-pill-arrow { color: #818CF8; }
+
+        /* Glowing divider */
+        .portal-divider {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+        .portal-divider-line {
+            flex: 1; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(99,102,241,0.4), rgba(217,70,239,0.4), transparent);
+            position: relative; overflow: hidden;
+        }
+        .portal-divider-line::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -60%; width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: shimmer 2.5s ease-in-out infinite;
+        }
+        @keyframes shimmer { 0% { left: -60%; } 100% { left: 160%; } }
+        .portal-divider-txt { font-size: 0.65rem; color: #334155; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
+
+        /* Trust badges */
+        .trust-badges {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 99px;
+            padding: 0.35rem 0.85rem;
+            font-size: 0.7rem;
+            color: #475569;
+            font-weight: 600;
+        }
+        .trust-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: #34D399; }
+
+        /* Removed individual right panel styles as they are merged above */
+
+        /* Aurora logic moved to .portal-split */
+
+        /* Subtle grid on right */
+        .portal-right::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Drifting glow orbs on right panel */
+        .right-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            pointer-events: none;
+            z-index: 0;
+            animation: orb-drift ease-in-out infinite alternate;
+        }
+        @keyframes orb-drift {
+            0%   { transform: translate(0, 0)  scale(1); }
+            100% { transform: translate(30px, -40px) scale(1.12); }
+        }
+
+        /* Right panel particles */
+        .right-particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            animation: r-particle-float linear infinite;
+        }
+        @keyframes r-particle-float {
+            0%   { transform: translateY(0) scale(1);   opacity: 0.5; }
+            100% { transform: translateY(-100px) scale(0.3); opacity: 0; }
+        }
+
+        /* Diagonal shimmer sweep across right panel */
+        .right-shimmer {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                115deg,
+                transparent 30%,
+                rgba(99,102,241,0.03) 45%,
+                rgba(217,70,239,0.025) 50%,
+                transparent 65%
+            );
+            background-size: 300% 300%;
+            pointer-events: none;
+            z-index: 0;
+            animation: shimmer-sweep 7s ease-in-out infinite;
+        }
+        @keyframes shimmer-sweep {
+            0%   { background-position: 100% 100%; }
+            50%  { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        .portal-form-wrap {
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 2;
+            margin: 2rem 0;        /* Compact centering */
+        }
+
+        /* Named orb variants */
+        .right-orb-1 {
+            width:320px; height:320px;
+            top:-60px; right:-80px;
+            background: radial-gradient(circle, rgba(99,102,241,0.10) 0%, transparent 70%);
+            animation-duration: 9s;
+        }
+        .right-orb-2 {
+            width:260px; height:260px;
+            bottom:-80px; left:-60px;
+            background: radial-gradient(circle, rgba(217,70,239,0.08) 0%, transparent 70%);
+            animation-duration: 12s;
+            animation-delay: 2s;
+        }
+        .right-orb-3 {
+            width:180px; height:180px;
+            top:45%; right:10%;
+            background: radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 70%);
+            animation-duration: 7s;
+            animation-delay: 1s;
+        }
+
+        /* Back button */
+        .portal-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #475569;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 2.25rem;
+            transition: color 0.2s;
+        }
+        .portal-back:hover { color: #818CF8; }
+
+        /* ── ROLE SELECTOR (right panel tabs) ── */
+        .portal-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 1rem;
+            padding: 0.35rem;
+            margin-bottom: 2rem;
+        }
+        .portal-tab {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.65rem 0.75rem;
+            border-radius: 0.75rem;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            border: 1px solid transparent;
+        }
+        .portal-tab.active {
+            background: rgba(99,102,241,0.12);
+            border-color: rgba(99,102,241,0.25);
+            color: #818CF8;
+            box-shadow: 0 4px 16px rgba(99,102,241,0.15);
+        }
+        .portal-tab:hover:not(.active) { color: white; background: rgba(255,255,255,0.04); }
+
+        /* Form header */
+        .portal-form-header { margin-bottom: 1.75rem; }
+        .portal-form-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(99,102,241,0.1);
+            border: 1px solid rgba(99,102,241,0.2);
+            color: #818CF8;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.3rem 0.9rem;
+            border-radius: 99px;
+            margin-bottom: 0.85rem;
+        }
+        .portal-form-title {
+            font-size: 1.85rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.04em;
+            margin-bottom: 0.35rem;
+        }
+        .portal-form-sub { font-size: 0.85rem; color: #475569; }
+
+        /* ── FORM SECTION ── */
+        .portal-form-section { display: none; }
+        .portal-form-section.visible { display: block; animation: fade-in 0.35s ease; }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Floating label input */
+        .pf-field {
+            position: relative;
             margin-bottom: 1rem;
+        }
+        .pf-field label {
+            position: absolute;
+            top: 50%; left: 1.1rem;
+            transform: translateY(-50%);
+            font-size: 0.88rem;
+            color: #475569;
+            font-weight: 600;
+            pointer-events: none;
+            transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+            background: transparent;
+            padding: 0 0.25rem;
+            z-index: 2;
+        }
+        .pf-field input:focus ~ label,
+        .pf-field input:not(:placeholder-shown) ~ label {
+            top: 0;
+            font-size: 0.68rem;
+            color: #6366F1;
+            background: #030712;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .pf-input {
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 0.875rem;
+            padding: 1rem 2.8rem 1rem 1.1rem;
+            color: white;
+            font-size: 0.92rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .pf-input::placeholder { color: transparent; }
+        .pf-input:focus {
+            border-color: rgba(99,102,241,0.5);
+            background: rgba(99,102,241,0.05);
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+        }
+        .pf-icon {
+            position: absolute;
+            top: 50%; right: 1rem;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Remember / forgot row */
+        .pf-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            font-size: 0.78rem;
+        }
+        .pf-remember { display: flex; align-items: center; gap: 0.5rem; color: #475569; cursor: pointer; }
+        .pf-remember input[type="checkbox"] {
+            width: 14px; height: 14px;
+            accent-color: #6366F1;
+            cursor: pointer;
+        }
+        .pf-forgot { color: #6366F1; text-decoration: none; font-weight: 600; transition: color 0.2s; }
+        .pf-forgot:hover { color: #818CF8; }
+
+        /* Submit button */
+        .pf-btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF);
+            background-size: 200% 200%;
+            background-position: 0% 50%;
+            border: none;
+            border-radius: 0.875rem;
+            color: white;
+            font-size: 1rem;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 8px 32px rgba(99,102,241,0.3);
+            letter-spacing: 0.01em;
+        }
+        .pf-btn-primary:hover {
+            background-position: 100% 50%;
+            transform: translateY(-2px);
+            box-shadow: 0 16px 48px rgba(99,102,241,0.45);
+        }
+        .pf-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        /* Admin special button */
+        .pf-btn-admin {
+            background: linear-gradient(135deg, #EF4444, #DC2626, #F97316);
+        }
+        .pf-btn-admin:hover { box-shadow: 0 16px 48px rgba(239,68,68,0.35); }
+
+        /* Signup link */
+        .pf-signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.82rem;
+            color: #475569;
+        }
+        .pf-signup-link a { color: #818CF8; font-weight: 700; text-decoration: none; }
+        .pf-signup-link a:hover { color: white; }
+
+        /* Security note */
+        .pf-security {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-top: 1.25rem;
+            padding: 0.7rem 1rem;
+            background: rgba(34,197,94,0.04);
+            border: 1px solid rgba(34,197,94,0.1);
+            border-radius: 0.75rem;
+        }
+        .pf-security-icon { font-size: 0.9rem; flex-shrink: 0; }
+        .pf-security-text { font-size: 0.72rem; color: #334155; line-height: 1.5; }
+
+        /* Loading overlay inside button */
+        .btn-loading { display: none; align-items: center; gap: 0.5rem; justify-content: center; }
+        .btn-loading.show { display: flex; }
+        .btn-spinner {
+            width: 16px; height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        @media (max-width: 850px) {
-            .cards-container { flex-direction: column; align-items: center; width: 100%; overflow-y: auto; }
-            .portal-card { height: auto; min-height: 500px; width: 100%; max-width: 400px; }
-            .back-nav { top: 1rem; left: 1rem; }
+        /* Error message */
+        .pf-error {
+            background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.2);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.8rem;
+            color: #F87171;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .pf-error.show { display: flex; }
+
+        /* Admin warning */
+        .admin-warning {
+            background: rgba(239,68,68,0.06);
+            border: 1px solid rgba(239,68,68,0.15);
+            border-radius: 0.875rem;
+            padding: 0.9rem 1rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+        .admin-warning-icon { font-size: 1rem; flex-shrink: 0; }
+        .admin-warning-text { font-size: 0.75rem; color: #64748B; line-height: 1.6; }
+        .admin-warning-text span { color: #F87171; font-weight: 700; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .portal-left { display: none; }
+            .portal-right { 
+                margin-left: 0; 
+                width: 100%; 
+                padding: 2rem 1.5rem 8rem 1.5rem; 
+                border-left: none; 
+            }
         }
     </style>
 </head>
 <body>
+<div class="portal-split">
 
-    <a href="/index.html" class="back-nav">← Back to Home</a>
+    <!-- ══ LEFT BRANDING PANEL ══ -->
+    <div class="portal-left" id="portalLeft">
+        <div class="portal-left-col">
 
-    <div class="cards-container">
-        
-        <!-- ADMINISTRATOR CARD -->
-        <div class="portal-card card-admin" id="card-admin">
-            <div class="loading-overlay" id="loader-admin">
-                <div class="spinner" style="border-top-color: #EF4444;"></div>
-                <span>Verifying Admin...</span>
+            <!-- Brand -->
+            <div class="portal-brand animate-fade-in">
+                <div class="logo-icon"><span class="logo-icon-inner">F</span></div>
+                <span class="logo-text">FINTECH<span class="text-gradient-creative">PRO</span></span>
             </div>
 
-            <div class="card-inner">
-                <!-- Front -->
-                <div class="card-face">
-                    <div class="icon-box admin-icon">🛡️</div>
-                    <h2 class="role-title">Administrator</h2>
-                    <p class="role-desc">Access platform controls, user management, and system logs.</p>
-                    <button class="btn-action btn-login-dashboard" onclick="toggleForm('card-admin', true)">Login as Admin</button>
-                </div>
+            <!-- Headline -->
+            <h1 class="portal-headline animate-slide-up">Welcome Back<br><span class="text-gradient-creative">to Your Dashboard</span></h1>
+            <p class="portal-sub animate-fade-in delay-200ms opacity-0">Choose your account type and securely access your financial workspace in seconds.</p>
 
-                <!-- Back (Form) -->
-                <div class="card-face">
-                    <button class="login-back-btn" onclick="toggleForm('card-admin', false)">←</button>
-                    <h2 class="role-title" style="margin-bottom: 2rem;">Admin Access</h2>
-                    
-                    <form id="form-admin" style="width: 100%;" onsubmit="handleLogin(event, 'admin')">
-                        <div class="form-group">
-                            <label class="form-label">Admin Email</label>
-                            <input type="email" name="email" class="form-input" placeholder="@gmail.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-input" placeholder="password" required>
-                        </div>
-                        <button type="submit" class="btn-action btn-login-dashboard" style="margin-top: 1rem;">Login</button>
-                    </form>
+            <!-- Role pills (visual nav) -->
+            <div class="role-pills stagger-load">
+                <div class="role-pill active" onclick="selectRole('business', this)">
+                    <div class="role-pill-icon indigo">🏢</div>
+                    <div class="role-pill-badge">
+                        <div class="role-pill-name">Business & Organisation</div>
+                        <div class="role-pill-desc">Expense tracking, reports, team management</div>
+                    </div>
+                    <span class="role-pill-arrow">→</span>
+                </div>
+                <div class="role-pill" onclick="selectRole('admin', this)">
+                    <div class="role-pill-icon purple">🛡️</div>
+                    <div class="role-pill-badge">
+                        <div class="role-pill-name">Administrator</div>
+                        <div class="role-pill-desc">Platform controls, user management, system logs</div>
+                    </div>
+                    <span class="role-pill-arrow">→</span>
                 </div>
             </div>
+
+            <!-- Divider -->
+            <div class="portal-divider">
+                <div class="portal-divider-line"></div>
+                <span class="portal-divider-txt">Always Secure</span>
+                <div class="portal-divider-line"></div>
+            </div>
+
+            <!-- Trust badges -->
+            <div class="trust-badges">
+                <div class="trust-badge"><span class="trust-badge-dot"></span> 256-bit Encrypted</div>
+                <div class="trust-badge"><span class="trust-badge-dot"></span> JWT Sessions</div>
+                <div class="trust-badge"><span class="trust-badge-dot"></span> OTP Verified</div>
+            </div>
+
         </div>
-
-        <!-- BUSINESS CARD -->
-        <div class="portal-card card-business" id="card-business">
-            <div class="loading-overlay" id="loader-business">
-                <div class="spinner"></div>
-                <span>Accessing Dashboard...</span>
-            </div>
-
-            <div class="card-inner">
-                <!-- Front -->
-                <div class="card-face">
-                    <div class="icon-box business-icon">🏢</div>
-                    <h2 class="role-title">Business & Org</h2>
-                    <p class="role-desc">Manage teams, track expenses, and view financial reports.</p>
-                    <button class="btn-action btn-login-biz" onclick="toggleForm('card-business', true)">Login to Dashboard</button>
-                    <a href="/views/signup.html" class="btn-action btn-create-biz">Create Account</a>
-                </div>
-
-                <!-- Back (Form) -->
-                <div class="card-face">
-                    <button class="login-back-btn" onclick="toggleForm('card-business', false)">←</button>
-                    <h2 class="role-title" style="margin-bottom: 2rem;">Business Login</h2>
-                    
-                    <form id="form-business" style="width: 100%;" onsubmit="handleLogin(event, 'business')">
-                        <div class="form-group">
-                            <label class="form-label">Work Email</label>
-                            <input type="email" name="email" class="form-input" placeholder="@gmail.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-input" placeholder="password" required>
-                        </div>
-                        <button type="submit" class="btn-action btn-login-biz" style="margin-top: 1rem;">Login</button>
-                    </form>
-                    
-                    <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #94A3B8;">
-                        New here? <a href="/views/signup.html" style="color: #818CF8; text-decoration: none; font-weight: 700;">Join now</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <script>
-        // Animation Toggle
-        function toggleForm(cardId, show) {
-            const card = document.getElementById(cardId);
-            if (show) {
-                card.classList.add('show-form');
-            } else {
-                card.classList.remove('show-form');
-            }
-        }
+    <!-- ══ RIGHT FORM PANEL ══ -->
+    <div class="portal-right" id="portalRight">
+        <!-- Drifting glow orbs -->
+        <div class="right-orb right-orb-1"></div>
+        <div class="right-orb right-orb-2"></div>
+        <div class="right-orb right-orb-3"></div>
+        <!-- Diagonal shimmer sweep -->
+        <div class="right-shimmer"></div>
+        <div class="portal-form-wrap">
 
-        // Login Handler
-        async function handleLogin(e, roleType) {
-            e.preventDefault();
-            const form = e.target;
-            const email = form.email.value;
-            const password = form.password.value;
-            
-            // UI Feedback
-            const loaderId = roleType === 'admin' ? 'loader-admin' : 'loader-business';
-            const loader = document.getElementById(loaderId);
-            if(loader) loader.style.display = 'flex';
+            <a href="/index.html" class="portal-back">← Back to Home</a>
 
-            try {
-                // Sending roleType as role helps server validated that the user really has that role
-                // DB uses 'admin' not 'administrator'
-                const response = await fetch('/api/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        email, 
-                        password,
-                        role: roleType 
-                    })
-                });
+            <!-- Role tabs -->
+            <div class="portal-tabs">
+                <div class="portal-tab active" id="tab-business" onclick="selectRole('business', null)">
+                    <span>🏢</span> Business
+                </div>
+                <div class="portal-tab" id="tab-admin" onclick="selectRole('admin', null)">
+                    <span>🛡️</span> Admin
+                </div>
+            </div>
 
-                const result = await response.json();
-                
-                // Artificial delay for UX
-                await new Promise(r => setTimeout(r, 800));
+            <!-- ── BUSINESS FORM ── -->
+            <div class="portal-form-section visible" id="section-business">
+                <div class="portal-form-header">
+                    <span class="portal-form-badge">✦ Business & Organisation</span>
+                    <h2 class="portal-form-title">Welcome back 👋</h2>
+                    <p class="portal-form-sub">Sign in to your financial dashboard.</p>
+                </div>
 
-                if (response.ok && result.success) {
-                    const user = result.data;
-                    const userRole = user.role.toLowerCase();
+                <div class="pf-error" id="error-business"><span>⚠️</span><span id="error-business-msg"></span></div>
 
-                    // Success
-                    localStorage.setItem('fintech_token', user.token);
-                    localStorage.setItem('fintech_logged_in_user', JSON.stringify(user));
-                    localStorage.setItem('fintech_name', user.fullName);
-                    localStorage.setItem('fintech_email', user.email);
+                <form id="form-business" onsubmit="handleLogin(event, 'business')">
+                    <div class="pf-field">
+                        <input type="email" id="bizEmail" name="email" class="pf-input" placeholder="Work Email" required autocomplete="email">
+                        <label for="bizEmail">Work Email</label>
+                        <span class="pf-icon">✉️</span>
+                    </div>
+                    <div class="pf-field">
+                        <input type="password" id="bizPass" name="password" class="pf-input" placeholder="Password" required autocomplete="current-password">
+                        <label for="bizPass">Password</label>
+                        <span class="pf-icon">🔒</span>
+                    </div>
+                    <div class="pf-meta-row">
+                        <label class="pf-remember">
+                            <input type="checkbox" id="bizRemember"> Remember me
+                        </label>
+                        <a href="javascript:void(0)" onclick="showForgot()" class="pf-forgot">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="pf-btn-primary" id="btn-business">
+                        <span class="btn-text">🚀 Sign In to Dashboard</span>
+                        <span class="btn-loading" id="loading-business">
+                            <span class="btn-spinner"></span> Signing in…
+                        </span>
+                    </button>
+                </form>
 
-                    // Redirect
-                    if (userRole === 'admin' || userRole === 'administrator') {
-                        window.location.href = '/views/dashboard.html';
-                    } else {
-                        window.location.href = '/views/dashboard.html';
-                    }
+                <div class="pf-security">
+                    <span class="pf-security-icon">🔐</span>
+                    <span class="pf-security-text">Your session is secured with 256-bit AES encryption and JWT tokens.</span>
+                </div>
 
-                } else {
-                    throw new Error(result.message || 'Login failed');
+                <div class="pf-signup-link">
+                    <p>New to FintechPro? <a href="/views/signup.html">Create free account →</a></p>
+                </div>
+            </div>
+
+            <!-- ── ADMIN FORM ── -->
+            <div class="portal-form-section" id="section-admin">
+                <div class="portal-form-header">
+                    <span class="portal-form-badge portal-badge-red">🛡️ Administrator Access</span>
+                    <h2 class="portal-form-title">Admin Login</h2>
+                    <p class="portal-form-sub">Restricted access — authorised personnel only.</p>
+                </div>
+
+                <div class="admin-warning">
+                    <span class="admin-warning-icon">⚠️</span>
+                    <div class="admin-warning-text">
+                        <span>Restricted area.</span> This portal is for platform administrators only. All login attempts are logged and monitored.
+                    </div>
+                </div>
+
+                <div class="pf-error" id="error-admin"><span>⚠️</span><span id="error-admin-msg"></span></div>
+
+                <form id="form-admin" onsubmit="handleLogin(event, 'admin')">
+                    <div class="pf-field">
+                        <input type="email" id="adminEmail" name="email" class="pf-input" placeholder="Admin Email" required autocomplete="email">
+                        <label for="adminEmail">Admin Email</label>
+                        <span class="pf-icon">🛡️</span>
+                    </div>
+                    <div class="pf-field">
+                        <input type="password" id="adminPass" name="password" class="pf-input" placeholder="Password" required autocomplete="current-password">
+                        <label for="adminPass">Password</label>
+                        <span class="pf-icon">🔑</span>
+                    </div>
+                    <div class="pf-meta-row">
+                        <label class="pf-remember">
+                            <input type="checkbox"> Remember me
+                        </label>
+                        <a href="javascript:void(0)" onclick="showForgot()" class="pf-forgot portal-text-red">Emergency access?</a>
+                    </div>
+                    <button type="submit" class="pf-btn-primary pf-btn-admin" id="btn-admin">
+                        <span class="btn-text">🛡️ Access Admin Panel</span>
+                        <span class="btn-loading" id="loading-admin">
+                            <span class="btn-spinner"></span> Verifying…
+                        </span>
+                    </button>
+                </form>
+
+                <div class="pf-security portal-security-box">
+                    <span class="pf-security-icon">🔏</span>
+                    <span class="pf-security-text">All admin actions are logged. Unauthorised access attempts will be reported.</span>
+                </div>
+
+            <!-- ── FORGOT PASSWORD FORM ── -->
+            <div class="portal-form-section" id="section-forgot">
+                <div class="portal-form-header">
+                    <span class="portal-form-badge">🔒 Password Recovery</span>
+                    <h2 class="portal-form-title">Forgot Password?</h2>
+                    <p class="portal-form-sub">Enter your email to receive a verification code.</p>
+                </div>
+
+                <div class="pf-error" id="error-forgot"><span>⚠️</span><span id="error-forgot-msg"></span></div>
+
+                <form id="form-forgot" onsubmit="handleForgotRequest(event)">
+                    <div class="pf-field">
+                        <input type="email" id="forgotEmail" name="email" class="pf-input" placeholder="Work Email" required autocomplete="email">
+                        <label for="forgotEmail">Work Email</label>
+                        <span class="pf-icon">✉️</span>
+                    </div>
+                    
+                    <button type="submit" class="pf-btn-primary" id="btn-forgot">
+                        <span class="btn-text">📨 Send Verification Code</span>
+                        <span class="btn-loading" id="loading-forgot">
+                            <span class="btn-spinner"></span> Sending…
+                        </span>
+                    </button>
+                    <button type="button" class="pf-btn-secondary margin-t-1" onclick="selectRole('business', null)">
+                        ← Back to Login
+                    </button>
+                </form>
+            </div>
+
+            <!-- ── FORGOT OTP FORM ── -->
+            <div class="portal-form-section" id="section-forgot-otp">
+                <div class="portal-form-header">
+                    <span class="portal-form-badge">📩 Verification</span>
+                    <h2 class="portal-form-title">Check Your Inbox</h2>
+                    <p class="portal-form-sub">We've sent a 6-digit code to <span id="display-forgot-email" class="text-indigo-bold">your email</span>.</p>
+                </div>
+
+                <div class="pf-error" id="error-forgot-otp"><span>⚠️</span><span id="error-forgot-otp-msg"></span></div>
+
+                <form id="form-forgot-otp" onsubmit="handleForgotOTP(event)">
+                    <div class="pf-field">
+                        <input type="text" id="forgotOTP" name="otp" class="pf-input text-center" placeholder="000000" pattern="\d{6}" maxlength="6" required title="6-digit OTP">
+                        <label for="forgotOTP">6-Digit Code</label>
+                        <span class="pf-icon">🔑</span>
+                    </div>
+                    
+                    <button type="submit" class="pf-btn-primary" id="btn-forgot-otp">
+                        <span class="btn-text">✅ Verify Code</span>
+                        <span class="btn-loading" id="loading-forgot-otp">
+                            <span class="btn-spinner"></span> Verifying…
+                        </span>
+                    </button>
+                    <button type="button" class="pf-btn-secondary margin-t-1" onclick="showForgot()">
+                        ← Back to Email
+                    </button>
+                </form>
+            </div>
+
+            <!-- ── FORGOT SUCCESS ── -->
+            <div class="portal-form-section" id="section-forgot-success">
+                <div class="portal-form-header text-center">
+                    <div class="success-icon-anim">✓</div>
+                    <h2 class="portal-form-title">Verification Successful</h2>
+                    <p class="portal-form-sub">A secure password reset link has been sent to your email. Please check your inbox (and spam folder) to complete the process.</p>
+                </div>
+
+                <div class="pf-security-box margin-b-2">
+                    <span class="pf-security-icon">🛡️</span>
+                    <span class="pf-security-text">For security, the reset link will expire in 15 minutes.</span>
+                </div>
+
+                <button type="button" class="pf-btn-primary" onclick="selectRole('business', null)">
+                    Return to Login
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    /* ── Role Switching ── */
+    function selectRole(role, pill) {
+        // Update left panel pills
+        document.querySelectorAll('.role-pill').forEach(p => p.classList.remove('active'));
+        if (pill) pill.classList.add('active');
+        else {
+            document.querySelectorAll('.role-pill').forEach(p => {
+                if (p.querySelector('.role-pill-name').textContent.toLowerCase().includes(role === 'business' ? 'business' : 'admin')) {
+                    p.classList.add('active');
                 }
-
-            } catch (err) {
-                alert(err.message);
-                if(loader) loader.style.display = 'none';
-            }
+            });
         }
-    </script>
+
+        // Update tabs
+        document.querySelectorAll('.portal-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + role).classList.add('active');
+
+        // Update form sections
+        document.querySelectorAll('.portal-form-section').forEach(s => {
+            s.classList.remove('visible');
+            s.classList.remove('form-opening');
+        });
+        const activeForm = document.getElementById('section-' + role);
+        activeForm.classList.add('visible');
+        activeForm.classList.add('form-opening');
+    }
+
+    /* ── Login Handler ── */
+    async function handleLogin(e, roleType) {
+        e.preventDefault();
+        const form     = e.target;
+        const email    = form.email.value;
+        const password = form.password.value;
+        const btn      = document.getElementById('btn-' + roleType);
+        const loadEl   = document.getElementById('loading-' + roleType);
+        const errEl    = document.getElementById('error-' + roleType);
+        const errMsg   = document.getElementById('error-' + roleType + '-msg');
+
+        // Hide old error, show loader
+        errEl.classList.remove('show');
+        btn.querySelector('.btn-text').style.display = 'none';
+        loadEl.classList.add('show');
+        btn.disabled = true;
+
+        try {
+            const response = await fetch('/api/auth/login', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ email, password, role: roleType })
+            });
+
+            const result = await response.json();
+            // Artificial UX delay
+            await new Promise(r => setTimeout(r, 800));
+
+            if (response.ok && result.success) {
+                const user     = result.data;
+                const userRole = user.role.toLowerCase();
+                localStorage.setItem('fintech_token',            user.token);
+                localStorage.setItem('fintech_logged_in_user',   JSON.stringify(user));
+                localStorage.setItem('fintech_name',             user.fullName);
+                localStorage.setItem('fintech_email',            user.email);
+                const userPrefix = `user_${user.email.replace(/[^a-zA-Z0-9]/g, '_')}_`;
+                localStorage.setItem('fintech_current_prefix',   userPrefix);
+                window.location.href = '/views/dashboard.html';
+            } else {
+                throw new Error(result.message || 'Login failed. Please check your credentials.');
+            }
+
+        } catch (err) {
+            errMsg.textContent = err.message;
+            errEl.classList.add('show');
+            btn.querySelector('.btn-text').style.display = '';
+            loadEl.classList.remove('show');
+            btn.disabled = false;
+        }
+    }
+
+    /* ── Forgot Password Handlers ── */
+    function showForgot() {
+        document.querySelectorAll('.portal-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.portal-form-section').forEach(s => {
+            s.classList.remove('visible');
+            s.classList.remove('form-opening');
+        });
+        const activeForm = document.getElementById('section-forgot');
+        activeForm.classList.add('visible');
+        activeForm.classList.add('form-opening');
+    }
+
+    async function handleForgotRequest(e) {
+        e.preventDefault();
+        const email = document.getElementById('forgotEmail').value;
+        const btn = document.getElementById('btn-forgot');
+        const loadEl = document.getElementById('loading-forgot');
+        const errEl = document.getElementById('error-forgot');
+        const errMsg = document.getElementById('error-forgot-msg');
+
+        errEl.classList.remove('show');
+        btn.querySelector('.btn-text').style.display = 'none';
+        loadEl.classList.add('show');
+        btn.disabled = true;
+
+        try {
+            // Mock API call to send OTP
+            await new Promise(r => setTimeout(r, 1500));
+            document.getElementById('display-forgot-email').textContent = email;
+            
+            // Switch to OTP section
+            document.querySelectorAll('.portal-form-section').forEach(s => {
+                s.classList.remove('visible');
+                s.classList.remove('form-opening');
+            });
+            const otpForm = document.getElementById('section-forgot-otp');
+            otpForm.classList.add('visible');
+            otpForm.classList.add('form-opening');
+        } catch (err) {
+            errMsg.textContent = "Failed to send code. Please try again.";
+            errEl.classList.add('show');
+            btn.querySelector('.btn-text').style.display = '';
+            loadEl.classList.remove('show');
+            btn.disabled = false;
+        }
+    }
+
+    async function handleForgotOTP(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btn-forgot-otp');
+        const loadEl = document.getElementById('loading-forgot-otp');
+        const errEl = document.getElementById('error-forgot-otp');
+        const errMsg = document.getElementById('error-forgot-otp-msg');
+
+        errEl.classList.remove('show');
+        btn.querySelector('.btn-text').style.display = 'none';
+        loadEl.classList.add('show');
+        btn.disabled = true;
+
+        try {
+            // Mock API call to verify OTP
+            await new Promise(r => setTimeout(r, 1200));
+            
+            // Switch to Success section
+            document.querySelectorAll('.portal-form-section').forEach(s => {
+                s.classList.remove('visible');
+                s.classList.remove('form-opening');
+            });
+            const successForm = document.getElementById('section-forgot-success');
+            successForm.classList.add('visible');
+            successForm.classList.add('form-opening');
+        } catch (err) {
+            errMsg.textContent = "Invalid verification code.";
+            errEl.classList.add('show');
+            btn.querySelector('.pf-btn-primary .btn-text').style.display = '';
+            loadEl.classList.remove('show');
+            btn.disabled = false;
+        }
+    }
+
+    /* ── Floating Particles — Left Panel ── */
+    const leftPanel = document.getElementById('portalLeft');
+    const pColors   = ['rgba(99,102,241,0.6)', 'rgba(217,70,239,0.5)', 'rgba(6,182,212,0.5)', 'rgba(139,92,246,0.5)'];
+    function spawnParticle() {
+        if (!leftPanel) return;
+        const p    = document.createElement('div');
+        p.className = 'portal-particle';
+        const size = Math.random() * 9 + 4;
+        p.style.cssText = `
+            width:${size}px; height:${size}px;
+            background:${pColors[Math.floor(Math.random() * pColors.length)]};
+            left:${Math.random() * 100}%;
+            bottom:${Math.random() * 15}%;
+            filter:blur(${size / 3}px);
+            animation-duration:${Math.random() * 6 + 5}s;
+            animation-delay:${Math.random() * 2}s;
+        `;
+        leftPanel.appendChild(p);
+        setTimeout(() => p.remove(), 11000);
+    }
+    setInterval(spawnParticle, 700);
+
+    /* ── Floating Particles — Right Panel ── */
+    const rightPanel = document.getElementById('portalRight');
+    const rColors    = ['rgba(99,102,241,0.35)', 'rgba(217,70,239,0.28)', 'rgba(6,182,212,0.28)', 'rgba(139,92,246,0.32)'];
+    function spawnRightParticle() {
+        if (!rightPanel) return;
+        const p    = document.createElement('div');
+        p.className = 'right-particle';
+        const size = Math.random() * 6 + 3;
+        p.style.cssText = `
+            width:${size}px; height:${size}px;
+            background:${rColors[Math.floor(Math.random() * rColors.length)]};
+            left:${Math.random() * 100}%;
+            bottom:${Math.random() * 20}%;
+            filter:blur(${size / 2.5}px);
+            animation-duration:${Math.random() * 5 + 6}s;
+            animation-delay:${Math.random() * 3}s;
+        `;
+        rightPanel.appendChild(p);
+        setTimeout(() => p.remove(), 11000);
+    }
+    setInterval(spawnRightParticle, 1200);
+
+</script>
 </body>
 </html>

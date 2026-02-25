@@ -10,157 +10,100 @@
     <link rel="stylesheet" href="/css/variables.css">
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/components.css">
-    <style>
-        body { font-family: 'Outfit', sans-serif; margin: 0; }
-        .sidebar {
-            width: 260px;
-            background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255,255,255,0.08);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 2rem 1.25rem;
-            position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 10;
-        }
-        .nav-item {
-            width: 100%;
-            height: 54px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 0 1.25rem;
-            margin-bottom: 0.75rem;
-            color: #94A3B8;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            gap: 1rem;
-            box-sizing: border-box;
-        }
-        .nav-item:hover, .nav-item.active {
-            background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF);
-            color: white;
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
-            transform: translateX(5px);
-        }
-        .content {
-            margin-left: 260px;
-            padding: 4rem;
-            min-height: 100vh;
-        }
-        .filter-btn {
-            padding: 0.6rem 1.75rem;
-            border-radius: 99px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #94A3B8;
-            font-size: 0.8rem;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .filter-btn:hover {
-            background: rgba(255,255,255,0.1);
-            color: white;
-        }
-        .filter-btn.active {
-            background: #6366F1;
-            color: white;
-            border-color: #6366F1;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-        }
-    </style>
+    <link rel="stylesheet" href="/css/transactions.css">
+    <link rel="stylesheet" href="/css/animations.css">
 </head>
 <body class="creative-mode">
-    <div class="sidebar">
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 4rem; padding-left: 0.5rem;">
-            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF); border-radius: 10px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center;">
-                <span style="transform: rotate(-45deg); color: white; font-weight: 800;">F</span>
+    <button class="mobile-nav-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+        ☰
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo-wrapper">
+            <div class="logo-icon">
+                <span class="logo-icon-inner">F</span>
             </div>
-            <span style="font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em;">FINTECH<span class="text-gradient-creative">PRO</span></span>
+            <span class="logo-text">FINTECH<span class="text-gradient-creative">PRO</span></span>
         </div>
         
         <a href="/views/dashboard.html" class="nav-item">
-            <span style="font-size: 1.25rem;">🏠</span>
+            <span class="nav-icon">🏠</span>
             <span>Dashboard</span>
         </a>
         <a href="/views/expenses.html" class="nav-item">
-            <span style="font-size: 1.25rem;">💸</span>
+            <span class="nav-icon">💸</span>
             <span>Expenses</span>
         </a>
+        <a href="/views/transfer.html" class="nav-item">
+            <span class="nav-icon">📤</span>
+            <span>Transfer</span>
+        </a>
         <a href="/views/transactions.html" class="nav-item active">
-            <span style="font-size: 1.25rem;">📋</span>
+            <span class="nav-icon">📋</span>
             <span>Transactions</span>
         </a>
         <a href="/views/reports.html" class="nav-item">
-            <span style="font-size: 1.25rem;">📊</span>
+            <span class="nav-icon">📊</span>
             <span>Reports</span>
         </a>
         <a href="/views/admin.html" id="adminNavItem" class="nav-item">
-            <span style="font-size: 1.25rem;">👤</span>
+            <span class="nav-icon">🛡️</span>
             <span>Admin</span>
         </a>
         <a href="/views/profile.html" class="nav-item">
-            <span style="font-size: 1.25rem;">👤</span>
+            <span class="nav-icon">👤</span>
             <span>Profile</span>
         </a>
         <a href="/views/settings.html" class="nav-item">
-            <span style="font-size: 1.25rem;">⚙️</span>
+            <span class="nav-icon">⚙️</span>
             <span>Settings</span>
         </a>
         <a href="/views/support.html" class="nav-item">
-            <span style="font-size: 1.25rem;">🎧</span>
+            <span class="nav-icon">🎧</span>
             <span>Support</span>
         </a>
         
-        <div style="flex: 1;"></div>
+        <div class="flex-1"></div>
         
-        <a href="/index.html" class="nav-item" style="margin-bottom: 0;">
-            <span style="font-size: 1.25rem;">🚪</span>
+        <a href="#" onclick="handleLogout()" class="nav-item margin-b-0">
+            <span class="nav-icon">🚪</span>
             <span>Logout</span>
         </a>
     </div>
 
     <main class="content">
-        <head style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem;">
+        <header class="header-main">
             <div>
-                <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
-            <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0;">Recent <span class="text-gradient-creative">Transactions</span></h1>
+                <h1 class="header-title">Recent <span class="text-gradient">Transactions</span></h1>
+                <p class="header-description">Comprehensive financial history in real-time.</p>
+            </div>
             <a href="/views/profile.html">
-            <div id="headerAvatar" style="width: 50px; height: 50px; background: linear-gradient(135deg, #6366F1, #D946EF); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; color: white; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.08);">U</div>
+                <div id="headerAvatar" class="sidebar-user-avatar">U</div>
             </a>
         </header>
-                <p style="color: #94A3B8; margin-top: 0.5rem;">Comprehensive financial history in real-time.</p>
-            </div>
-            <div style="display: flex; gap: 0.75rem;">
-                <button id="filter-all" class="filter-btn active" onclick="setFilter('all')">All</button>
-                <button id="filter-income" class="filter-btn" onclick="setFilter('income')">Income</button>
-                <button id="filter-expense" class="filter-btn" onclick="setFilter('expense')">Expenses</button>
-            </div>
-        </header>
 
-        <div class="glass-card" style="border-radius: 2rem; overflow: hidden; padding-bottom: 1rem; margin-top: 3rem;">
-            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <div class="filter-row margin-b-2">
+            <button id="filter-all" class="filter-btn active" onclick="setFilter('all')">All</button>
+            <button id="filter-income" class="filter-btn" onclick="setFilter('income')">Income</button>
+            <button id="filter-expense" class="filter-btn" onclick="setFilter('expense')">Expenses</button>
+        </div>
+
+        <div class="table-container">
+            <table class="table-main-full">
                 <thead>
-                    <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">DATE</th>
-                        <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">DESC</th>
-                        <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">TYPE</th>
-                        <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800; text-align: right;">AMOUNT</th>
+                    <tr class="table-head-row">
+                        <th class="table-head-cell trans-table-head-cell">DATE</th>
+                        <th class="table-head-cell trans-table-head-cell">DESC</th>
+                        <th class="table-head-cell trans-table-head-cell">TYPE</th>
+                        <th class="table-head-cell trans-table-head-cell text-right">AMOUNT</th>
                     </tr>
                 </thead>
                 <tbody id="transBody">
                     <!-- Dynamic Content -->
                 </tbody>
             </table>
-            <div id="emptyState" style="display: none; padding: 5rem; text-align: center; color: #94A3B8;">
-                <p style="font-size: 1.25rem;">No transactions found for this filter.</p>
+            <div id="emptyState" class="empty-state hide">
+                <p>No transactions found for this filter.</p>
             </div>
         </div>
     </main>
@@ -178,26 +121,56 @@
             renderTransactions();
         }
 
-        function renderTransactions() {
+        async function renderTransactions() {
             const tableBody = document.getElementById('transBody');
             const emptyState = document.getElementById('emptyState');
-            
-            // Data Gathering
-            const rawExpenses = JSON.parse(localStorage.getItem('fintech_expenses')) || [];
-            const incomeData = [
-                { date: 'Oct 22, 2024', merchant: 'Salary Deposit', category: 'Income', amount: 450000, type: 'income' },
-                { date: 'Oct 15, 2024', merchant: 'Dividend Payout', category: 'Income', amount: 12500, type: 'income' }
-            ];
+            const token = localStorage.getItem('fintech_token');
+            if (!token) return;
 
-            const expenseData = rawExpenses.map(e => ({
-                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                merchant: e.merchant,
-                category: e.category,
-                amount: e.amount,
-                type: 'expense'
-            }));
+            try {
+                const [expRes, incRes, transferRes] = await Promise.all([
+                    fetch('/api/expenses', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('/api/income', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('/api/transfer/history', { headers: { 'Authorization': `Bearer ${token}` } })
+                ]);
 
-            let combined = [...incomeData, ...expenseData];
+                const expResult = await expRes.json();
+                const incResult = await incRes.json();
+                const transferResult = await transferRes.json();
+
+                if (expResult.success && incResult.success) {
+                    const rawExpenses = expResult.data;
+                    const rawIncomes = incResult.data;
+                    const rawTransfers = transferResult.success ? transferResult.data : [];
+
+                    const expenseData = rawExpenses.map(e => ({
+                        date: e.date ? new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A',
+                        rawDate: e.date,
+                        merchant: e.title,
+                        category: e.category,
+                        amount: e.amount,
+                        type: 'expense'
+                    }));
+
+                    const incomeData = rawIncomes.map(i => ({
+                        date: i.date ? new Date(i.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A',
+                        rawDate: i.date,
+                        merchant: i.source,
+                        category: i.category,
+                        amount: i.amount,
+                        type: 'income'
+                    }));
+
+                    const transferData = rawTransfers.map(t => ({
+                        date: t.date ? new Date(t.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A',
+                        rawDate: t.date,
+                        merchant: (t.type === 'debit' ? 'Sent to ' : 'Received from ') + t.otherParty,
+                        category: t.description || 'Internal Transfer',
+                        amount: t.amount,
+                        type: t.type === 'debit' ? 'expense' : 'income'
+                    }));
+
+            let combined = [...incomeData, ...expenseData, ...transferData].sort((a, b) => new Date(b.rawDate) - new Date(a.rawDate));
 
             // Filtering
             if (currentFilter === 'income') {
@@ -206,60 +179,113 @@
                 combined = combined.filter(t => t.type === 'expense');
             }
 
-            // Rendering
-            tableBody.innerHTML = '';
-            if (combined.length === 0) {
-                emptyState.style.display = 'block';
-            } else {
-                emptyState.style.display = 'none';
-                combined.forEach(t => {
-                    const isIncome = t.type === 'income';
-                    const sign = isIncome ? '+' : '-';
-                    const color = isIncome ? '#10B981' : '#F43F5E';
-                    const amount = '₹' + t.amount.toLocaleString('en-IN');
 
-                    const row = `
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
-                            <td style="padding: 1.5rem 2rem;"><span style="color: #94A3B8; font-size: 0.875rem;">${t.date}</span></td>
-                            <td style="padding: 1.5rem 2rem;"><p style="font-weight: 800; margin: 0;">${t.merchant}</p></td>
-                            <td style="padding: 1.5rem 2rem;"><span style="color: #6366F1; font-weight: 700; font-size: 0.75rem; text-transform: uppercase;">${t.category}</span></td>
-                            <td style="padding: 1.5rem 2rem; text-align: right; font-weight: 800; color: ${color};">${sign}${amount}</td>
-                        </tr>
-                    `;
-                    tableBody.insertAdjacentHTML('beforeend', row);
-                });
+                    // Rendering
+                    tableBody.innerHTML = '';
+                    if (combined.length === 0) {
+                        emptyState.classList.remove('hide');
+                    } else {
+                        emptyState.classList.add('hide');
+                        combined.forEach(t => {
+                            const isIncome = t.type === 'income';
+                            const sign = isIncome ? '+' : '-';
+                            const amount = '₹' + t.amount.toLocaleString('en-IN');
+
+                            const row = `
+                                <tr class="trans-table-row">
+                                    <td class="trans-table-cell"><span class="trans-date-text">${t.date}</span></td>
+                                    <td class="trans-table-cell"><p class="trans-merchant-name">${t.merchant}</p></td>
+                                    <td class="trans-table-cell"><span class="trans-category-tag">${t.category}</span></td>
+                                    <td class="trans-table-cell trans-amount-text ${(isIncome ? 'text-income' : 'text-expense')}">
+                                        ${sign}${amount}
+                                    </td>
+                                </tr>
+                            `;
+                            tableBody.insertAdjacentHTML('beforeend', row);
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to load transactions:', err);
+                tableBody.innerHTML = '<tr><td colspan="4" class="table-empty-row text-error-accent">Error loading data from server.</td></tr>';
             }
         }
 
         // Init
-        window.onload = () => {
-            renderTransactions();
-            
+        window.onload = async () => {
             const loggedInUser = JSON.parse(localStorage.getItem('fintech_logged_in_user'));
+            if (!loggedInUser) {
+                window.location.href = '/views/portal.html';
+                return;
+            }
 
+            await renderTransactions();
+            
             // Avatar Logic
             const avatar = document.getElementById('headerAvatar');
             const savedPhoto = localStorage.getItem('fintech_profile_pic');
-            const userInitial = (loggedInUser && loggedInUser.name ? loggedInUser.name.charAt(0) : 'U').toUpperCase();
+            const userInitial = (loggedInUser.fullName || loggedInUser.name || 'U').charAt(0).toUpperCase();
 
             if (savedPhoto && savedPhoto.startsWith('data:image')) {
                 avatar.style.backgroundImage = `url(${savedPhoto})`;
+                avatar.classList.add('has-photo');
                 avatar.textContent = '';
             } else {
+                avatar.classList.remove('has-photo');
+                avatar.style.backgroundImage = 'none';
                 avatar.textContent = userInitial;
             }
             
-            // RBAC: Show Admin only for administrators
-            const userRole = (loggedInUser && loggedInUser.role) ? loggedInUser.role.toLowerCase() : '';
+            // RBAC
+            const userRole = (loggedInUser.role) ? loggedInUser.role.toLowerCase() : '';
             const adminLink = document.getElementById('adminNavItem');
             if (adminLink) {
-                if (userRole === 'administrator') {
-                    adminLink.style.display = 'flex';
+                if (userRole === 'administrator' || userRole === 'admin') {
+                    adminLink.classList.remove('hide');
                 } else {
-                    adminLink.style.display = 'none';
+                    adminLink.classList.add('hide');
                 }
             }
         };
+        function handleLogout() {
+            // Check if this is an admin-impersonated session
+            const adminToken = localStorage.getItem('fintech_admin_token');
+            const adminUser = localStorage.getItem('fintech_admin_user');
+            
+            if (adminToken && adminUser) {
+                // Restore admin session
+                localStorage.setItem('fintech_token', adminToken);
+                localStorage.setItem('fintech_logged_in_user', adminUser);
+                localStorage.removeItem('fintech_admin_token');
+                localStorage.removeItem('fintech_admin_user');
+                window.location.href = '/views/admin.html';
+            } else {
+                localStorage.removeItem('fintech_token');
+                localStorage.removeItem('fintech_logged_in_user');
+                localStorage.removeItem('fintech_current_prefix');
+                window.location.href = '/index.html';
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar) return;
+            sidebar.classList.toggle('active');
+            const btn = document.getElementById('sidebarToggle');
+            if (btn) btn.innerHTML = sidebar.classList.contains('active') ? '✕' : '☰';
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const btn = document.getElementById('sidebarToggle');
+            if (window.innerWidth <= 1024 && 
+                sidebar && sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                e.target !== btn) {
+                toggleSidebar();
+            }
+        });
     </script>
 </body>
 </html>

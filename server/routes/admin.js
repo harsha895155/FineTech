@@ -14,7 +14,8 @@ const {
     adminCreatePlatformUser,
     deletePlatformUser,
     createPlatformTeam,
-    getAllPlatformTeams
+    getAllPlatformTeams,
+    deletePlatformTeam
 } = require('../controllers/adminController');
 
 // All admin routes are protected
@@ -35,6 +36,7 @@ router.post('/platform/users', authorize('administrator', 'admin'), adminCreateP
 // Team Management
 router.get('/platform/teams', authorize('administrator', 'admin'), getAllPlatformTeams);
 router.post('/platform/teams', authorize('administrator', 'admin'), createPlatformTeam);
+router.delete('/platform/teams/:id', authorize('administrator', 'admin'), deletePlatformTeam);
 
 // Use a single route definition for user-specific platform actions
 router.route('/platform/users/:id')

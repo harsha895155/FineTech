@@ -30,212 +30,125 @@
     <link rel="stylesheet" href="/css/variables.css">
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/components.css">
-    <style>
-        body { font-family: 'Outfit', sans-serif; margin: 0; }
-        .sidebar {
-            width: 260px;
-            background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255,255,255,0.08);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 2rem 1.25rem;
-            position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 10;
-        }
-        .nav-item {
-            width: 100%;
-            height: 54px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 0 1.25rem;
-            margin-bottom: 0.75rem;
-            color: #94A3B8;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            gap: 1rem;
-            box-sizing: border-box;
-        }
-        .nav-item:hover, .nav-item.active {
-            background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF);
-            color: white;
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
-            transform: translateX(5px);
-        }
-        .content {
-            margin-left: 260px;
-            padding: 4rem;
-            min-height: 100vh;
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(3, 7, 18, 0.8);
-            backdrop-filter: blur(10px);
-            display: none;
-            justify-content: center;
-            align-items: flex-start;
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            overflow-y: auto;
-            padding: 2rem 0;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        .modal-overlay::-webkit-scrollbar {
-            display: none;
-        }
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-        .modal-content {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 2rem;
-            padding: 3rem;
-            width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            margin: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        .modal-content::-webkit-scrollbar {
-            display: none;
-        }
-        .admin-input {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 1rem;
-            padding: 1.25rem;
-            color: white;
-            width: 100%;
-            outline: none;
-            margin-bottom: 1.5rem;
-            font-family: inherit;
-            box-sizing: border-box;
-        }
-        .admin-input:focus {
-            border-color: #6366F1;
-        }
-        
-        /* Dark Theme Select Dropdown */
-        select.admin-input {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236366F1' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1.25rem center;
-            padding-right: 3rem;
-            cursor: pointer;
-        }
-        
-        select.admin-input option {
-            background: #1e293b;
-            color: white;
-            padding: 0.75rem;
-        }
-        
-        select.admin-input option:hover,
-        select.admin-input option:checked {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
-            color: #a5b4fc;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/animations.css">
 </head>
 <body class="creative-mode">
-    <div class="sidebar">
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 4rem; padding-left: 0.5rem;">
-            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF); border-radius: 10px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center;">
-                <span style="transform: rotate(-45deg); color: white; font-weight: 800;">F</span>
+    <button class="mobile-nav-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+        ☰
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo-wrapper">
+            <div class="logo-icon">
+                <span class="logo-icon-inner">F</span>
             </div>
-            <span style="font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em;">FINTECH<span class="text-gradient-creative">PRO</span></span>
+            <span class="logo-text">FINTECH<span class="text-gradient-creative">PRO</span></span>
         </div>
         
         <a href="/views/dashboard.html" class="nav-item">
-            <span style="font-size: 1.25rem;">🏠</span>
+            <span class="nav-icon">🏠</span>
             <span>Dashboard</span>
         </a>
         <a href="/views/expenses.html" class="nav-item">
-            <span style="font-size: 1.25rem;">💸</span>
+            <span class="nav-icon">💸</span>
             <span>Expenses</span>
         </a>
+        <a href="/views/transfer.html" class="nav-item">
+            <span class="nav-icon">📤</span>
+            <span>Transfer</span>
+        </a>
         <a href="/views/transactions.html" class="nav-item">
-            <span style="font-size: 1.25rem;">📋</span>
+            <span class="nav-icon">📋</span>
             <span>Transactions</span>
         </a>
         <a href="/views/reports.html" class="nav-item">
-            <span style="font-size: 1.25rem;">📊</span>
+            <span class="nav-icon">📊</span>
             <span>Reports</span>
         </a>
         <a href="/views/admin.html" id="adminNavItem" class="nav-item active">
-            <span style="font-size: 1.25rem;">👤</span>
+            <span class="nav-icon">🛡️</span>
             <span>Admin</span>
         </a>
         <a href="/views/profile.html" class="nav-item">
-            <span style="font-size: 1.25rem;">👤</span>
+            <span class="nav-icon">👤</span>
             <span>Profile</span>
         </a>
         <a href="/views/settings.html" class="nav-item">
-            <span style="font-size: 1.25rem;">⚙️</span>
+            <span class="nav-icon">⚙️</span>
             <span>Settings</span>
         </a>
         <a href="/views/support.html" class="nav-item">
-            <span style="font-size: 1.25rem;">🎧</span>
+            <span class="nav-icon">🎧</span>
             <span>Support</span>
         </a>
         
-        <div style="flex: 1;"></div>
+        <div class="flex-1"></div>
         
-        <a href="/index.html" class="nav-item" style="margin-bottom: 0;">
-            <span style="font-size: 1.25rem;">🚪</span>
+        <a href="#" onclick="handleLogout()" class="nav-item margin-b-0">
+            <span class="nav-icon">🚪</span>
             <span>Logout</span>
         </a>
     </div>
 
     <main class="content">
-        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4rem;">
-                <div>
-                    <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0; letter-spacing: -0.05em; color: white;">Platform <span class="text-gradient-creative">Control</span></h1>
-                    <p style="color: #64748B; margin: 0.5rem 0 0 0; font-weight: 600;">System Overview • <span id="totalUserCount" style="color: #6366F1;">0</span> Registered Users</p>
-                </div>
-            <div style="display: flex; align-items: center; gap: 1.5rem;">
-                <button class="btn-creative" style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); color: #818CF8;" id="createTeamBtn">Create Team</button>
-                <button class="btn-creative btn-primary-creative" id="addUserBtn">Add User</button>
+        <header class="header-main">
+            <div>
+                <h1 class="header-title">Platform <span class="text-gradient-creative">Control</span></h1>
+                <p class="header-description">System Overview • <span id="totalUserCount" class="text-accent-indigo">0</span> Registered Users</p>
+            </div>
+            <div class="admin-header-actions">
+                <button class="btn-creative btn-outline-indigo-soft" id="createTeamBtn" title="Create a new team">Create Team</button>
+                <button class="btn-creative btn-primary-creative" id="addUserBtn" title="Add a new user">Add User</button>
                 <a href="/views/profile.html">
-                <div id="headerAvatar" style="width: 50px; height: 50px; background: linear-gradient(135deg, #6366F1, #D946EF); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; color: white; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.08);">U</div>
+                    <div id="headerAvatar" class="sidebar-user-avatar">U</div>
                 </a>
             </div>
         </header>
 
         <div id="adminTablesContainer">
-            <!-- Administrators Table -->
-            <div class="role-section" style="margin-bottom: 4rem;">
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-                    <div style="width: 12px; height: 12px; background: #6366F1; border-radius: 3px;"></div>
-                    <h2 style="font-size: 1.25rem; font-weight: 800; margin: 0;">Platform <span class="text-gradient-creative">Administrators</span></h2>
+            <!-- Platform Teams Table -->
+            <div class="role-section margin-b-4">
+                <div class="role-section-header">
+                    <div class="flex-row align-center gap-1">
+                        <div class="section-indicator indicator-team"></div>
+                        <h2 class="section-title">Platform <span class="text-gradient-creative">Teams</span></h2>
+                    </div>
+                    <button class="btn-creative btn-small btn-outline-violet-soft" onclick="fetchTeams()" title="Refresh platform teams list">🔄 Refresh Teams</button>
                 </div>
-                <div class="glass-card" style="border-radius: 2rem; overflow: hidden;">
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <div class="glass-card glass-table-container">
+                    <table class="table-main">
                         <thead>
-                            <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05);">
-                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">USER</th>
-                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">STATUS</th>
-                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800; text-align: right;">ACTIONS</th>
+                            <tr class="table-head-row">
+                                <th class="table-head-cell">TEAM NAME</th>
+                                <th class="table-head-cell">MEMBERS</th>
+                                <th class="table-head-cell">CREATED BY</th>
+                                <th class="table-head-cell" class="text-right">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teamsTableBody">
+                            <!-- Teams will appear here -->
+                            <tr>
+                                <td colspan="4" class="table-empty-row">Loading teams...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Administrators Table -->
+            <div class="role-section margin-b-4">
+                <div class="flex-row align-center gap-1 margin-b-1-5">
+                    <div class="section-indicator indicator-admin"></div>
+                    <h2 class="section-title">Platform <span class="text-gradient-creative">Administrators</span></h2>
+                </div>
+                <div class="glass-card glass-table-container">
+                    <table class="table-main">
+                        <thead>
+                            <tr class="table-head-row">
+                                <th class="table-head-cell">USER</th>
+                                <th class="table-head-cell">STATUS</th>
+                                <th class="table-head-cell text-right">ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody id="adminTableBody">
@@ -245,19 +158,19 @@
                 </div>
             </div>
 
-            <!-- Business Users Table -->
-            <div class="role-section" style="margin-bottom: 4rem;">
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-                    <div style="width: 12px; height: 12px; background: #D946EF; border-radius: 3px;"></div>
-                    <h2 style="font-size: 1.25rem; font-weight: 800; margin: 0;">Business <span class="text-gradient-creative">Owners</span></h2>
+            <!-- Business Owners Table -->
+            <div class="role-section margin-b-4">
+                <div class="flex-row align-center gap-1 margin-b-1-5">
+                    <div class="section-indicator indicator-business"></div>
+                    <h2 class="section-title">Business <span class="text-gradient-creative">Owners</span></h2>
                 </div>
-                <div class="glass-card" style="border-radius: 2rem; overflow: hidden;">
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <div class="glass-card glass-table-container">
+                    <table class="table-main">
                         <thead>
-                            <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05);">
-                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">USER</th>
-                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">STATUS</th>
-                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800; text-align: right;">ACTIONS</th>
+                            <tr class="table-head-row">
+                                <th class="table-head-cell">USER</th>
+                                <th class="table-head-cell">STATUS</th>
+                                <th class="table-head-cell text-right">ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody id="businessTableBody">
@@ -268,18 +181,18 @@
             </div>
 
             <!-- Organization Users Table -->
-            <div class="role-section" style="margin-bottom: 4rem;">
-                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-                    <div style="width: 12px; height: 12px; background: #06B6D4; border-radius: 3px;"></div>
-                    <h2 style="font-size: 1.25rem; font-weight: 800; margin: 0;">Organization <span class="text-gradient-creative">Accounts</span></h2>
+            <div class="role-section margin-b-4">
+                <div class="flex-row align-center gap-1 margin-b-1-5">
+                    <div class="section-indicator indicator-org"></div>
+                    <h2 class="section-title">Organization <span class="text-gradient-creative">Accounts</span></h2>
                 </div>
-                <div class="glass-card" style="border-radius: 2rem; overflow: hidden;">
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <div class="glass-card glass-table-container">
+                    <table class="table-main">
                         <thead>
-                            <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05);">
-                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">USER</th>
-                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">STATUS</th>
-                                <th style="padding: 1.5rem 2rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800; text-align: right;">ACTIONS</th>
+                            <tr class="table-head-row">
+                                <th class="table-head-cell">USER</th>
+                                <th class="table-head-cell">STATUS</th>
+                                <th class="table-head-cell text-right">ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody id="orgTableBody">
@@ -288,60 +201,129 @@
                     </table>
                 </div>
             </div>
+
+            <!-- Global Transfer Hub -->
+            <div class="role-section margin-b-4">
+                <div class="role-section-header">
+                    <div class="flex-row align-center gap-1">
+                        <div class="section-indicator indicator-bank"></div>
+                        <h2 class="section-title">Global <span class="text-gradient-creative">Transfer Hub</span></h2>
+                    </div>
+                    <button class="btn-creative btn-small btn-outline-violet-soft" onclick="fetchSystemTransfers()" title="Refresh transfer logs">🔄 Refresh Logs</button>
+                </div>
+                <div class="glass-card glass-table-container">
+                    <table class="table-main">
+                        <thead>
+                            <tr class="table-head-row">
+                                <th class="table-head-cell">TXN ID</th>
+                                <th class="table-head-cell">SENDER</th>
+                                <th class="table-head-cell">RECEIVER</th>
+                                <th class="table-head-cell">AMOUNT</th>
+                                <th class="table-head-cell">DATE</th>
+                                <th class="table-head-cell text-right">STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transferTableBody">
+                            <tr>
+                                <td colspan="6" class="table-empty-row">Loading system transfers...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+
     </main>
 
     <!-- User Modal (Add/Edit) -->
     <div id="userModal" class="modal-overlay">
-        <div class="modal-content">
-            <h2 id="modalTitle" style="font-weight: 800; margin-bottom: 2rem; font-size: 1.5rem;">Add New User</h2>
+        <div class="modal-content modal-width-lg">
+            <button onclick="closeModal()" class="modal-close-btn">✕</button>
+            <h2 id="modalTitle" class="admin-modal-title">Add New User</h2>
             <form id="userForm">
                 <input type="hidden" id="userId">
                 <div id="registrationInputs">
-                    <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">FULL NAME</label>
+                    <label for="userName" class="admin-label">FULL NAME</label>
                     <input type="text" id="userName" class="admin-input" placeholder="e.g. John Doe" required>
                     
-                    <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">EMAIL ADDRESS</label>
+                    <label for="userEmail" class="admin-label">EMAIL ADDRESS</label>
                     <input type="email" id="userEmail" class="admin-input" placeholder="e.g. john@example.com" required>
 
-                    <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">PHONE NUMBER</label>
+                    <label for="userPhone" class="admin-label">PHONE NUMBER</label>
                     <input type="text" id="userPhone" class="admin-input" placeholder="phoneNumber" required>
 
-                    <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">ROLE</label>
-                    <select id="userRole" class="admin-input">
+                    <label for="userRole" class="admin-label">USER ROLE</label>
+                    <select id="userRole" class="admin-input" title="User Role">
                         <option value="administrator">Administrator</option>
-                        <option value="business">Business</option>
+                        <option value="business" selected>Business</option>
                         <option value="organization">Organization</option>
                     </select>
 
+                    <!-- Bank Connection Section -->
+                    <div class="bank-link-section">
+                        <h3 class="bank-link-title">🏦 LINK BANK VIA PHONE</h3>
+                        
+                        <label for="bankSearch" class="label-secondary">SEARCH & SELECT BANK</label>
+                        <div class="bank-search-container">
+                            <input type="text" id="bankSearch" class="admin-input margin-b-0-5 bank-search-input-padding" placeholder="Search bank name... (e.g. HDFC, Kotak)" onkeyup="filterBanks()" title="Search for a bank">
+                            <span class="bank-search-icon">🔍</span>
+                        </div>
+                        
+                        <div id="bankList" class="bank-list-scroll">
+                            <!-- Banks populated via JS -->
+                        </div>
+
+                        <div id="selectedBankDisplay" class="selected-bank-card hide">
+                            <span id="targetBankIcon" class="nav-icon">🏛️</span>
+                            <div>
+                                <p id="targetBankName" class="admin-user-name text-white"></p>
+                                <p class="admin-user-email">Identifier: User's Phone Number</p>
+                            </div>
+                        </div>
+
+                        <label for="userInitialBalance" class="label-secondary">FETCHED BALANCE (₹)</label>
+                        <input type="number" id="userInitialBalance" class="admin-input bg-success-accent-soft text-success-accent font-800" placeholder="Connect to see balance" readonly title="Bank account balance">
+
+                        <button type="button" id="btnLinkBank" class="btn-creative btn-primary-creative w-full no-padding-btn margin-t-0-5 display-flex" onclick="simulateBankConnection()" title="Link account via Account Aggregator">
+                            🔗 Link Account via AA (Phone Only)
+                        </button>
+                    </div>
+
+                    <div id="bankSyncLoader" class="bank-sync-feedback hide">
+                        <div class="loader-spinner"></div>
+                        <p class="font-size-sm text-success-accent font-700 margin-0">Connecting to Bank Servers & Fetching History...</p>
+                    </div>
+
                     <!-- Change Password Toggle (for Edit mode) -->
-                    <div id="changePasswordToggle" style="display: none; margin-bottom: 1rem;">
-                        <button type="button" id="togglePassBtn" onclick="togglePasswordFields()" style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 0.75rem 1.25rem; color: #818CF8; font-family: inherit; font-weight: 700; font-size: 0.8rem; cursor: pointer; width: 100%; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                    <div id="changePasswordToggle" class="hide margin-b-1">
+                        <button type="button" id="togglePassBtn" onclick="togglePasswordFields()" class="btn-pass-toggle">
                             🔑 Change Password
                         </button>
                     </div>
 
                     <div id="passwordFields">
-                        <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;" id="passLabel">PASSWORD</label>
+                        <label class="admin-label" id="passLabel">PASSWORD</label>
                         <input type="password" id="userPass" class="admin-input" placeholder="••••••••">
 
-                        <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;" id="confirmPassLabel">CONFIRM PASSWORD</label>
+                        <label class="admin-label" id="confirmPassLabel">CONFIRM PASSWORD</label>
                         <input type="password" id="userConfirmPass" class="admin-input" placeholder="••••••••">
                     </div>
 
-                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                        <button type="submit" class="btn-creative btn-primary-creative" style="flex: 1; padding: 1.25rem;">Save User</button>
-                        <button type="button" class="btn-creative" style="flex: 1; background: rgba(255,255,255,0.05); color: white;" onclick="closeModal()">Cancel</button>
+                    </div>
+
+                    <div class="display-flex gap-1 margin-t-1">
+                        <button type="submit" class="btn-creative btn-primary-creative flex-1 p-1-25" title="Save user details">Save User</button>
+                        <button type="button" class="btn-creative flex-1 btn-cancel" onclick="closeModal()" title="Cancel and close modal">Cancel</button>
                     </div>
                 </div>
 
                 <!-- OTP Verification Inside Modal -->
-                <div id="otpSection" style="display: none;">
-                    <p style="color: #94A3B8; text-align: center; margin-bottom: 2rem;">A verification code has been sent to the user's email. Please enter it below to activate the account.</p>
-                    <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem; text-align: center;">6-DIGIT OTP</label>
-                    <input type="text" id="adminOtpInput" class="admin-input" placeholder="000000" maxlength="6" style="text-align: center; font-size: 2rem; letter-spacing: 12px; font-weight: 800;">
+                <div id="otpSection" class="hide">
+                    <p class="otp-prompt">A verification code has been sent to the user's email. Please enter it below to activate the account.</p>
+                    <label for="adminOtpInput" class="admin-label text-center">6-DIGIT OTP</label>
+                    <input type="text" id="adminOtpInput" class="admin-input otp-huge-input" placeholder="000000" maxlength="6" title="Enter 6-digit OTP">
                     
-                    <button type="button" class="btn-creative btn-primary-creative" style="width: 100%; padding: 1.25rem; margin-top: 1.5rem;" onclick="verifyUserOtp()">Verify & Activate</button>
+                    <button type="button" class="btn-creative btn-primary-creative w-full p-1-25 margin-t-1-5" onclick="verifyUserOtp()" title="Verify OTP and activate account">Verify & Activate</button>
                 </div>
             </form>
         </div>
@@ -350,46 +332,49 @@
     <!-- Login as User Modal -->
     <div id="impersonateModal" class="modal-overlay">
         <div class="modal-content">
-            <h2 style="font-weight: 800; margin-bottom: 1rem; font-size: 1.5rem;">Verify User Access</h2>
-            <p id="impersonateText" style="color: #94A3B8; margin-bottom: 2rem; font-size: 0.9rem;">Please enter the password for <span id="impersonateEmail" style="color: #6366F1; font-weight: 700;"></span> to continue.</p>
+            <button onclick="closeImpersonateModal()" class="modal-close-btn">✕</button>
+            <h2 class="admin-modal-title margin-b-1">Verify User Access</h2>
+            <p id="impersonateText" class="impersonate-prompt">Please enter the password for <span id="impersonateEmail" class="text-accent-indigo font-700"></span> to continue.</p>
             
-            <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">USER PASSWORD</label>
-            <input type="password" id="impPassInput" class="admin-input" placeholder="••••••••" required>
+            <label for="impPassInput" class="admin-label">USER PASSWORD</label>
+            <input type="password" id="impPassInput" class="admin-input" placeholder="••••••••" required title="Enter user password for verification">
             
-            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                <button onclick="confirmImpersonation()" class="btn-creative btn-primary-creative" style="flex: 1; padding: 1.25rem;">Verify & Login</button>
-                <button onclick="closeImpersonateModal()" class="btn-creative" style="flex: 1; background: rgba(255,255,255,0.05); color: white;">Cancel</button>
+            <div class="flex-row gap-1 margin-t-1">
+                <button onclick="confirmImpersonation()" class="btn-creative btn-primary-creative flex-1 p-1-25" title="Verify and login as user">Verify & Login</button>
+                <button onclick="closeImpersonateModal()" class="btn-creative flex-1 btn-cancel" title="Cancel impersonation">Cancel</button>
             </div>
         </div>
     </div>
 
     <!-- Create Team Modal -->
     <div id="teamModal" class="modal-overlay">
-        <div class="modal-content" style="width: 600px;">
-            <h2 style="font-weight: 800; margin-bottom: 2rem; font-size: 1.5rem;">Create New Team</h2>
+        <div class="modal-content modal-width-lg">
+            <button onclick="closeTeamModal()" class="modal-close-btn">✕</button>
+            <h2 class="admin-modal-title">Create New Team</h2>
             <form id="teamForm">
-                <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">TEAM NAME</label>
+                <label for="teamName" class="admin-label">TEAM NAME</label>
                 <input type="text" id="teamName" class="admin-input" placeholder="e.g. Alpha Squad" required>
 
-                <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">DESCRIPTION</label>
+                <label for="teamDesc" class="admin-label">DESCRIPTION</label>
                 <input type="text" id="teamDesc" class="admin-input" placeholder="What does this team do?">
 
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 1rem;">SELECT TEAM MEMBERS</label>
+                <div class="margin-b-1-5">
+                    <label class="admin-label margin-b-1">SELECT TEAM MEMBERS</label>
                     <!-- Search Bar Inside Modal -->
-                    <div style="position: relative; margin-bottom: 1.5rem;">
-                        <input type="text" id="teamUserSearch" class="admin-input" placeholder="Search by name, email, or phone..." onkeyup="filterTeamUsers()" style="margin-bottom: 0; padding-left: 3rem;">
-                        <span style="position: absolute; left: 1.25rem; top: 1.15rem; font-size: 1.2rem; opacity: 0.5;">🔍</span>
+                    <div class="position-relative margin-b-1-5">
+                        <label for="teamUserSearch" class="hide">Search Members</label>
+                        <input type="text" id="teamUserSearch" class="admin-input margin-b-0 team-search-input-padding" placeholder="Search by name, email, or phone..." onkeyup="filterTeamUsers()" title="Search for team members">
+                        <span class="search-icon-modal">🔍</span>
                     </div>
                     
-                    <div id="teamUserList" style="max-height: 300px; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 1rem; padding: 1rem;">
+                    <div id="teamUserList" class="team-members-scroll">
                         <!-- Users will be listed here with checkboxes -->
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="submit" class="btn-creative btn-primary-creative" style="flex: 1; padding: 1.25rem;">Create Team</button>
-                    <button type="button" class="btn-creative" style="flex: 1; background: rgba(255,255,255,0.05); color: white;" onclick="closeTeamModal()">Cancel</button>
+                <div class="flex-row gap-1 team-modal-actions">
+                    <button type="submit" class="btn-creative btn-primary-creative flex-1 team-submit-btn">Create Team</button>
+                    <button type="button" class="btn-creative flex-1 btn-discard" onclick="closeTeamModal()">Cancel</button>
                 </div>
             </form>
         </div>
@@ -413,11 +398,67 @@
 
             if (savedPhoto && savedPhoto.startsWith('data:image')) {
                 avatar.style.backgroundImage = `url(${savedPhoto})`;
+                avatar.classList.add('has-photo');
                 avatar.textContent = '';
             } else {
+                avatar.classList.remove('has-photo');
+                avatar.style.backgroundImage = 'none';
                 avatar.textContent = userInitial;
             }
+
+            // Initial Hydration
+            fetchUsers();
+            fetchTeams();
+            fetchSystemTransfers();
         });
+
+        async function fetchSystemTransfers() {
+            const token = localStorage.getItem('fintech_token');
+            const tbody = document.getElementById('transferTableBody');
+            if (!tbody) return;
+
+            try {
+                const response = await fetch('/api/transfer/admin/all', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    tbody.innerHTML = '';
+                    if (result.data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" class="table-empty-row">No system transfers found.</td></tr>';
+                        return;
+                    }
+
+                    result.data.forEach(txn => {
+                        const row = `
+                            <tr class="table-row">
+                                <td class="table-cell font-size-xs font-600">${txn.transactionId}</td>
+                                <td class="table-cell">
+                                    <p class="admin-user-name">${txn.senderId ? txn.senderId.fullName : 'Unknown'}</p>
+                                    <p class="admin-user-email font-size-xs">${txn.senderId ? txn.senderId.email : 'N/A'}</p>
+                                </td>
+                                <td class="table-cell">
+                                    <p class="admin-user-name">${txn.receiverId ? txn.receiverId.fullName : 'Unknown'}</p>
+                                    <p class="admin-user-email font-size-xs">${txn.receiverId ? txn.receiverId.email : 'N/A'}</p>
+                                </td>
+                                <td class="table-cell font-800 text-accent-indigo">₹${txn.amount.toLocaleString('en-IN')}</td>
+                                <td class="table-cell text-secondary font-size-xs">${new Date(txn.createdAt).toLocaleString()}</td>
+                                <td class="table-cell text-right">
+                                    <span class="status-badge-success">${txn.status.toUpperCase()}</span>
+                                </td>
+                            </tr>
+                        `;
+                        tbody.insertAdjacentHTML('beforeend', row);
+                    });
+
+                }
+            } catch (err) {
+                console.error('Fetch transfers error:', err);
+                tbody.innerHTML = '<tr><td colspan="6" class="table-empty-row text-error">Failed to load system transfers.</td></tr>';
+            }
+        }
+
 
         const addUserBtn = document.getElementById('addUserBtn');
         const createTeamBtn = document.getElementById('createTeamBtn');
@@ -524,7 +565,7 @@
             orgBody.innerHTML = '';
 
             if (users.length === 0) {
-                const emptyRow = `<tr><td colspan="3" style="padding: 2rem; text-align: center; color: #94A3B8;">No users found in the system.</td></tr>`;
+                const emptyRow = `<tr><td colspan="3" class="table-empty-row">No users found in the system.</td></tr>`;
                 adminBody.innerHTML = emptyRow;
                 businessBody.innerHTML = emptyRow;
                 orgBody.innerHTML = emptyRow;
@@ -542,28 +583,28 @@
                 const isBusinessOwner = rawRole === 'business';
                 
                 const initials = user.fullName ? user.fullName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) : 'U';
-                const roleColor = isPlatformAdmin ? '#6366F1' : (isBusinessOwner ? '#D946EF' : '#06B6D4');
+                const roleClass = isPlatformAdmin ? 'avatar-admin' : (isBusinessOwner ? 'avatar-business' : 'avatar-org');
                 
                 const row = `
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
-                        <td style="padding: 1.5rem 2rem;">
-                            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <div style="width: 32px; height: 32px; background: ${roleColor}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.75rem; color: white;">${initials}</div>
+                    <tr class="admin-table-row">
+                        <td class="admin-table-cell">
+                            <div class="admin-user-info">
+                                <div class="admin-user-avatar ${roleClass}">${initials}</div>
                                 <div>
-                                    <p style="font-weight: 800; margin: 0;">${user.fullName || 'Unnamed User'}</p>
-                                    <p style="font-size: 0.7rem; color: #64748B; margin: 0;">${user.email}</p>
+                                    <p class="admin-user-name">${user.fullName || 'Unnamed User'}</p>
+                                    <p class="admin-user-email">${user.email}</p>
                                 </div>
                             </div>
                         </td>
-                        <td style="padding: 1.5rem 2rem;">
-                            <span style="padding: 0.25rem 0.75rem; background: ${user.isEmailVerified ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)'}; color: ${user.isEmailVerified ? '#10B981' : '#F59E0B'}; border-radius: 99px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase;">
+                        <td class="admin-table-cell">
+                            <span class="status-badge ${user.isEmailVerified ? 'status-active' : 'status-pending'}">
                                 ${user.isEmailVerified ? 'Active' : 'Pending Verification'}
                             </span>
                         </td>
-                        <td style="padding: 1.5rem 2rem; text-align: right;">
-                            <button class="btn-creative" style="padding: 0.5rem 1rem; font-size: 0.7rem; margin-right: 0.5rem; background: rgba(99, 102, 241, 0.1); color: #818CF8; border-color: rgba(99, 102, 241, 0.2);" onclick="initImpersonation('${userId}', '${user.email}')">Login</button>
-                            <button class="btn-creative" style="padding: 0.5rem 1rem; font-size: 0.7rem; margin-right: 0.5rem;" onclick="openModal('edit', '${userId}')">Edit</button>
-                            <button class="btn-creative" style="padding: 0.5rem 1rem; font-size: 0.7rem; background: rgba(244, 63, 94, 0.1); color: #F43F5E; border: none;" onclick="deleteUser('${userId}')">Delete</button>
+                        <td class="admin-actions-cell">
+                            <button class="btn-creative btn-table-action btn-login-as" onclick="initImpersonation('${userId}', '${user.email}')">Login</button>
+                            <button class="btn-creative btn-table-action" onclick="openModal('edit', '${userId}')">Edit</button>
+                            <button class="btn-creative btn-table-action btn-delete" onclick="deleteUser('${userId}')">Delete</button>
                         </td>
                     </tr>
                 `;
@@ -581,9 +622,9 @@
             });
 
             // Add "No users" message if a category is empty
-            if (counts.admin === 0) adminBody.innerHTML = `<tr><td colspan="3" style="padding: 2rem; text-align: center; color: #94A3B8;">No platform administrators found.</td></tr>`;
-            if (counts.business === 0) businessBody.innerHTML = `<tr><td colspan="3" style="padding: 2rem; text-align: center; color: #94A3B8;">No business owners registered yet.</td></tr>`;
-            if (counts.org === 0) orgBody.innerHTML = `<tr><td colspan="3" style="padding: 2rem; text-align: center; color: #94A3B8;">No organization accounts registered yet.</td></tr>`;
+            if (counts.admin === 0) adminBody.innerHTML = `<tr><td colspan="3" class="table-empty-row">No platform administrators found.</td></tr>`;
+            if (counts.business === 0) businessBody.innerHTML = `<tr><td colspan="3" class="table-empty-row">No business owners registered yet.</td></tr>`;
+            if (counts.org === 0) orgBody.innerHTML = `<tr><td colspan="3" class="table-empty-row">No organization accounts registered yet.</td></tr>`;
         }
 
         const registrationInputs = document.getElementById('registrationInputs');
@@ -593,8 +634,8 @@
 
         function openModal(mode, id = null) {
             userModal.classList.add('active');
-            registrationInputs.style.display = 'block';
-            otpSection.style.display = 'none';
+            registrationInputs.classList.remove('hide');
+            otpSection.classList.add('hide');
 
             if (mode === 'edit') {
                 const user = users.find(u => u._id === id);
@@ -606,8 +647,8 @@
                 document.getElementById('userRole').value = user.role;
                 
                 // Hide password fields, show toggle button
-                document.getElementById('passwordFields').style.display = 'none';
-                document.getElementById('changePasswordToggle').style.display = 'block';
+                document.getElementById('passwordFields').classList.add('hide');
+                document.getElementById('changePasswordToggle').classList.remove('hide');
                 document.getElementById('togglePassBtn').innerHTML = '🔑 Change Password';
                 document.getElementById('userPass').required = false;
                 document.getElementById('userConfirmPass').required = false;
@@ -617,10 +658,26 @@
                 document.getElementById('modalTitle').textContent = 'Add New User';
                 userForm.reset();
                 document.getElementById('userId').value = '';
-                document.getElementById('passwordFields').style.display = 'block';
-                document.getElementById('changePasswordToggle').style.display = 'none';
+                document.getElementById('passwordFields').classList.remove('hide');
+                document.getElementById('changePasswordToggle').classList.add('hide');
                 document.getElementById('userPass').required = true;
                 document.getElementById('userConfirmPass').required = true;
+                
+                // Clear bank fields (safely check if elements exist)
+                const bankSearchEl = document.getElementById('bankSearch');
+                if (bankSearchEl) bankSearchEl.value = '';
+                const balanceEl = document.getElementById('userInitialBalance');
+                if (balanceEl) balanceEl.value = '';
+                selectedBankId = null;
+                simulatedBankData = null;
+                const bankDisplay = document.getElementById('selectedBankDisplay');
+                if (bankDisplay) bankDisplay.classList.add('hide');
+                const bankList = document.getElementById('bankList');
+                if (bankList) bankList.classList.remove('hide');
+                const btnLink = document.getElementById('btnLinkBank');
+                if (btnLink) btnLink.classList.remove('hide');
+                const loader = document.getElementById('bankSyncLoader');
+                if (loader) loader.classList.add('hide');
             }
         }
         function closeModal() {
@@ -630,20 +687,16 @@
         function togglePasswordFields() {
             const passFields = document.getElementById('passwordFields');
             const toggleBtn = document.getElementById('togglePassBtn');
-            if (passFields.style.display === 'none') {
-                passFields.style.display = 'block';
+            if (passFields.classList.contains('hide')) {
+                passFields.classList.remove('hide');
                 toggleBtn.innerHTML = '❌ Cancel Password Change';
-                toggleBtn.style.background = 'rgba(244, 63, 94, 0.1)';
-                toggleBtn.style.borderColor = 'rgba(244, 63, 94, 0.3)';
-                toggleBtn.style.color = '#F43F5E';
+                toggleBtn.classList.add('btn-pass-toggle-cancel');
             } else {
-                passFields.style.display = 'none';
+                passFields.classList.add('hide');
                 document.getElementById('userPass').value = '';
                 document.getElementById('userConfirmPass').value = '';
                 toggleBtn.innerHTML = '🔑 Change Password';
-                toggleBtn.style.background = 'rgba(99, 102, 241, 0.1)';
-                toggleBtn.style.borderColor = 'rgba(99, 102, 241, 0.3)';
-                toggleBtn.style.color = '#818CF8';
+                toggleBtn.classList.remove('btn-pass-toggle-cancel');
             }
         }
 
@@ -747,19 +800,20 @@
             list.innerHTML = '';
             
             if (users.length === 0) {
-                list.innerHTML = '<p style="text-align: center; color: #94A3B8; margin: 1rem 0;">No users available.</p>';
+                list.innerHTML = '<p class="empty-state-text">No users available.</p>';
                 return;
             }
 
             users.forEach(user => {
+                const userId = user._id || user.id;
                 const item = `
-                    <div class="team-user-item" data-search="${(user.fullName + ' ' + user.email + ' ' + (user.phoneNumber || '')).toLowerCase()}" style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.3s ease;">
-                        <input type="checkbox" name="teamMembers" value="${user._id}" style="width: 18px; height: 18px; accent-color: #6366F1; cursor: pointer;">
-                        <div style="flex: 1;">
-                            <p style="margin: 0; font-weight: 700; font-size: 0.9rem;">${user.fullName}</p>
-                            <p style="margin: 0; font-size: 0.75rem; color: #94A3B8;">${user.email}</p>
+                    <div class="team-user-item" data-search="${(user.fullName + ' ' + user.email + ' ' + (user.phoneNumber || '')).toLowerCase()}">
+                        <input type="checkbox" name="teamMembers" value="${userId}" class="team-user-checkbox">
+                        <div class="flex-1">
+                            <p class="team-user-name-small">${user.fullName}</p>
+                            <p class="team-user-email-small">${user.email}</p>
                         </div>
-                        <span style="font-size: 0.65rem; padding: 0.2rem 0.5rem; background: rgba(99, 102, 241, 0.1); color: #818CF8; border-radius: 4px; text-transform: uppercase; font-weight: 800;">${user.role}</span>
+                        <span class="team-role-badge">${user.role}</span>
                     </div>
                 `;
                 list.insertAdjacentHTML('beforeend', item);
@@ -773,21 +827,28 @@
             items.forEach(item => {
                 const searchText = item.getAttribute('data-search');
                 if (searchText.includes(query)) {
-                    item.style.display = 'flex';
+                    item.classList.add('show-flex');
+                    item.classList.remove('hide');
                 } else {
-                    item.style.display = 'none';
+                    item.classList.add('hide');
+                    item.classList.remove('show-flex');
                 }
             });
         }
 
         teamForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            console.log('🚀 [Admin Page] Team form submitted');
+            
             const name = document.getElementById('teamName').value;
             const description = document.getElementById('teamDesc').value;
             const checkboxes = document.querySelectorAll('input[name="teamMembers"]:checked');
             const members = Array.from(checkboxes).map(cb => cb.value);
 
+            console.log('📦 [Admin Page] Form Data:', { name, description, membersCount: members.length });
+
             if (members.length === 0) {
+                console.warn('⚠️ [Admin Page] No members selected');
                 alert('Please select at least one team member.');
                 return;
             }
@@ -807,6 +868,7 @@
                 if (result.success) {
                     alert('Team created successfully! ✨');
                     closeTeamModal();
+                    fetchTeams(); // Refresh team list
                 } else {
                     alert('Error creating team: ' + result.message);
                 }
@@ -815,6 +877,142 @@
                 alert('Connection error while creating team.');
             }
         });
+
+        async function fetchTeams() {
+            console.log('📡 [Admin Page] Fetching teams...');
+            const tableBody = document.getElementById('teamsTableBody');
+            
+            if (!tableBody) {
+                console.error('❌ [Admin Page] teamsTableBody element not found!');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('fintech_token');
+                if (!token) {
+                    console.error('❌ [Admin Page] No auth token for fetchTeams');
+                    return;
+                }
+
+                const response = await fetch('/api/admin/platform/teams', {
+                    method: 'GET',
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                console.log(`📥 [Admin Page] Teams Response: ${response.status} ${response.statusText}`);
+
+                if (!response.ok) {
+                    const errText = await response.text();
+                    console.error('❌ [Admin Page] Teams fetch error body:', errText.substring(0, 300));
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log('📥 [Admin Page] Teams loaded:', result.success, 'count:', (result.data || []).length);
+
+                if (result.success) {
+                    const teams = Array.isArray(result.data) ? result.data : [];
+                    console.log('📋 [Admin Page] Teams to render:', teams.map(t => t.name));
+                    renderTeamsTable(teams);
+                } else {
+                    console.error('❌ [Admin Page] Error in result:', result.message);
+                    tableBody.innerHTML = `<tr><td colspan="4" class="table-empty-row text-error-accent">Error: ${result.message}</td></tr>`;
+                }
+            } catch (err) {
+                console.error('🔥 [Admin Page] Fetch Teams Error:', err);
+                tableBody.innerHTML = `<tr><td colspan="4" class="table-empty-row text-error-accent">Connection failed while fetching teams.</td></tr>`;
+            }
+        }
+
+        function renderTeamsTable(teams) {
+            const tableBody = document.getElementById('teamsTableBody');
+            if (!tableBody) {
+                console.error('❌ [Admin Page] teamsTableBody not found for rendering!');
+                return;
+            }
+            tableBody.innerHTML = '';
+
+            if (!teams || teams.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4" class="table-empty-row">No platform teams created yet.</td></tr>';
+                return;
+            }
+
+            console.log(`🎨 [Admin Page] Rendering ${teams.length} team(s) into table`);
+
+            teams.forEach((team, index) => {
+                const membersArr = team.members || [];
+                const memberCount = membersArr.length;
+                const memberList = membersArr.map(m => {
+                    let name;
+                    if (typeof m === 'object' && m !== null) {
+                        name = m.fullName || m.email || 'Unknown User';
+                    } else if (typeof m === 'string') {
+                        name = `User (${m.substring(0, 8)}...)`;
+                    } else {
+                        name = 'Unknown';
+                    }
+                    return `
+                        <div class="team-member-item">
+                            <span class="team-member-dot">•</span>
+                            <span class="team-member-name">${name}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                const creatorName = (team.createdBy && typeof team.createdBy === 'object') 
+                    ? (team.createdBy.fullName || team.createdBy.email || 'System') 
+                    : 'System';
+                const createdDate = team.createdAt ? new Date(team.createdAt).toLocaleDateString() : 'N/A';
+
+                const row = `
+                    <tr class="team-row">
+                        <td class="admin-table-cell">
+                            <p class="team-name-cell">${team.name || 'Unnamed Team'}</p>
+                            <p class="team-desc-cell">${team.description || 'No description'}</p>
+                        </td>
+                        <td class="admin-table-cell">
+                            <p class="team-member-count">${memberCount} member(s)</p>
+                            ${memberList}
+                        </td>
+                        <td class="admin-table-cell">
+                            <p class="team-creator-name">${creatorName}</p>
+                            <p class="team-created-date">${createdDate}</p>
+                        </td>
+                        <td class="admin-table-cell text-right">
+                            <button class="btn-creative btn-delete btn-small" onclick="deleteTeam('${team._id}')">Delete Team</button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('beforeend', row);
+                console.log(`✅ [Admin Page] Rendered team #${index+1}: ${team.name}`);
+            });
+        }
+
+        async function deleteTeam(id) {
+            if (!confirm('Are you sure you want to delete this team?')) return;
+
+            try {
+                const token = localStorage.getItem('fintech_token');
+                const response = await fetch(`/api/admin/platform/teams/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert('Team deleted successfully.');
+                    fetchTeams();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Connection error while deleting team.');
+            }
+        }
 
         // Impersonation Logic
         let currentImpersonationId = '';
@@ -828,10 +1026,10 @@
             const passInput = document.getElementById('impPassInput');
             const impersonateText = document.getElementById('impersonateText');
 
-            if (passInput) passInput.style.display = 'none';
-            if (passLabel) passLabel.style.display = 'none';
+            if (passInput) passInput.classList.add('hide');
+            if (passLabel) passLabel.classList.add('hide');
             if (impersonateText) {
-                impersonateText.innerHTML = `You are about to switch your active session to <span style="color: #6366F1; font-weight: 700;">${email}</span>. You will be redirected to their dashboard.`;
+                impersonateText.innerHTML = `You are about to switch your active session to <span class="impersonate-highlight">${email}</span>. You will be redirected to their dashboard.`;
             }
 
             document.getElementById('impersonateModal').classList.add('active');
@@ -856,6 +1054,13 @@
                 const result = await response.json();
                 if (result.success) {
                     const userData = result.data;
+                    
+                    // Save the admin's current session before switching
+                    const adminToken = localStorage.getItem('fintech_token');
+                    const adminUser = localStorage.getItem('fintech_logged_in_user');
+                    localStorage.setItem('fintech_admin_token', adminToken);
+                    localStorage.setItem('fintech_admin_user', adminUser);
+                    
                     // Switch current session to impersonated user
                     localStorage.setItem('fintech_token', userData.token);
                     localStorage.setItem('fintech_logged_in_user', JSON.stringify(userData));
@@ -871,9 +1076,106 @@
             }
         }
 
+        // --- Bank Selection & Search Logic ---
+        const allBanks = [
+            { id: 'HDFC', name: 'HDFC Bank', icon: '🔵' },
+            { id: 'ICICI', name: 'ICICI Bank', icon: '🟠' },
+            { id: 'SBI', name: 'State Bank of India', icon: '💙' },
+            { id: 'AXIS', name: 'Axis Bank', icon: '🔴' },
+            { id: 'KOTAK', name: 'Kotak Mahindra Bank', icon: '🟥' },
+            { id: 'PNB', name: 'Punjab National Bank', icon: '🟡' },
+            { id: 'BOB', name: 'Bank of Baroda', icon: '🟠' },
+            { id: 'GRAMMPAY', name: 'GRAMMPAY (Virtual)', icon: '⭐' },
+            { id: 'DBS', name: 'DBS Bank', icon: '⚫' },
+            { id: 'HSBC', name: 'HSBC Bank', icon: '💎' }
+        ];
+
+        let selectedBankId = null;
+
+        function filterBanks() {
+            const query = document.getElementById('bankSearch').value.toLowerCase();
+            const list = document.getElementById('bankList');
+            list.innerHTML = '';
+            
+            const filtered = allBanks.filter(b => b.name.toLowerCase().includes(query));
+            filtered.forEach(bank => {
+                const item = document.createElement('div');
+                item.className = 'bank-item';
+                item.innerHTML = `<span class="bank-item-icon">${bank.icon}</span> <span class="bank-item-name">${bank.name}</span>`;
+                item.onclick = () => selectBank(bank);
+                list.appendChild(item);
+            });
+        }
+
+        function selectBank(bank) {
+            selectedBankId = bank.id;
+            document.getElementById('bankList').classList.add('hide');
+            document.getElementById('bankSearch').value = bank.name;
+            
+            const display = document.getElementById('selectedBankDisplay');
+            display.classList.add('show-flex');
+            display.classList.remove('hide');
+            document.getElementById('targetBankIcon').textContent = bank.icon;
+            document.getElementById('targetBankName').textContent = bank.name;
+        }
+
+        // --- Bank Connection Simulation ---
+        let simulatedBankData = null;
+
+        function simulateBankConnection() {
+            const phone = document.getElementById('userPhone').value;
+            if (!selectedBankId) {
+                alert('Please select a bank from the list first.');
+                return;
+            }
+            if (!phone || phone.length < 10) {
+                alert('A valid phone number is required in the fields above to locate your account.');
+                return;
+            }
+
+            const btn = document.getElementById('btnLinkBank');
+            const loader = document.getElementById('bankSyncLoader');
+            
+            btn.classList.add('hide');
+            loader.classList.remove('hide');
+
+            // Simulate AA Flow (Aggregator connecting via Phone Number)
+            setTimeout(() => {
+                loader.innerHTML = `
+                    <p class="font-800 font-size-sm text-success-accent">✅ Accounts found for +91 ${phone}</p>
+                    <p class="text-accent-slate font-size-xs">Requesting secure consent via SMS...</p>
+                `;
+                
+                setTimeout(() => {
+                    const startingBalance = 0;
+                    document.getElementById('userInitialBalance').value = startingBalance;
+                    
+                    simulatedBankData = {
+                        balance: startingBalance,
+                        expenses: [],
+                        income: []
+                    };
+
+                    loader.innerHTML = `<p class="font-800 font-size-sm text-success-accent">🏦 Bank Account Linked Successfully!</p>`;
+                }, 1500);
+            }, 2000);
+        }
+
+        // Initial call to populate list if empty
+        window.addEventListener('load', () => {
+            setTimeout(filterBanks, 500);
+        });
+
         userForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const id = document.getElementById('userId').value;
+            const id = String(document.getElementById('userId').value || '').trim();
+            console.log('📝 [Admin Page] Form Submit - Mode:', id ? 'Edit' : 'Add', 'ID:', id);
+
+            if (id && (id === 'undefined' || id === 'null' || id.includes('[object'))) {
+                console.error('❌ [Admin Page] Aborting: Invalid ID detected for update:', id);
+                alert('Error: Data corruption detected. Please refresh and try again.');
+                return;
+            }
             const fullName = document.getElementById('userName').value;
             const email = document.getElementById('userEmail').value;
             const phoneNumber = document.getElementById('userPhone').value;
@@ -884,43 +1186,41 @@
             const token = localStorage.getItem('fintech_token');
 
             if (id) {
-                // Edit existing
+                // Edit existing user
                 const updateData = { fullName, email, phoneNumber, role };
-
-                // Include password only if change password fields are visible and filled
-                if (password && password.trim() !== '') {
+                
+                // Only include password if user chose to change it
+                if (password) {
                     if (password !== confirmPass) {
                         alert('Passwords do not match!');
-                        return;
-                    }
-                    if (password.length < 6) {
-                        alert('Password must be at least 6 characters.');
                         return;
                     }
                     updateData.password = password;
                 }
 
                 try {
+                    console.log(`📡 [Admin Page] Sending PATCH to /api/admin/platform/users/${id}`);
                     const response = await fetch(`/api/admin/platform/users/${id}`, {
                         method: 'PATCH',
                         headers: { 
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
+                            'Authorization': `Bearer ${token}` 
                         },
                         body: JSON.stringify(updateData)
                     });
-                    
+
                     const result = await response.json();
-                    if (result.success) {
-                        alert('User updated successfully!');
-                        fetchUsers();
+                    
+                    if (response.ok && result.success) {
+                        alert('User updated successfully! ✨');
                         closeModal();
+                        fetchUsers(); // Refresh the user tables
                     } else {
-                        alert('Update failed: ' + result.message);
+                        alert('Error updating user: ' + (result.message || 'Unknown server error'));
                     }
                 } catch (err) {
                     console.error(err);
-                    alert('Connection failed.');
+                    alert('Failed to connect to server.');
                 }
             } else {
                 // Add new with OTP
@@ -929,9 +1229,6 @@
                     return;
                 }
 
-                // If no role selected, default to business
-                const userRole = role || 'business';
-
                 try {
                     const response = await fetch('/api/admin/platform/users', {
                         method: 'POST',
@@ -939,35 +1236,73 @@
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${token}` 
                         },
-                        body: JSON.stringify({ 
-                            fullName, 
-                            email, 
-                            phoneNumber, 
-                            password, 
-                            role: userRole 
-                        })
+                        body: JSON.stringify({ fullName, email, phoneNumber, password, role: role || 'business' })
                     });
 
                     const result = await response.json();
                     
                     if (response.ok && result.success) {
                         pendingVerificationEmail = email;
+
                         // Transition to OTP Mode
-                        registrationInputs.style.display = 'none';
-                        otpSection.style.display = 'block';
+                        registrationInputs.classList.add('hide');
+                        otpSection.classList.remove('hide');
                         document.getElementById('modalTitle').textContent = 'Verify User Account';
                     } else {
                         alert('Error creating user: ' + (result.message || 'Unknown server error'));
                     }
                 } catch (err) {
                     console.error(err);
-                    alert('Failed to connect to server while creating user.');
+                    alert('Failed to connect to server.');
                 }
             }
         });
 
         // Initialize table
         fetchUsers();
+        fetchTeams();
+
+        console.log('🏁 [Admin Page] Initialization complete');
+
+        function handleLogout() {
+            // Check if this is an admin-impersonated session
+            const adminToken = localStorage.getItem('fintech_admin_token');
+            const adminUser = localStorage.getItem('fintech_admin_user');
+            
+            if (adminToken && adminUser) {
+                // Restore admin session
+                localStorage.setItem('fintech_token', adminToken);
+                localStorage.setItem('fintech_logged_in_user', adminUser);
+                localStorage.removeItem('fintech_admin_token');
+                localStorage.removeItem('fintech_admin_user');
+                window.location.href = '/views/admin.html';
+            } else {
+                localStorage.removeItem('fintech_token');
+                localStorage.removeItem('fintech_logged_in_user');
+                localStorage.removeItem('fintech_current_prefix');
+                window.location.href = '/index.html';
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar) return;
+            sidebar.classList.toggle('active');
+            const btn = document.getElementById('sidebarToggle');
+            if (btn) btn.innerHTML = sidebar.classList.contains('active') ? '✕' : '☰';
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const btn = document.getElementById('sidebarToggle');
+            if (window.innerWidth <= 1024 && 
+                sidebar && sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                e.target !== btn) {
+                toggleSidebar();
+            }
+        });
     </script>
 </body>
 </html>

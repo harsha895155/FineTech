@@ -107,6 +107,51 @@ exports.deleteTransaction = async (req, res) => {
     }
 };
 
+// @desc    Update transaction
+// @route   PUT /api/transactions/:id
+// @access  Private
+exports.updateTransaction = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { type, amount, category, description, date, paymentMode } = req.body;
+
+        // Try updating in Expense first
+        let updated = await Expense.findOneAndUpdate(
+            { _id: id, userId: req.user.id },
+            { 
+                $set: { 
+                    amount, category, description, 
+                    expenseDate: date, paymentMode 
+                } 
+            },
+            { new: true }
+        );
+
+        if (!updated) {
+            // Try updating in Income
+            updated = await Income.findOneAndUpdate(
+                { _id: id, userId: req.user.id },
+                { 
+                    $set: { 
+                        amount, source: category, 
+                        incomeDate: date 
+                    } 
+                },
+                { new: true }
+            );
+        }
+
+        if (!updated) {
+            return res.status(404).json({ error: 'Transaction not found' });
+        }
+
+        res.status(200).json({ success: true, data: updated });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server Error' });
+    }
+};
+
 // @desc    Get stats
 // @route   GET /api/transactions/stats
 // @access  Private

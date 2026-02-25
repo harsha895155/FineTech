@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package",
   "homepage": "http://Harsha.github.io/SampleProject",
   "name": "sampleproject",
   "private": true,

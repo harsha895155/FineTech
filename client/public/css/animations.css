@@ -1,0 +1,135 @@
+/* ============================================================
+   FINTECHPRO — MASTER ANIMATION SYSTEM
+   ============================================================ */
+
+/* ── 1. KEYFRAME DEFINITIONS ── */
+
+/* Page Entry */
+@keyframes pageFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Subtle Slide Up */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Slide In from Right */
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Slide In from Left */
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Scale & Pop */
+@keyframes scalePop {
+    0%   { opacity: 0; transform: scale(0.9); }
+    70%  { transform: scale(1.02); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Soft Pulse for interactive elements */
+@keyframes softPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+    70%  { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+}
+
+/* Floating animation */
+@keyframes floating {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Spinner Rotate */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* ── 2. GLOBAL UTILITY CLASSES ── */
+
+.animate-fade-in {
+    animation: pageFadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.animate-slide-in-right {
+    animation: slideInRight 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.animate-scale-in {
+    animation: scalePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-float {
+    animation: floating 3s ease-in-out infinite;
+}
+
+.animate-pulse {
+    animation: softPulse 2s infinite;
+}
+
+/* ── 3. STAGGERED ENTRANCE ── */
+/* Add this class to a container to animate children sequentially */
+.stagger-load > * {
+    opacity: 0;
+}
+
+.stagger-load > *:nth-child(1) { animation: slideUp 0.5s 0.1s forwards; }
+.stagger-load > *:nth-child(2) { animation: slideUp 0.5s 0.2s forwards; }
+.stagger-load > *:nth-child(3) { animation: slideUp 0.5s 0.3s forwards; }
+.stagger-load > *:nth-child(4) { animation: slideUp 0.5s 0.4s forwards; }
+.stagger-load > *:nth-child(5) { animation: slideUp 0.5s 0.5s forwards; }
+.stagger-load > *:nth-child(6) { animation: slideUp 0.5s 0.6s forwards; }
+
+/* ── 4. PAGE TRANSITION TRIGGER ── */
+/* When navigating, we can add a simple entry effect on the body or main container */
+body {
+    animation: pageFadeIn 0.6s ease-out;
+}
+
+/* ── 5. INTERACTIVE BUTTON & FORM EFFECTS ── */
+
+/* Click ripple simulation / scale down */
+.btn-animate-click:active {
+    transform: scale(0.95);
+}
+
+/* Form entry animation (when being toggled visible) */
+.form-opening {
+    animation: scalePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Glass card hover enhancement */
+.glass-card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-hover:hover {
+    transform: translateY(-5px) scale(1.01);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ── 6. WIZARD STEP TRANSITIONS ── */
+/* ── 7. ANIMATION UTILITIES ── */
+.delay-100ms { animation-delay: 0.1s !important; }
+.delay-200ms { animation-delay: 0.2s !important; }
+.delay-300ms { animation-delay: 0.3s !important; }
+.delay-400ms { animation-delay: 0.4s !important; }
+.delay-500ms { animation-delay: 0.5s !important; }
+
+.opacity-0 { opacity: 0 !important; }

@@ -1,3 +1,26 @@
+/* ===================================================
+   GLOBAL 80% UI SCALING
+   Browser zoom = 100%  →  Website visual = 80%
+   
+   zoom: 0.8 gives browsers a rendered canvas that is
+   1/0.8 = 125% of the physical viewport in both axes.
+   We must size html to exactly 125vw and hide the
+   right-hand overflow so there is no horizontal scroll
+   and no content cut-off.
+   =================================================== */
+html {
+    zoom: 0.8;
+    width: 125vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
 /* Creative Aurora Tokens */
 :root {
     --color-aurora-1: #6366F1;
@@ -30,4 +53,50 @@
     --input-border: rgba(255, 255, 255, 0.1);
     --input-focus-bg: rgba(255, 255, 255, 0.08);
     --input-shadow-focus: 0 0 0 4px rgba(99, 102, 241, 0.15);
+
+    /* Dynamic Sizing Tokens (Default: Desktop) */
+    --font-heading: 3.5rem;
+    --font-subheading: 1.5rem;
+    --font-body: 1rem;
+    --spacing-multi: 1;
+    --card-padding: 3.5rem;
+    --container-max: 1400px;
+    --sidebar-width: 260px;
+
+    /* Zoom-compensated viewport height (100vh / 0.8 = 125vh) */
+    --vh-full: 125vh;
+}
+
+/* Laptop / Small Desktop (1025px - 1440px) */
+@media (max-width: 1440px) {
+    :root {
+        --font-heading: 3rem;
+        --font-subheading: 1.25rem;
+        --spacing-multi: 0.9;
+        --card-padding: 2.5rem;
+    }
+}
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) {
+    :root {
+        --font-heading: 2.5rem;
+        --font-subheading: 1.15rem;
+        --spacing-multi: 0.8;
+        --card-padding: 2rem;
+        --sidebar-width: 220px;
+    }
+}
+
+/* Mobile (Up to 768px) */
+@media (max-width: 768px) {
+    :root {
+        --font-heading: 2rem;
+        --font-subheading: 1rem;
+        --font-body: 0.9rem;
+        --spacing-multi: 0.7;
+        --card-padding: 1.5rem;
+        --radius-futuristic: 1.5rem;
+        --sidebar-width: 0px; /* Toggle based */
+    }
 }

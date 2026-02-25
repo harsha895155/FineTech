@@ -1,0 +1,584 @@
+@import url('variables.css');
+@import url('layout.css');
+@import url('components.css');
+
+/* Dashboard Specific Styles */
+.stats-grid {
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: calc(2rem * var(--spacing-multi)); 
+    margin-bottom: 2rem;
+}
+
+.main-grid {
+    display: grid; 
+    grid-template-columns: 3fr 2fr; 
+    gap: calc(2rem * var(--spacing-multi));
+}
+
+.st-card {
+    padding: calc(2rem * var(--spacing-multi));
+    border-radius: var(--radius-futuristic);
+    min-height: 140px;
+}
+
+.stat-label {
+    color: #94A3B8;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.stat-value {
+    font-size: calc(2rem * var(--spacing-multi));
+    font-weight: 800;
+    margin: 0.5rem 0;
+}
+
+.stat-trend {
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.trend-up { color: #10B981; }
+.trend-down { color: #F43F5E; }
+.trend-neutral { color: #06B6D4; }
+
+/* Notification Panel */
+.notif-bell {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.notif-bell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background: var(--aurora-gradient);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+    filter: blur(10px);
+}
+
+.notif-bell:hover::before {
+    opacity: 0.2;
+}
+
+.notif-bell:hover {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: scale(1.05);
+}
+
+.notif-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(135deg, #F43F5E, #E11D48);
+    border-radius: 50%;
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #0F172A;
+    animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+.notif-panel {
+    position: fixed;
+    top: 0;
+    right: -420px;
+    width: 100%;
+    max-width: 400px;
+    height: var(--vh-full);
+    background: rgba(10, 15, 28, 0.95);
+    -webkit-backdrop-filter: var(--blur-glass);
+    backdrop-filter: var(--blur-glass);
+    border-left: 1px solid rgba(255,255,255,0.1);
+    z-index: 2000;
+    transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: -30px 0 80px rgba(0,0,0,0.6);
+}
+
+.notif-panel.active { right: 0; }
+
+.notif-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.notif-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.notif-panel-header {
+    padding: 2rem 1.5rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notif-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1.5rem;
+}
+
+.notif-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 14px;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+    position: relative;
+}
+
+.notif-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.notif-item.unread {
+    background: rgba(99, 102, 241, 0.06);
+    border-color: rgba(99, 102, 241, 0.12);
+}
+
+.notif-item.unread::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 60%;
+    background: linear-gradient(180deg, #6366F1, #D946EF);
+    border-radius: 2px;
+}
+
+.notif-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.notif-icon.login { background: rgba(234, 179, 8, 0.15); color: #EAB308; }
+.notif-icon.account { background: rgba(16, 185, 129, 0.15); color: #10B981; }
+.notif-icon.transaction { background: rgba(244, 63, 94, 0.15); color: #F43F5E; }
+.notif-icon.system { background: rgba(99, 102, 241, 0.15); color: #6366F1; }
+
+.mark-all-btn {
+    background: transparent;
+    border: none;
+    color: #6366F1;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.mark-all-btn:hover {
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.btn-close-notif {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.btn-close-notif:hover {
+    background: rgba(244, 63, 94, 0.1);
+    border-color: rgba(244, 63, 94, 0.2);
+    color: #F43F5E;
+}
+
+/* Bank Modal */
+.bank-step-progress {
+    display: flex; justify-content: space-between; margin-bottom: 2.5rem;
+    position: relative; padding: 0 10px;
+}
+
+.bank-progress-line {
+    position: absolute; top: 12px; left: 30px; width: 0%;
+    height: 3px; background: linear-gradient(90deg, #6366F1, #8B5CF6); 
+    z-index: 1; border-radius: 10px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bank-step-dot {
+    width: 28px; height: 28px; border-radius: 10px; background: #1E293B;
+    border: 2px solid rgba(255,255,255,0.1); z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 800; color: #64748B;
+}
+
+.bank-step-dot.active {
+    background: #6366F1; border-color: #6366F1; color: white;
+    box-shadow: 0 0 20px rgba(99,102,241,0.5);
+}
+
+.bank-step-dot.completed {
+    background: #10B981; border-color: #10B981; color: white;
+}
+
+/* New Dashboard Classes */
+.user-welcome-text h1 {
+    font-size: var(--font-heading);
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: 0.0em;
+    color: #ffffff;
+    font-size: 25px;
+}
+
+.user-welcome-text p {
+    color: #64748B;
+    font-weight: 100;
+    font-size: var(--font-subheading);
+}
+
+.chart-card {
+    padding: calc(2.5rem * var(--spacing-multi));
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-header {
+    margin-bottom: 2rem;
+}
+
+.chart-title {
+    font-weight: 800;
+    margin: 0;
+}
+
+.drilldown-breadcrumb {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #94A3B8;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.breadcrumb-indicator {
+    color: rgba(255,255,255,0.3);
+}
+
+.quick-view-card {
+    padding: 2.5rem;
+}
+
+.quick-view-title {
+    font-weight: 800;
+    margin-bottom: 2.5rem;
+}
+
+.activity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.activity-info {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.activity-icon-wrapper {
+    width: 32px;
+    height: 32px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.activity-text-primary {
+    font-weight: 700;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.activity-text-secondary {
+    font-size: 0.75rem;
+    color: #64748B;
+    margin: 0;
+}
+
+.activity-amount {
+    font-weight: 800;
+}
+
+.bank-section-header {
+    margin-bottom: 2.5rem;
+}
+
+.bank-connection-item {
+    padding: 1.5rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.notif-subtitle {
+    margin: 4px 0 0;
+    color: #64748B;
+    font-size: 0.75rem;
+}
+
+.notif-empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: #475569;
+}
+
+.notif-empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+/* Dashboard Special Buttons */
+.btn-bank-connect { background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; }
+.btn-update-data { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; }
+.btn-update-data:hover { background: rgba(255,255,255,0.1); }
+.btn-view-all { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); color: white; }
+.btn-view-all:hover { background: rgba(255,255,255,0.05); }
+
+/* Bank Modal Search */
+.bank-search-wrapper { position: relative; margin-bottom: 1.5rem; }
+.bank-search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #64748B; pointer-events: none; }
+.bank-search-input { padding-left: 2.75rem !important; }
+
+.bank-modal-header { position: relative; }
+.bank-modal-title { font-weight: 800; margin-bottom: 0.5rem; }
+.bank-modal-subtitle { color: #64748B; font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+.btn-link-another {
+    width: 100%; padding: 1rem; margin-top: 2rem; border-radius: 12px;
+    background: rgba(99, 102, 241, 0.1); border: 1px dashed rgba(99, 102, 241, 0.3);
+    color: #818CF8; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
+}
+.btn-link-another:hover { background: rgba(99, 102, 241, 0.15); border-color: rgba(99, 102, 241, 0.5); }
+
+/* Dashboard Dril-down & Activity Styles */
+.breadcrumb-year { color: #6366F1; cursor: pointer; }
+.breadcrumb-month { color: #D946EF; }
+.breadcrumb-week { color: #06B6D4; }
+
+.btn-chart-back {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.7rem;
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.year-switcher-select {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    background: rgba(99, 102, 241, 0.1);
+    color: #818CF8;
+    border-color: rgba(99, 102, 241, 0.2);
+    outline: none;
+}
+
+.chart-container-box { height: 300px; width: 100%; }
+
+.day-detail-box {
+    margin-top: 1rem;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.day-detail-cat-title {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #94A3B8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 0.25rem;
+}
+
+.day-detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+
+.empty-activity-text {
+    color: #94A3B8;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+/* Notification Empty State */
+.notif-empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: #475569;
+}
+
+.notif-empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.notif-empty-title {
+    font-weight: 600;
+    margin: 0;
+}
+
+.notif-empty-desc {
+    font-size: 0.8rem;
+    color: #334155;
+    margin: 0.25rem 0 0 0;
+}
+
+/* Notification Item Content */
+.notif-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notif-title {
+    margin: 0;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #E2E8F0;
+}
+
+.notif-message {
+    margin: 4px 0 0;
+    font-size: 0.78rem;
+    color: #94A3B8;
+    line-height: 1.4;
+}
+
+.notif-time {
+    margin: 6px 0 0;
+    font-size: 0.65rem;
+    color: #475569;
+    font-weight: 600;
+}
+
+/* Dashboard Empty Day Transactions */
+.day-empty-text {
+    text-align: center;
+    color: #94A3B8;
+    padding: 2rem;
+}
+
+/* Bank Grid Utilities */
+.bank-name-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* OTP Highlight Span */
+.text-indigo-bold {
+    color: #6366F1;
+    font-weight: 800;
+}
+
+.notif-delete-btn {
+    opacity: 0;
+    visibility: hidden;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    font-size: 0.8rem;
+    color: #94A3B8;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%) scale(0.9);
+    z-index: 5;
+}
+
+.notif-item:hover .notif-delete-btn {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) scale(1);
+}
+
+.notif-delete-btn:hover {
+    background: rgba(244, 63, 94, 0.1);
+    border-color: rgba(244, 63, 94, 0.2);
+    color: #F43F5E;
+    transform: translateY(-50%) scale(1.1);
+}

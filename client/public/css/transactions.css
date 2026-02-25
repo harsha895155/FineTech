@@ -1,0 +1,117 @@
+@import url('variables.css');
+@import url('layout.css');
+@import url('components.css');
+
+/* Transactions Page Specific Styles */
+.filter-row {
+    display: flex; 
+    gap: 0.75rem; 
+    margin-bottom: 1rem;
+}
+
+.filter-btn {
+    padding: 0.6rem 1.75rem;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #94A3B8;
+    font-size: 0.8rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.filter-btn.active {
+    background: #6366F1;
+    color: white;
+    border-color: #6366F1;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 24px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    margin-top: 3rem;
+}
+
+/* Base table styles for alignment */
+.table-main-full {
+    width: 100%; 
+    border-collapse: collapse; 
+    text-align: left; 
+    min-width: 600px;
+}
+
+.empty-state {
+    padding: 5rem; 
+    text-align: center; 
+    color: #94A3B8;
+}
+
+.empty-state p {
+    font-size: 1.25rem;
+}
+
+@media (max-width: 768px) {
+    .filter-row {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        display: flex;
+        white-space: nowrap;
+        gap: 0.75rem;
+    }
+}
+
+.trans-header-title {
+    font-size: 2.5rem; 
+    font-weight: 800; 
+    margin: 0;
+}
+
+.trans-header-subtitle {
+    color: #94A3B8; 
+    margin-top: 0.5rem;
+}
+
+.trans-table-head-cell {
+    padding: 1.5rem 2rem;
+}
+
+.trans-table-row {
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+
+.trans-table-cell {
+    padding: 1.5rem 2rem;
+}
+
+.trans-date-text {
+    color: #94A3B8; 
+    font-size: 0.875rem;
+}
+
+.trans-merchant-name {
+    font-weight: 800; 
+    margin: 0;
+}
+
+.trans-category-tag {
+    color: #6366F1; 
+    font-weight: 700; 
+    font-size: 0.75rem; 
+    text-transform: uppercase;
+}
+
+.trans-amount-text {
+    text-align: right; 
+    font-weight: 800;
+}

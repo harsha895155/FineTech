@@ -10,307 +10,123 @@
     <link rel="stylesheet" href="/css/variables.css">
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/animations.css">
     <!-- Chart.js for Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <style>
-        body { font-family: 'Outfit', sans-serif; margin: 0; }
-        .sidebar {
-            width: 260px;
-            background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255,255,255,0.08);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 2rem 1.25rem;
-            position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 10;
-        }
-        .nav-item {
-            width: 100%;
-            height: 54px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 0 1.25rem;
-            margin-bottom: 0.75rem;
-            color: #94A3B8;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            gap: 1rem;
-            box-sizing: border-box;
-        }
-        .nav-item:hover, .nav-item.active {
-            background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF);
-            color: white;
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
-            transform: translateX(5px);
-        }
-        .content {
-            margin-left: 260px;
-            padding: 4rem;
-            min-height: 100vh;
-        }
-        .st-card {
-            padding: 2.5rem;
-            border-radius: 2rem;
-        }
-
-        /* Notification Styles */
-        .notif-bell {
-            position: relative;
-            width: 48px;
-            height: 48px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.25rem;
-        }
-        .notif-bell:hover {
-            background: rgba(99, 102, 241, 0.15);
-            border-color: rgba(99, 102, 241, 0.3);
-            transform: scale(1.05);
-        }
-        .notif-badge {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(135deg, #F43F5E, #E11D48);
-            border-radius: 50%;
-            color: white;
-            font-size: 0.65rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #0F172A;
-            animation: pulse-badge 2s infinite;
-        }
-        .notif-badge.hidden { display: none; }
-        @keyframes pulse-badge {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
-        .notif-panel {
-            position: fixed;
-            top: 0;
-            right: -420px;
-            width: 400px;
-            height: 100vh;
-            background: rgba(15, 23, 42, 0.98);
-            backdrop-filter: blur(40px);
-            border-left: 1px solid rgba(255,255,255,0.08);
-            z-index: 1001;
-            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            flex-direction: column;
-            box-shadow: -20px 0 60px rgba(0,0,0,0.5);
-        }
-        .notif-panel.open { right: 0; }
-        .notif-panel-header {
-            padding: 2rem 1.5rem 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .notif-panel-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem 1.5rem;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        .notif-panel-body::-webkit-scrollbar { display: none; }
-        .notif-item {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            border-radius: 14px;
-            margin-bottom: 0.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid transparent;
-        }
-        .notif-item:hover {
-            background: rgba(255,255,255,0.03);
-            border-color: rgba(255,255,255,0.06);
-        }
-        .notif-item.unread {
-            background: rgba(99, 102, 241, 0.06);
-            border-color: rgba(99, 102, 241, 0.12);
-        }
-        .notif-item.unread::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 3px;
-            height: 60%;
-            background: linear-gradient(180deg, #6366F1, #D946EF);
-            border-radius: 2px;
-        }
-        .notif-item { position: relative; }
-        .notif-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-        .notif-icon.login { background: rgba(234, 179, 8, 0.15); }
-        .notif-icon.account { background: rgba(16, 185, 129, 0.15); }
-        .notif-icon.transaction { background: rgba(244, 63, 94, 0.15); }
-        .notif-icon.system { background: rgba(99, 102, 241, 0.15); }
-        .notif-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        .notif-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-        .mark-all-btn {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            color: #818CF8;
-            padding: 0.4rem 0.8rem;
-            border-radius: 8px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-        .mark-all-btn:hover {
-            background: rgba(99, 102, 241, 0.2);
-        }
-    </style>
 </head>
 <body class="creative-mode">
-    <div class="sidebar">
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 4rem; padding-left: 0.5rem;">
-            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF); border-radius: 10px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center;">
-                <span style="transform: rotate(-45deg); color: white; font-weight: 800;">F</span>
+    <button class="mobile-nav-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+        ☰
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo-wrapper">
+            <div class="logo-icon">
+                <span class="logo-icon-inner">F</span>
             </div>
-            <span style="font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em;">FINTECH<span class="text-gradient-creative">PRO</span></span>
+            <span class="logo-text">FINTECH<span class="text-gradient-creative">PRO</span></span>
         </div>
         
         <a href="/views/dashboard.html" class="nav-item active">
-            <span style="font-size: 1.25rem;">🏠</span>
+            <span class="nav-icon">🏠</span>
             <span>Dashboard</span>
         </a>
         <a href="/views/expenses.html" class="nav-item">
-            <span style="font-size: 1.25rem;">💸</span>
+            <span class="nav-icon">💸</span>
             <span>Expenses</span>
         </a>
+        <a href="/views/transfer.html" class="nav-item">
+            <span class="nav-icon">📤</span>
+            <span>Transfer</span>
+        </a>
         <a href="/views/transactions.html" class="nav-item">
-            <span style="font-size: 1.25rem;">📋</span>
+            <span class="nav-icon">📋</span>
             <span>Transactions</span>
         </a>
         <a href="/views/reports.html" class="nav-item">
-            <span style="font-size: 1.25rem;">📊</span>
+            <span class="nav-icon">📊</span>
             <span>Reports</span>
         </a>
         <a href="/views/admin.html" id="adminNavItem" class="nav-item">
-            <span style="font-size: 1.25rem;">👤</span>
+            <span class="nav-icon">🛡️</span>
             <span>Admin</span>
         </a>
         <a href="/views/profile.html" class="nav-item">
-            <span style="font-size: 1.25rem;">👤</span>
+            <span class="nav-icon">👤</span>
             <span>Profile</span>
         </a>
         <a href="/views/settings.html" class="nav-item">
-            <span style="font-size: 1.25rem;">⚙️</span>
+            <span class="nav-icon">⚙️</span>
             <span>Settings</span>
         </a>
         <a href="/views/support.html" class="nav-item">
-            <span style="font-size: 1.25rem;">🎧</span>
+            <span class="nav-icon">🎧</span>
             <span>Support</span>
         </a>
         
-        <div style="flex: 1;"></div>
+        <div class="flex-1"></div>
         
-        <a href="/index.html" class="nav-item" style="margin-bottom: 0;">
-            <span style="font-size: 1.25rem;">🚪</span>
+        <a href="#" onclick="handleLogout()" class="nav-item margin-b-0">
+            <span class="nav-icon">🚪</span>
             <span>Logout</span>
         </a>
     </div>
 
     <main class="content">
-        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4rem;">
-            <div style="display: flex; align-items: center; gap: 1.5rem;">
-                <!-- Mini Avatar -->
-                <div id="headerAvatar" style="width: 54px; height: 54px; background: linear-gradient(135deg, #6366F1, #D946EF); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 800; color: white; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.08);">U</div>
-                <div>
-                    <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0;">Welcome, <span id="welcomeName" class="text-gradient-creative">User</span></h1>
-                    <p style="color: #94A3B8; margin-top: 0.25rem;">Your financial world is synced and secure.</p>
-                </div>
+        <header class="header-main">
+            <div>
+                <h1 class="header-title">Welcome, <span id="welcomeName" class="text-gradient">User</span></h1>
+                <p class="header-description">Your financial world is synced and secure.</p>
             </div>
-            <div style="display: flex; gap: 1rem; align-items: center;">
+            
+            <div class="actions-group flex-row align-center gap-1">
+                <button id="connectBankBtn" class="btn-creative btn-pulse btn-bank-connect" onclick="openBankModal()" title="Connect your bank account">Connect Bank</button>
+                <button id="syncBtn" class="btn-creative btn-update-data" title="Sync latest data">Update Data</button>
+                <a href="/views/expenses.html" class="btn-creative btn-primary-creative text-no-decoration">+ Add Bill</a>
+                
                 <!-- Notification Bell -->
                 <div class="notif-bell" id="notifBell" onclick="toggleNotifPanel()">
                     🔔
-                    <span class="notif-badge hidden" id="notifBadge">0</span>
+                    <span class="notif-badge hide" id="notifBadge">0</span>
                 </div>
-                <button id="syncBtn" class="btn-creative" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">Update Data</button>
-                <a href="/views/expenses.html" class="btn-creative btn-primary-creative" style="text-decoration: none;">+ Add Bill</a>
+                
+                <a href="/views/profile.html">
+                    <div id="headerAvatar" class="sidebar-user-avatar">U</div>
+                </a>
             </div>
         </header>
 
-        <!-- Stats -->
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 4rem;">
+        <div class="stats-grid stagger-load">
             <div class="glass-card st-card">
-                <p style="color: #94A3B8; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Total Balance</p>
-                <h2 style="font-size: 3rem; font-weight: 800; margin: 0.5rem 0;" id="totalBalance">₹4,52,200</h2>
-                <div style="color: #10B981; font-weight: 700; font-size: 0.9rem;">+5% this month</div>
+                <p class="stat-label">Total Balance</p>
+                <h2 class="stat-value" id="totalBalance">₹0</h2>
+                <div class="stat-trend trend-up">+5% this month</div>
             </div>
             <div class="glass-card st-card">
-                <p style="color: #94A3B8; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Recent Expenses</p>
-                <h2 style="font-size: 3rem; font-weight: 800; margin: 0.5rem 0;" id="spentToday">₹0</h2>
-                <div style="color: #F43F5E; font-weight: 700; font-size: 0.9rem;">Cached in local storage</div>
+                <p class="stat-label">Recent Expenses</p>
+                <h2 class="stat-value" id="spentToday">₹0</h2>
+                <div class="stat-trend trend-down">Cached locally</div>
             </div>
             <div class="glass-card st-card">
-                <p style="color: #94A3B8; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;">Transactions</p>
-                <h2 style="font-size: 3rem; font-weight: 800; margin: 0.5rem 0;" id="transCount">0</h2>
-                <div style="color: #06B6D4; font-weight: 700; font-size: 0.9rem;">Synced</div>
+                <p class="stat-label">Transactions</p>
+                <h2 class="stat-value" id="transCount">0</h2>
+                <div class="stat-trend trend-neutral">Synced</div>
             </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 2rem;">
-            <div class="glass-card" style="padding: 2.5rem; position: relative; overflow: hidden;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+        <div class="main-grid">
+            <div class="glass-card chart-card">
+                <div class="flex-row justify-between align-center chart-header">
                     <div>
-                        <h3 id="chartTitle" style="font-weight: 800; margin: 0;">Monthly Spending</h3>
-                        <div id="drilldownBreadcrumb" style="display: flex; gap: 0.5rem; margin-top: 0.5rem; font-size: 0.75rem; color: #94A3B8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
-                            <span style="color: #6366F1;">Yearly View</span>
+                        <h3 id="chartTitle" class="chart-title">Monthly Spending</h3>
+                        <div id="drilldownBreadcrumb" class="drilldown-breadcrumb">
+                            <span class="breadcrumb-year">Yearly View</span>
                         </div>
                     </div>
-                    <div style="display: flex; gap: 0.75rem; align-items: center;">
-                        <button id="chartBackBtn" class="btn-creative" style="padding: 0.5rem 0.8rem; font-size: 0.7rem; background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: white; display: none;" onclick="navigateUp()">← Back</button>
-                        <select id="yearSwitcher" class="btn-creative" style="padding: 0.5rem 1rem; font-size: 0.75rem; background: rgba(99, 102, 241, 0.1); color: #818CF8; border-color: rgba(99, 102, 241, 0.2); outline: none;" onchange="handleYearChange()">
+                    <div class="flex-row gap-0-75 align-center">
+                        <button id="chartBackBtn" class="btn-creative btn-chart-back" onclick="navigateUp()">← Back</button>
+                        <select id="yearSwitcher" class="btn-creative year-switcher-select" onchange="handleYearChange()" title="Select Year">
                             <option value="2026">2026</option>
                             <option value="2025">2025</option>
                             <option value="2024">2024</option>
@@ -318,21 +134,35 @@
                     </div>
                 </div>
 
-                <div id="chartContainer" style="height: 300px; width: 100%;">
+                <div id="chartContainer" class="chart-container-box">
                     <canvas id="spendingChart"></canvas>
                 </div>
 
                 <!-- Daily Detail List (Hidden by default, shown during Level 4 drill-down) -->
-                <div id="dayDetailList" style="display: none; margin-top: 1rem; max-height: 250px; overflow-y: auto;">
+                <div id="dayDetailList" class="day-detail-box hide">
                     <!-- Dynamic categories and expenses -->
                 </div>
             </div>
-            <div class="glass-card" style="padding: 2.5rem;">
-                <h3 style="font-weight: 800; margin-bottom: 2.5rem;">Quick View</h3>
-                <div id="quickActivity" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <div class="glass-card quick-view-card">
+                <h3 class="quick-view-title">Quick View</h3>
+                <div id="quickActivity" class="flex-col gap-1-5">
                     <!-- Content from localStorage -->
                 </div>
-                <button class="btn-creative w-full" style="margin-top: 3rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); color: white;" onclick="window.location='/views/expenses.html'">View All</button>
+                <button class="btn-creative w-full btn-view-all margin-t-3" onclick="window.location='/views/expenses.html'" title="View all expenses">View All</button>
+            </div>
+
+            <!-- Connected Banks -->
+            <div class="glass-card quick-view-card margin-t-2">
+                <div class="flex-row justify-between align-center bank-section-header">
+                    <h3 class="chart-title">Connected Banks</h3>
+                    <span class="status-badge-success">LIVE SYNC</span>
+                </div>
+                <div id="bankConnectionsList" class="flex-col gap-1">
+                    <div class="empty-state text-center padding-2-1">
+                        No banks connected yet.
+                    </div>
+                </div>
+                <button onclick="openBankModal()" class="btn-link-another" title="Link another bank account">+ Link Another Account</button>
             </div>
         </div>
     </main>
@@ -344,19 +174,19 @@
     <div class="notif-panel" id="notifPanel">
         <div class="notif-panel-header">
             <div>
-                <h3 style="margin: 0; font-weight: 800; font-size: 1.1rem;">🔔 Notifications</h3>
-                <p style="margin: 4px 0 0; color: #64748B; font-size: 0.75rem;" id="notifSubtitle">No new notifications</p>
+                <h3 class="margin-0 font-800 font-size-lg">🔔 Notifications</h3>
+                <p class="notif-subtitle" id="notifSubtitle">No new notifications</p>
             </div>
-            <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <div class="flex-row gap-0-5 align-center">
                 <button class="mark-all-btn" onclick="markAllRead()">✓ Mark All Read</button>
-                <button style="background: transparent; border: none; color: #94A3B8; font-size: 1.5rem; cursor: pointer; padding: 0.25rem;" onclick="toggleNotifPanel()">✕</button>
+                <button class="btn-close-notif" onclick="toggleNotifPanel()" title="Close notifications">✕</button>
             </div>
         </div>
         <div class="notif-panel-body" id="notifList">
-            <div style="text-align: center; padding: 4rem 1rem; color: #475569;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">🔕</div>
-                <p style="font-weight: 600;">No notifications yet</p>
-                <p style="font-size: 0.8rem; color: #334155;">Your alerts will appear here</p>
+            <div class="notif-empty-state">
+                <div class="notif-empty-icon">🔕</div>
+                <p class="font-600">No notifications yet</p>
+                <p class="font-size-sm text-accent-slate">Your alerts will appear here</p>
             </div>
         </div>
     </div>
@@ -373,9 +203,20 @@
         const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-        window.addEventListener('load', () => {
+        let dashboardData = {
+            expenses: [],
+            income: [],
+            balance: 0
+        };
+
+        window.addEventListener('load', async () => {
             const loggedInUser = JSON.parse(localStorage.getItem('fintech_logged_in_user'));
-            const userName = loggedInUser ? (loggedInUser.fullName || loggedInUser.name) || 'User' : 'User';
+            if (!loggedInUser) {
+                window.location.href = '/views/portal.html';
+                return;
+            }
+            
+            const userName = (loggedInUser.fullName || loggedInUser.name) || 'User';
             document.getElementById('welcomeName').textContent = userName;
             
             // Avatar Logic
@@ -385,71 +226,135 @@
 
             if (savedPhoto && savedPhoto.startsWith('data:image')) {
                 avatar.style.backgroundImage = `url(${savedPhoto})`;
+                avatar.classList.add('has-photo');
                 avatar.textContent = '';
             } else {
+                avatar.classList.remove('has-photo');
+                avatar.style.backgroundImage = 'none';
                 avatar.textContent = userInitial;
             }
 
             // RBAC
-            const userRole = (loggedInUser && loggedInUser.role) ? loggedInUser.role.toLowerCase() : '';
+            const userRole = (loggedInUser.role) ? loggedInUser.role.toLowerCase() : '';
             const adminLink = document.getElementById('adminNavItem');
             if (adminLink) {
                 if (userRole === 'administrator' || userRole === 'admin') {
-                    adminLink.style.display = 'flex';
+                    adminLink.classList.remove('hide');
                 } else {
-                    adminLink.style.display = 'none';
+                    adminLink.classList.add('hide');
                 }
             }
             
-            // Initialize Dashboard Data
-            initDashboard();
+            // Initialize Dashboard Data from API
+            await loadDashboardData();
             fetchNotifications();
+            fetchBankConnections();
         });
 
-        function initDashboard() {
-            updateGlobalStats();
-            renderSpendingChart();
-            renderQuickView();
+        async function loadDashboardData() {
+            const token = localStorage.getItem('fintech_token');
+            if (!token) return;
+
+            try {
+                const [expRes, incRes, transferRes, profileRes] = await Promise.all([
+                    fetch('/api/expenses', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('/api/income', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('/api/transfer/history', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('/api/auth/profile', { headers: { 'Authorization': `Bearer ${token}` } })
+                ]);
+
+                const expResult = await expRes.json();
+                const incResult = await incRes.json();
+                const transferResult = await transferRes.json();
+                const profileResult = await profileRes.json();
+
+                if (expResult.success && incResult.success) {
+                    dashboardData.expenses = expResult.data;
+                    dashboardData.income = incResult.data;
+                    dashboardData.transfers = transferResult.success ? transferResult.data : [];
+                    
+                    // Use actual balance from profile
+                    if (profileResult.success) {
+                        dashboardData.balance = profileResult.data.balance || 0;
+                    } else {
+                        const totalInc = dashboardData.income.reduce((sum, i) => sum + i.amount, 0);
+                        const totalExp = dashboardData.expenses.reduce((sum, e) => sum + e.amount, 0);
+                        dashboardData.balance = totalInc - totalExp;
+                    }
+
+                    updateGlobalStats();
+                    renderSpendingChart();
+                    renderQuickView();
+                }
+            } catch (err) {
+                console.error('Failed to load dashboard data:', err);
+            }
         }
 
         function updateGlobalStats() {
-            const balance = parseFloat(localStorage.getItem('fintech_balance')) || 452200;
-            const expenses = JSON.parse(localStorage.getItem('fintech_expenses')) || [];
+            const expenses = dashboardData.expenses;
+            const incomes = dashboardData.income;
+            const transfers = dashboardData.transfers || [];
             
-            // Filter expenses for current year
+            // Filter data for current year
             const yearExpenses = expenses.filter(e => new Date(e.date).getFullYear() === parseInt(selectedYear));
-            const totalSpent = yearExpenses.reduce((acc, exp) => acc + exp.amount, 0);
+            const yearIncomes = incomes.filter(i => new Date(i.date).getFullYear() === parseInt(selectedYear));
+            const yearTransfers = transfers.filter(t => new Date(t.date).getFullYear() === parseInt(selectedYear));
             
-            document.getElementById('totalBalance').textContent = '₹' + balance.toLocaleString('en-IN');
-            document.getElementById('spentToday').textContent = '₹' + totalSpent.toLocaleString('en-IN');
-            document.getElementById('transCount').textContent = yearExpenses.length;
+            const totalSpent = yearExpenses.reduce((acc, exp) => acc + exp.amount, 0);
+            const totalTransfersOut = yearTransfers.filter(t => t.type === 'debit').reduce((acc, t) => acc + t.amount, 0);
+            
+            document.getElementById('totalBalance').textContent = '₹' + dashboardData.balance.toLocaleString('en-IN');
+            document.getElementById('spentToday').textContent = '₹' + (totalSpent + totalTransfersOut).toLocaleString('en-IN');
+            document.getElementById('transCount').textContent = yearExpenses.length + yearIncomes.length + yearTransfers.length;
         }
 
         function renderQuickView() {
             const activityBox = document.getElementById('quickActivity');
-            const expenses = JSON.parse(localStorage.getItem('fintech_expenses')) || [];
+            const expenses = dashboardData.expenses;
+            const incomes = dashboardData.income;
+            const transfers = dashboardData.transfers || [];
+            
+            // Combine and sort by date (newest first)
+            const combined = [
+                ...expenses.map(e => ({ ...e, type: 'expense', name: e.title })),
+                ...incomes.map(i => ({ ...i, type: 'income', name: i.source })),
+                ...transfers.map(t => ({ ...t, name: (t.type === 'debit' ? 'Sent to ' : 'Received from ') + t.otherParty }))
+            ].sort((a, b) => new Date(b.date) - new Date(a.date));
+
             activityBox.innerHTML = '';
             
-            if(expenses.length === 0) {
-                activityBox.innerHTML = '<p style="color: #94A3B8; text-align: center;">No recent transactions.</p>';
+            if(combined.length === 0) {
+                activityBox.innerHTML = '<p class="empty-activity-text">No recent transactions.</p>';
             } else {
-                expenses.slice(0, 3).forEach(exp => {
+                combined.slice(0, 5).forEach(item => {
+                    const isDebit = item.type === 'expense' || item.type === 'debit';
+                    const isCredit = item.type === 'income' || item.type === 'credit';
+                    const sign = isDebit ? '-' : '+';
+                    const color = isDebit ? '#F43F5E' : '#10B981';
+                    
+                    let icon = '💼';
+                    if (item.type === 'income') icon = '💰';
+                    if (item.type === 'debit') icon = '↗️';
+                    if (item.type === 'credit') icon = '↙️';
+
                     const row = `
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div style="display: flex; gap: 0.75rem; align-items: center;">
-                                <div style="width: 32px; height: 32px; background: rgba(255,255,255,0.05); border-radius: 8px; display: flex; align-items: center; justify-content: center;">💼</div>
+                        <div class="activity-item">
+                            <div class="activity-info">
+                                <div class="activity-icon-wrapper" style="background: ${isDebit ? 'rgba(244,63,94,0.1)' : 'rgba(16,185,129,0.1)'}">${icon}</div>
                                 <div>
-                                    <p style="font-weight: 700; margin: 0; font-size: 0.9rem;">${exp.merchant}</p>
-                                    <p style="font-size: 0.75rem; color: #64748B; margin: 0;">${exp.category}</p>
+                                    <p class="activity-text-primary ${item.transactionId ? 'font-size-sm' : ''}">${item.name}</p>
+                                    <p class="activity-text-secondary">${item.category || item.description || 'Transfer'}</p>
                                 </div>
                             </div>
-                            <span style="font-weight: 800; color: #F43F5E;">-₹${exp.amount.toLocaleString('en-IN')}</span>
+                            <span class="activity-amount ${isDebit ? 'text-expense' : 'text-income'}">${sign}₹${item.amount.toLocaleString('en-IN')}</span>
                         </div>
                     `;
                     activityBox.insertAdjacentHTML('beforeend', row);
                 });
             }
         }
+
 
         // --- Chart & Drill-down Logic ---
 
@@ -495,7 +400,8 @@
 
         function renderSpendingChart() {
             const ctx = document.getElementById('spendingChart').getContext('2d');
-            const expenses = JSON.parse(localStorage.getItem('fintech_expenses')) || [];
+            const expenses = dashboardData.expenses;
+            const incomes = dashboardData.income;
             const backBtn = document.getElementById('chartBackBtn');
             const breadcrumb = document.getElementById('drilldownBreadcrumb');
             const chartTitle = document.getElementById('chartTitle');
@@ -503,59 +409,94 @@
             const chartCanvas = document.getElementById('spendingChart');
 
             // Reset UI
-            backBtn.style.display = currentLevel === 'year' ? 'none' : 'block';
-            dayDetail.style.display = 'none';
-            chartCanvas.style.display = 'block';
+            if (currentLevel === 'year') {
+                backBtn.classList.add('hide');
+                backBtn.classList.remove('show-block');
+            } else {
+                backBtn.classList.add('show-block');
+                backBtn.classList.remove('hide');
+            }
+            dayDetail.classList.add('hide');
+            dayDetail.classList.remove('show-block');
+            chartCanvas.classList.add('show-block');
+            chartCanvas.classList.remove('hide');
 
             let labels = [];
-            let data = [];
-            let title = "Monthly Spending";
-            let breadcrumbHTML = `<span style="color: #6366F1; cursor: pointer;" onclick="resetToYear()">Yearly View (${selectedYear})</span>`;
+            let expenseData = [];
+            let incomeData = [];
+            let title = "Cash Flow Analytics";
+            let breadcrumbHTML = `<span class="breadcrumb-year" onclick="resetToYear()">Yearly View (${selectedYear})</span>`;
 
             if (currentLevel === 'year') {
-                title = "Monthly Spending";
+                title = "Monthly Cash Flow";
                 labels = monthNames;
-                data = monthNames.map((m, idx) => {
-                    return expenses.filter(e => {
+                monthNames.forEach((m, idx) => {
+                    const monthExp = expenses.filter(e => {
                         const d = new Date(e.date);
                         return d.getFullYear() === parseInt(selectedYear) && d.getMonth() === idx;
                     }).reduce((sum, e) => sum + e.amount, 0);
+                    
+                    const monthInc = incomes.filter(i => {
+                        const d = new Date(i.date);
+                        return d.getFullYear() === parseInt(selectedYear) && d.getMonth() === idx;
+                    }).reduce((sum, i) => sum + i.amount, 0);
+
+                    expenseData.push(monthExp);
+                    incomeData.push(monthInc);
                 });
             } 
             else if (currentLevel === 'month') {
-                title = `${monthNames[selectedMonth]} Spending`;
-                breadcrumbHTML += ` <span style="color: rgba(255,255,255,0.3);">/</span> <span style="color: #D946EF;">${monthNames[selectedMonth]}</span>`;
+                title = `${monthNames[selectedMonth]} Cash Flow`;
+                breadcrumbHTML += ` <span class="breadcrumb-indicator">/</span> <span class="breadcrumb-month">${monthNames[selectedMonth]}</span>`;
                 const weeks = getWeeksInMonth(selectedYear, selectedMonth);
                 labels = weeks.map(w => w.label);
-                data = weeks.map(w => {
-                    return expenses.filter(e => {
+                weeks.forEach(w => {
+                    const weekExp = expenses.filter(e => {
                         const d = new Date(e.date);
                         return d >= w.start && d <= w.end;
                     }).reduce((sum, e) => sum + e.amount, 0);
+
+                    const weekInc = incomes.filter(i => {
+                        const d = new Date(i.date);
+                        return d >= w.start && d <= w.end;
+                    }).reduce((sum, i) => sum + i.amount, 0);
+
+                    expenseData.push(weekExp);
+                    incomeData.push(weekInc);
                 });
             }
             else if (currentLevel === 'week') {
                 const weeks = getWeeksInMonth(selectedYear, selectedMonth);
                 const weekObj = weeks[selectedWeek];
-                title = `Weekly Spending (${weekObj.label})`;
-                breadcrumbHTML += ` <span style="color: rgba(255,255,255,0.3);">/</span> <span style="color: #D946EF;">${monthNames[selectedMonth]}</span> <span style="color: rgba(255,255,255,0.3);">/</span> <span style="color: #06B6D4;">Week ${parseInt(selectedWeek)+1}</span>`;
+                title = `Weekly Cash Flow (${weekObj.label})`;
+                breadcrumbHTML += ` <span class="breadcrumb-indicator">/</span> <span class="breadcrumb-month">${monthNames[selectedMonth]}</span> <span class="breadcrumb-indicator">/</span> <span class="breadcrumb-week">Week ${parseInt(selectedWeek)+1}</span>`;
                 
                 labels = dayNames;
-                data = dayNames.map((dName, idx) => {
-                    return expenses.filter(e => {
+                dayNames.forEach((dName, idx) => {
+                    const dayExp = expenses.filter(e => {
                         const d = new Date(e.date);
                         return d >= weekObj.start && d <= weekObj.end && d.getDay() === idx;
                     }).reduce((sum, e) => sum + e.amount, 0);
+
+                    const dayInc = incomes.filter(i => {
+                        const d = new Date(i.date);
+                        return d >= weekObj.start && d <= weekObj.end && d.getDay() === idx;
+                    }).reduce((sum, i) => sum + i.amount, 0);
+
+                    expenseData.push(dayExp);
+                    incomeData.push(dayInc);
                 });
             }
             else if (currentLevel === 'day') {
                 const d = new Date(selectedDay);
                 const dayStr = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
-                title = `Categories: ${dayStr} expenses`; 
-                breadcrumbHTML += ` <span style="color: rgba(255,255,255,0.3);">/</span> <span style="color: #D946EF;">${monthNames[selectedMonth]}</span> <span style="color: rgba(255,255,255,0.3);">/</span> <span style="color: #06B6D4;">${dayNames[d.getDay()]}</span>`;
+                title = `Activity: ${dayStr}`; 
+                breadcrumbHTML += ` <span class="breadcrumb-indicator">/</span> <span class="breadcrumb-month">${monthNames[selectedMonth]}</span> <span class="breadcrumb-indicator">/</span> <span class="breadcrumb-week">${dayNames[d.getDay()]}</span>`;
                 
-                chartCanvas.style.display = 'none';
-                dayDetail.style.display = 'block';
+                chartCanvas.classList.add('hide');
+                chartCanvas.classList.remove('show-block');
+                dayDetail.classList.add('show-block');
+                dayDetail.classList.remove('hide');
                 renderDayDetails(selectedDay);
             }
 
@@ -568,21 +509,50 @@
                     type: 'bar',
                     data: {
                         labels: labels,
-                        datasets: [{
-                            data: data,
-                            backgroundColor: currentLevel === 'year' ? '#6366F1' : (currentLevel === 'month' ? '#D946EF' : '#06B6D4'),
-                            borderRadius: 8,
-                            hoverBackgroundColor: '#8B5CF6'
-                        }]
+                        datasets: [
+                            {
+                                label: 'Income',
+                                data: incomeData,
+                                backgroundColor: '#10B981',
+                                borderRadius: 6,
+                                hoverBackgroundColor: '#059669',
+                                barPercentage: 0.6,
+                                categoryPercentage: 0.5
+                            },
+                            {
+                                label: 'Expenses',
+                                data: expenseData,
+                                backgroundColor: '#F43F5E',
+                                borderRadius: 6,
+                                hoverBackgroundColor: '#E11D48',
+                                barPercentage: 0.6,
+                                categoryPercentage: 0.5
+                            }
+                        ]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
+                        plugins: { 
+                            legend: { 
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: '#94A3B8',
+                                    font: { family: 'Outfit', weight: 600, size: 10 },
+                                    boxWidth: 10,
+                                    padding: 20
+                                }
+                            } 
+                        },
                         scales: {
-                            y: { display: false, beginAtZero: true },
+                            y: { 
+                                beginAtZero: true,
+                                grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
+                                ticks: { color: '#64748B', font: { family: 'Outfit', size: 10 } }
+                            },
                             x: { 
-                                ticks: { color: '#94A3B8', font: { family: 'Outfit', weight: 600 } },
+                                ticks: { color: '#94A3B8', font: { family: 'Outfit', weight: 600, size: 10 } },
                                 grid: { display: false }
                             }
                         },
@@ -615,30 +585,43 @@
 
         function renderDayDetails(dateStr) {
             const list = document.getElementById('dayDetailList');
-            const expenses = JSON.parse(localStorage.getItem('fintech_expenses')) || [];
-            const dayExp = expenses.filter(e => e.date === dateStr);
+            const expenses = dashboardData.expenses;
+            const incomes = dashboardData.income;
             
-            if (dayExp.length === 0) {
-                list.innerHTML = '<p style="text-align: center; color: #94A3B8; padding: 2rem;">No expenses recorded for this day.</p>';
+            const dayExp = expenses.filter(e => e.date.split('T')[0] === dateStr);
+            const dayInc = incomes.filter(i => i.date.split('T')[0] === dateStr);
+            
+            if (dayExp.length === 0 && dayInc.length === 0) {
+                list.innerHTML = '<p class="day-empty-text">No transactions recorded for this day.</p>';
                 return;
             }
 
-            // Group by category
+            // Combine and group by category, sorted by time
+            const items = [
+                ...dayExp.map(e => ({ ...e, type: 'expense', name: e.title })),
+                ...dayInc.map(i => ({ ...i, type: 'income', name: i.source }))
+            ].sort((a, b) => new Date(b.date) - new Date(a.date));
+
             const categories = {};
-            dayExp.forEach(e => {
-                if (!categories[e.category]) categories[e.category] = [];
-                categories[e.category].push(e);
+            items.forEach(item => {
+                if (!categories[item.category]) categories[item.category] = [];
+                categories[item.category].push(item);
             });
 
             list.innerHTML = Object.keys(categories).map(cat => `
-                <div style="margin-bottom: 1.5rem;">
-                    <h4 style="font-size: 0.75rem; color: #6366F1; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">${cat}</h4>
-                    ${categories[cat].map(e => `
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: 0.5rem;">
-                            <span style="font-weight: 600; font-size: 0.9rem;">${e.merchant}</span>
-                            <span style="font-weight: 800; color: #F43F5E;">-₹${e.amount.toLocaleString('en-IN')}</span>
-                        </div>
-                    `).join('')}
+                <div class="margin-b-1-5">
+                    <h4 class="day-detail-cat-title">${cat}</h4>
+                    ${categories[cat].map(item => {
+                        const isExp = item.type === 'expense';
+                        const color = isExp ? '#F43F5E' : '#10B981';
+                        const sign = isExp ? '-' : '+';
+                        return `
+                            <div class="day-detail-item">
+                                <span class="font-600 font-size-0-9rem">${item.name}</span>
+                                <span class="font-800 ${isExp ? 'text-expense' : 'text-income'}">${sign}₹${item.amount.toLocaleString('en-IN')}</span>
+                            </div>
+                        `;
+                    }).join('')}
                 </div>
             `).join('');
         }
@@ -653,6 +636,7 @@
 
         document.getElementById('syncBtn').addEventListener('click', function() {
             this.textContent = 'Syncing...';
+            this.classList.add('btn-disabled');
             setTimeout(() => {
                 location.reload();
             }, 500);
@@ -662,9 +646,34 @@
         function toggleNotifPanel() {
             const panel = document.getElementById('notifPanel');
             const overlay = document.getElementById('notifOverlay');
-            panel.classList.toggle('open');
+            if (!panel || !overlay) return;
+            panel.classList.toggle('active');
             overlay.classList.toggle('active');
         }
+
+        // Close components when clicking outside
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarBtn = document.getElementById('sidebarToggle');
+            const notifPanel = document.getElementById('notifPanel');
+            const notifBell = document.getElementById('notifBell');
+            const notifOverlay = document.getElementById('notifOverlay');
+
+            // Handle Sidebar
+            if (window.innerWidth <= 1024 && 
+                sidebar && sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                sidebarBtn && !sidebarBtn.contains(e.target)) {
+                toggleSidebar();
+            }
+
+            // Handle Notifications
+            if (notifPanel && notifPanel.classList.contains('active') && 
+                !notifPanel.contains(e.target) && 
+                notifBell && !notifBell.contains(e.target)) {
+                toggleNotifPanel();
+            }
+        });
 
         async function fetchNotifications() {
             try {
@@ -695,19 +704,19 @@
             // Update badge
             if (unreadCount > 0) {
                 badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
-                badge.classList.remove('hidden');
+                badge.classList.remove('hide');
                 subtitle.textContent = `${unreadCount} unread notification${unreadCount > 1 ? 's' : ''}`;
             } else {
-                badge.classList.add('hidden');
+                badge.classList.add('hide');
                 subtitle.textContent = 'All caught up!';
             }
 
             if (notifications.length === 0) {
                 list.innerHTML = `
-                    <div style="text-align: center; padding: 4rem 1rem; color: #475569;">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">🔕</div>
-                        <p style="font-weight: 600;">No notifications yet</p>
-                        <p style="font-size: 0.8rem; color: #334155;">Your alerts will appear here</p>
+                    <div class="notif-empty-state">
+                        <div class="notif-empty-icon">🔕</div>
+                        <p class="notif-empty-title">No notifications yet</p>
+                        <p class="notif-empty-desc">Your alerts will appear here</p>
                     </div>
                 `;
                 return;
@@ -725,11 +734,12 @@
                 item.onclick = () => markAsRead(notif._id, item);
                 item.innerHTML = `
                     <div class="notif-icon ${iconClass}">${notif.icon || '🔔'}</div>
-                    <div style="flex: 1; min-width: 0;">
-                        <p style="margin: 0; font-weight: 700; font-size: 0.85rem; color: #E2E8F0;">${notif.title}</p>
-                        <p style="margin: 4px 0 0; font-size: 0.78rem; color: #94A3B8; line-height: 1.4;">${notif.message}</p>
-                        <p style="margin: 6px 0 0; font-size: 0.65rem; color: #475569; font-weight: 600;">${timeAgo}${notif.emailSent ? ' · 📧 Email sent' : ''}</p>
+                    <div class="notif-content">
+                        <p class="notif-title">${notif.title}</p>
+                        <p class="notif-message">${notif.message}</p>
+                        <p class="notif-time">${timeAgo}${notif.emailSent ? ' · 📧 Email sent' : ''}</p>
                     </div>
+                    <button class="notif-delete-btn" onclick="deleteNotification(event, '${notif._id}')" title="Delete Notification">🗑️</button>
                 `;
                 list.appendChild(item);
             });
@@ -762,6 +772,28 @@
             }
         }
 
+        async function deleteNotification(event, id) {
+            event.stopPropagation(); // Prevent markAsRead trigger
+            if (!confirm('Are you sure you want to delete this notification?')) return;
+
+            try {
+                const token = localStorage.getItem('fintech_token');
+                const response = await fetch(`/api/notifications/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    fetchNotifications();
+                } else {
+                    const result = await response.json();
+                    alert('Deletion failed: ' + result.message);
+                }
+            } catch (err) {
+                console.error('Delete notification failed:', err.message);
+            }
+        }
+
         function getTimeAgo(date) {
             const seconds = Math.floor((new Date() - date) / 1000);
             if (seconds < 60) return 'Just now';
@@ -770,7 +802,599 @@
             if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;
             return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
         }
+        function handleLogout() {
+            // Check if this is an admin-impersonated session
+            const adminToken = localStorage.getItem('fintech_admin_token');
+            const adminUser = localStorage.getItem('fintech_admin_user');
+            
+            if (adminToken && adminUser) {
+                // Restore admin session
+                localStorage.setItem('fintech_token', adminToken);
+                localStorage.setItem('fintech_logged_in_user', adminUser);
+                localStorage.removeItem('fintech_admin_token');
+                localStorage.removeItem('fintech_admin_user');
+                window.location.href = '/views/admin.html';
+            } else {
+                localStorage.removeItem('fintech_token');
+                localStorage.removeItem('fintech_logged_in_user');
+                localStorage.removeItem('fintech_current_prefix');
+                window.location.href = '/index.html';
+            }
+        }
+
+        // === BANK CONNECTION WORKFLOW ===
+        let currentBankStep = 0;
+        let activeConnectionId = null;
+        let otpTimerInterval = null;
+        let selectedBankName = '';
+
+        function openBankModal() {
+            const modal = document.getElementById('bankModal');
+            modal.classList.add('active');
+            modal.querySelector('.modal-content').classList.add('form-opening');
+            resetBankWorkflow();
+            loadBanks();
+        }
+
+        function closeBankModal() {
+            const modal = document.getElementById('bankModal');
+            modal.classList.remove('active');
+            modal.querySelector('.modal-content').classList.remove('form-opening');
+            hideModalError();
+            clearInterval(otpTimerInterval);
+        }
+
+        function showModalError(msg) {
+            const err = document.getElementById('modalError');
+            err.textContent = msg;
+            err.classList.add('show-block');
+            err.classList.remove('hide');
+            err.classList.remove('shake');
+            void err.offsetWidth; // trigger reflow
+            err.classList.add('shake');
+        }
+
+        function hideModalError() {
+            document.getElementById('modalError').classList.add('hide');
+        }
+
+        function resetBankWorkflow() {
+            currentBankStep = 0;
+            activeConnectionId = null;
+            selectedBankName = '';
+            hideModalError();
+            document.getElementById('bankDetailsForm').reset();
+            document.getElementById('bankSearch').value = '';
+            const nextBtn = document.getElementById('stepSelectNextBtn');
+            if (nextBtn) {
+                nextBtn.disabled = true;
+                nextBtn.classList.add('btn-disabled');
+            }
+            updateBankStepUI();
+        }
+
+        async function loadBanks() {
+            const token = localStorage.getItem('fintech_token');
+            try {
+                const res = await fetch('/api/banks/list', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await res.json();
+                if (result.success) {
+                    renderBankList(result.data);
+                }
+            } catch (err) {
+                console.error('Failed to load banks:', err);
+            }
+        }
+
+        function renderBankList(banks) {
+            const popular = banks.filter(b => b.category === 'popular');
+            const intl = banks.filter(b => b.category === 'international');
+            const local = banks.filter(b => b.category === 'local');
+
+            const renderGrid = (list, gridId) => {
+                const grid = document.getElementById(gridId);
+                grid.innerHTML = list.map(bank => `
+                    <div class="bank-option" onclick="selectBank('${bank.name}', this)">
+                        <div class="bank-logo-placeholder">${bank.logo}</div>
+                        <span class="bank-name-label">${bank.name}</span>
+                    </div>
+                `).join('');
+            };
+
+            renderGrid(popular, 'bankGridPopular');
+            renderGrid(intl, 'bankGridIntl');
+            renderGrid(local, 'bankGridLocal');
+        }
+
+        function selectBank(name, el) {
+            document.querySelectorAll('.bank-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedBankName = name;
+            const nextBtn = document.getElementById('stepSelectNextBtn');
+            nextBtn.disabled = false;
+            nextBtn.classList.remove('btn-disabled');
+        }
+
+        function proceedToDetails() {
+            document.getElementById('bankNameDisplayField').value = selectedBankName;
+            document.getElementById('selectedBankLabel').textContent = selectedBankName;
+            currentBankStep = 1;
+            updateBankStepUI();
+        }
+
+        function goBackStep() {
+            if (currentBankStep > 0) {
+                currentBankStep--;
+                updateBankStepUI();
+            }
+        }
+
+        function updateBankStepUI() {
+            const steps = ['step-select', 'step-details', 'step-otp', 'step-success'];
+            const dots = document.querySelectorAll('.step-dot');
+            const progressLine = document.getElementById('progressLine');
+
+            hideModalError();
+
+            steps.forEach((id, idx) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+
+                // directional transitions
+                if (idx < currentBankStep) {
+                    el.classList.remove('active');
+                    el.classList.add('prev');
+                } else if (idx === currentBankStep) {
+                    el.classList.add('active');
+                    el.classList.remove('prev');
+                } else {
+                    el.classList.remove('active', 'prev');
+                }
+
+                // Update dots
+                if (dots[idx]) {
+                    dots[idx].classList.toggle('active', idx === currentBankStep);
+                    dots[idx].classList.toggle('completed', idx < currentBankStep);
+                    dots[idx].innerHTML = idx < currentBankStep ? '✓' : (idx + 1);
+                }
+            });
+
+            // Update progress line
+            if (progressLine) {
+                const percent = (currentBankStep / (steps.length - 1)) * 100;
+                progressLine.style.width = `calc(${percent}% - ${percent > 0 ? '0px' : '0px'})`;
+            }
+        }
+
+        async function handleBankDetailsSubmit(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const token = localStorage.getItem('fintech_token');
+            
+            const formData = {
+                bankName: selectedBankName,
+                accountHolderName: document.getElementById('accHolderName').value,
+                accountNumber: document.getElementById('accNumber').value,
+                ifscCode: document.getElementById('ifscCode').value,
+                otpMethod: document.querySelector('input[name="otpMethod"]:checked').value
+            };
+
+            btn.textContent = 'Securing...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/banks/connect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(formData)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    activeConnectionId = result.data.connectionId;
+                    
+                    // Dynamic message based on method
+                    const method = formData.otpMethod === 'sms' ? 'Mobile Number' : 'Email Address';
+                    const target = formData.otpMethod === 'sms' ? result.data.maskedPhone : result.data.maskedEmail;
+                    
+                    document.getElementById('otpMessage').innerHTML = `Verification code sent to your registered <b>${method}</b>: <span class="text-indigo-bold">${target}</span>`;
+                    
+                    currentBankStep = 2;
+                    updateBankStepUI();
+                    startOTPTimer();
+                    setTimeout(() => document.querySelector('.otp-box').focus(), 100);
+                } else {
+                    showModalError(result.message);
+                }
+            } catch (err) {
+                showModalError('Details submission failed.');
+            } finally {
+                btn.textContent = 'Send OTP →';
+                btn.disabled = false;
+            }
+        }
+
+        function startOTPTimer() {
+            let timeLeft = 60;
+            const timerDisplay = document.getElementById('otpTimer');
+            const resendBtn = document.getElementById('resendOtpBtn');
+            resendBtn.classList.add('hide');
+            
+            clearInterval(otpTimerInterval);
+            otpTimerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = `Resend in ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(otpTimerInterval);
+                    timerDisplay.textContent = '';
+                    resendBtn.classList.remove('hide');
+                }
+            }, 1000);
+        }
+
+        async function resendOTP() {
+            const token = localStorage.getItem('fintech_token');
+            try {
+                const res = await fetch('/api/banks/resend-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ connectionId: activeConnectionId })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    alert('A new OTP has been sent.');
+                    startOTPTimer();
+                    // Clear OTP boxes
+                    document.querySelectorAll('.otp-box').forEach(b => b.value = '');
+                    document.querySelector('.otp-box').focus();
+                }
+            } catch (err) {
+                console.error('Resend failed:', err);
+            }
+        }
+
+        function setupOTPInputs() {
+            const boxes = document.querySelectorAll('.otp-box');
+            boxes.forEach((box, idx) => {
+                box.oninput = () => {
+                    if (box.value.length === 1 && idx < boxes.length - 1) {
+                        boxes[idx + 1].focus();
+                    }
+                };
+                box.onkeydown = (e) => {
+                    if (e.key === 'Backspace' && !box.value && idx > 0) {
+                        boxes[idx - 1].focus();
+                    }
+                };
+            });
+        }
+
+        async function handleOTPVerify(e) {
+            if(e) e.preventDefault();
+            const btn = document.getElementById('verifyOtpBtn');
+            const token = localStorage.getItem('fintech_token');
+            const otpArr = Array.from(document.querySelectorAll('.otp-box')).map(b => b.value);
+            const otp = otpArr.join('');
+
+            if (otp.length < 6) return alert('Please enter 6-digit OTP');
+
+            btn.textContent = 'Verifying...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/banks/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ connectionId: activeConnectionId, otp })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    document.getElementById('finalBankName').textContent = result.data.bankName;
+                    document.getElementById('finalAccLast4').textContent = result.data.accountLast4;
+                    currentBankStep = 3;
+                    updateBankStepUI();
+                } else {
+                    showModalError(result.message);
+                    // Shake OTP boxes
+                    const boxes = document.querySelectorAll('.otp-box');
+                    boxes.forEach(b => {
+                        b.classList.add('shake');
+                        setTimeout(() => b.classList.remove('shake'), 500);
+                    });
+                }
+            } catch (err) {
+                showModalError('Verification failed.');
+            } finally {
+                btn.textContent = 'Confirm & Link';
+                btn.disabled = false;
+            }
+        }
+
+        // Initialize OTP setup
+        document.addEventListener('DOMContentLoaded', setupOTPInputs);
+
+        async function fetchBankConnections() {
+            const token = localStorage.getItem('fintech_token');
+            if (!token) return;
+
+            try {
+                const res = await fetch('/api/banks/connections', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await res.json();
+                if (result.success && result.data.length > 0) {
+                    renderConnectedAccounts(result.data);
+                }
+            } catch (err) {
+                console.error('Failed to fetch bank connections:', err.message);
+            }
+        }
+
+        function renderConnectedAccounts(connections) {
+            const list = document.getElementById('bankConnectionsList');
+            list.innerHTML = connections.map(conn => `
+                <div class="connected-account-card">
+                    <div class="bank-icon-lg bank-logo-placeholder">${conn.bankLogo || '🏦'}</div>
+                    <div class="flex-1">
+                        <p class="account-name">${conn.bankName}</p>
+                        <p class="account-details">•••• ${conn.accountNumberMasked.slice(-4)}</p>
+                    </div>
+                    <div class="flex-row align-center gap-1">
+                        <div class="text-right">
+                            <p class="font-800 font-size-mini text-success-accent margin-0">Active</p>
+                            <p class="margin-t-0-125 text-accent-slate font-size-xs">Updated 1m ago</p>
+                        </div>
+                        <button class="btn-unlink" onclick="removeBankConnection('${conn._id}', '${conn.bankName}')">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function removeBankConnection(id, name) {
+            if (!confirm(`Are you sure you want to unlink your ${name} account? This will stop data syncing.`)) return;
+            
+            const token = localStorage.getItem('fintech_token');
+            try {
+                const res = await fetch(`/api/banks/connections/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await res.json();
+                if (result.success) {
+                    fetchBankConnections(); // Refresh the list
+                    alert('Bank account unlinked successfully.');
+                } else {
+                    alert(result.message);
+                }
+            } catch (err) {
+                console.error('Failed to remove connection:', err);
+                alert('Failed to remove bank connection.');
+            }
+        }
+
+        function finishBankLink() {
+            closeBankModal();
+            fetchBankConnections(); // Refresh list
+            fetchNotifications(); // Refresh notifications
+        }
+
+        // Filter banks
+        function filterBanks() {
+            const query = document.getElementById('bankSearch').value.toLowerCase();
+            const options = document.querySelectorAll('.bank-option');
+            let foundAny = false;
+
+            options.forEach(opt => {
+                const name = opt.textContent.toLowerCase();
+                const matches = name.includes(query);
+                if (matches) {
+                    opt.classList.add('show-flex');
+                    opt.classList.remove('hide');
+                    foundAny = true;
+                } else {
+                    opt.classList.add('hide');
+                    opt.classList.remove('show-flex');
+                }
+            });
+
+            // Hide/Show sections based on results
+            ['popular', 'intl', 'local'].forEach(cat => {
+                const section = document.getElementById(cat + 'BanksSection');
+                if (section) {
+                    const grid = document.getElementById('bankGrid' + (cat === 'intl' ? 'Intl' : cat.charAt(0).toUpperCase() + cat.slice(1)));
+                    const visibleInCat = Array.from(grid.children).some(child => !child.classList.contains('hide'));
+                    if (visibleInCat) {
+                        section.classList.add('show-block');
+                        section.classList.remove('hide');
+                    } else {
+                        section.classList.add('hide');
+                        section.classList.remove('show-block');
+                    }
+                }
+            });
+
+            if (foundAny) {
+                document.getElementById('noBanksFound').classList.add('hide');
+                document.getElementById('noBanksFound').classList.remove('show-block');
+            } else {
+                document.getElementById('noBanksFound').classList.add('show-block');
+                document.getElementById('noBanksFound').classList.remove('hide');
+            }
+        }
+
+        function handleLogout() {
+            // Check if this is an admin-impersonated session
+            const adminToken = localStorage.getItem('fintech_admin_token');
+            const adminUser = localStorage.getItem('fintech_admin_user');
+            
+            if (adminToken && adminUser) {
+                // Restore admin session
+                localStorage.setItem('fintech_token', adminToken);
+                localStorage.setItem('fintech_logged_in_user', adminUser);
+                localStorage.removeItem('fintech_admin_token');
+                localStorage.removeItem('fintech_admin_user');
+                window.location.href = '/views/admin.html';
+            } else {
+                localStorage.removeItem('fintech_token');
+                localStorage.removeItem('fintech_logged_in_user');
+                localStorage.removeItem('fintech_current_prefix');
+                window.location.href = '/index.html';
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar) return;
+            sidebar.classList.toggle('active');
+            const btn = document.getElementById('sidebarToggle');
+            if (btn) btn.innerHTML = sidebar.classList.contains('active') ? '✕' : '☰';
+        }
+
+        // Global initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchBankConnections();
+            fetchNotifications();
+            setupOTPInputs();
+            console.log('✅ Dashboard initialized');
+        });
     </script>
+
+    <!-- Bank Connection Modal -->
+    <div id="bankModal" class="modal-overlay">
+        <div class="modal-content modal-width-lg">
+            <button class="modal-close-btn" onclick="closeBankModal()" title="Close bank connection modal">✕</button>
+            
+            <div class="step-progress">
+                <div class="progress-line" id="progressLine"></div>
+                <div class="step-dot active">1</div>
+                <div class="step-dot">2</div>
+                <div class="step-dot">3</div>
+                <div class="step-dot">4</div>
+            </div>
+
+            <div class="step-content-container">
+                <div id="modalError" class="modal-error"></div>
+                
+                <!-- Step 0: Select Bank -->
+                <div id="step-select" class="step-panel active">
+                    <h2 class="bank-modal-title">Choose Bank</h2>
+                    <p class="bank-modal-subtitle">Select your bank to start linking securely.</p>
+                    
+                    <div class="bank-search-wrapper">
+                        <span class="bank-search-icon">🔍</span>
+                        <input type="text" id="bankSearch" class="input-creative bank-search-input" placeholder="Search for your bank..." onkeyup="filterBanks()" title="Search Filter Banks">
+                    </div>
+                    
+                    <div id="bankListContainer" class="bank-scroll-container margin-b-1-5">
+                        <div id="popularBanksSection">
+                            <p class="bank-group-label">Most Popular</p>
+                            <div class="bank-grid" id="bankGridPopular"></div>
+                        </div>
+
+                        <div id="intlBanksSection" class="bank-group-intl">
+                            <p class="bank-group-label-intl">International</p>
+                            <div class="bank-grid" id="bankGridIntl"></div>
+                        </div>
+
+                        <div id="localBanksSection" class="bank-group-intl">
+                            <p class="bank-group-label-local">Local & Regional</p>
+                            <div class="bank-grid" id="bankGridLocal"></div>
+                        </div>
+
+                        <div id="noBanksFound" class="no-banks-found">
+                            <p>No banks found.</p>
+                        </div>
+                    </div>
+
+                    <div class="bank-modal-footer">
+                        <button id="stepSelectNextBtn" class="btn-creative btn-proceed btn-disabled" disabled onclick="proceedToDetails()" title="Continue to bank details">Continue →</button>
+                    </div>
+                </div>
+
+                <!-- Step 1: Bank Details -->
+                <div id="step-details" class="step-panel">
+                    <h2 class="section-title-sm">Account Details</h2>
+                    <p class="section-desc-sm">Link your account for <span id="selectedBankLabel" class="selected-bank-highlight">the selected bank</span>.</p>
+                    
+                    <form id="bankDetailsForm" onsubmit="handleBankDetailsSubmit(event)">
+                        <p class="bank-label-mini">BANK NAME (AUTO-SELECTED)</p>
+                        <input type="text" id="bankNameDisplayField" class="input-creative input-readonly" readonly title="Bank Name Display" placeholder="Selected Bank">
+
+                        <p class="bank-label-mini">ACCOUNT HOLDER NAME</p>
+                        <input type="text" id="accHolderName" class="input-creative" placeholder="John Doe" required title="Account Holder Name">
+
+                        <div class="grid-2-1">
+                            <div>
+                                <p class="bank-label-mini">ACCOUNT NUMBER</p>
+                                <input type="text" id="accNumber" class="input-creative" placeholder="XXXX XXXX XXXX" required pattern="\d{9,18}" title="9 to 18 digits" placeholder="Account Number">
+                            </div>
+                            <div>
+                                <p class="bank-label-mini">IFSC CODE</p>
+                                <input type="text" id="ifscCode" class="input-creative" placeholder="IFSC0000123" required pattern="[A-Z]{4}0[A-Z0-9]{6}" title="IFSC Code (e.g. HDFC0000123)">
+                            </div>
+                        </div>
+
+                        <p class="bank-label-mini">SEND OTP VIA</p>
+                        <div class="otp-method-container">
+                            <label class="otp-method-label">
+                                <input type="radio" name="otpMethod" value="sms" checked title="Receive OTP via SMS">
+                                <span class="otp-method-text">Mobile SMS</span>
+                            </label>
+                            <label class="otp-method-label">
+                                <input type="radio" name="otpMethod" value="email" title="Receive OTP via Email">
+                                <span class="otp-method-text">Email ID</span>
+                            </label>
+                        </div>
+
+                        <div class="display-flex gap-1 margin-t-1">
+                            <button type="submit" class="btn-creative btn-primary-full flex-2" title="Continue to OTP verification">Continue to OTP →</button>
+                            <button type="button" onclick="goBackStep()" class="btn-creative flex-1 btn-cancel" title="Change selected bank">← Back</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 2: OTP Verification -->
+                <div id="step-otp" class="step-panel">
+                    <h2 class="section-title-sm">OTP Verification</h2>
+                    <p id="otpMessage" class="section-desc-sm">Verification code has been sent.</p>
+                    
+                    <div class="otp-container">
+                        <input type="text" maxlength="1" class="otp-box" autocomplete="one-time-code" title="OTP Digit 1" placeholder="•">
+                        <input type="text" maxlength="1" class="otp-box" title="OTP Digit 2" placeholder="•">
+                        <input type="text" maxlength="1" class="otp-box" title="OTP Digit 3" placeholder="•">
+                        <input type="text" maxlength="1" class="otp-box" title="OTP Digit 4" placeholder="•">
+                        <input type="text" maxlength="1" class="otp-box" title="OTP Digit 5" placeholder="•">
+                        <input type="text" maxlength="1" class="otp-box" title="OTP Digit 6" placeholder="•">
+                    </div>
+
+                    <div class="center-margin-t-1 margin-b-2">
+                        <p id="otpTimer" class="timer-text"></p>
+                        <button id="resendOtpBtn" onclick="resendOTP()" class="btn-text-resend hide" title="Resend OTP code">Resend OTP</button>
+                    </div>
+
+                    <div class="display-flex gap-1 margin-t-1">
+                        <button id="verifyOtpBtn" onclick="handleOTPVerify()" class="btn-creative btn-primary-full flex-2" title="Confirm and link bank account">Verify & Confirm</button>
+                        <button type="button" onclick="goBackStep()" class="btn-creative flex-1 btn-cancel" title="Go back to bank details">← Back</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Success -->
+                <div id="step-success" class="step-panel text-center">
+                    <div class="success-icon-anim">✓</div>
+                    <h2 class="section-title-sm">Bank Linked Successfully</h2>
+                    <p class="section-desc-sm">Your <span id="finalBankName" class="success-bank-name">Bank</span> account (••••<span id="finalAccLast4">0000</span>) is now ready to receive data.</p>
+                    
+                    <div class="security-badge-container">
+                        <p class="security-badge-text">Security Verified & Masked 🛡️</p>
+                        <div class="security-sweep"></div>
+                    </div>
+
+                    <button onclick="finishBankLink()" class="btn-creative btn-confirm-success" title="Finish and return to dashboard">Back to Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 

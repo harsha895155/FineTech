@@ -17,6 +17,26 @@ const SettingsPage = () => {
     };
 
     const [profileImagePreview, setProfileImagePreview] = useState(getProfileImage(user?.profileImage));
+    
+    // Missing States
+    const [currency, setCurrency] = useState('USD');
+    const [theme, setTheme] = useState('light');
+    const [notifications, setNotifications] = useState({
+        email: true,
+        alerts: true,
+    });
+
+    const currencies = [
+        { code: 'USD', name: 'US Dollar', symbol: '$' },
+        { code: 'EUR', name: 'Euro', symbol: '€' },
+        { code: 'GBP', name: 'British Pound', symbol: '£' },
+        { code: 'INR', name: 'Indian Rupee', symbol: '₹' },
+        { code: 'JPY', name: 'Japanese Yen', symbol: '¥' },
+    ];
+
+    const toggleNotification = (id) => {
+        setNotifications(prev => ({ ...prev, [id]: !prev[id] }));
+    };
 
     // Keep preview in sync with user object (important for updates!)
     React.useEffect(() => {

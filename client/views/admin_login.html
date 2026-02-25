@@ -8,158 +8,35 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/variables.css">
-    <style>
-        body { 
-            font-family: 'Outfit', sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            background: #0F172A; 
-            background-image: radial-gradient(circle at 50% -20%, rgba(239, 68, 68, 0.15) 0%, transparent 40%);
-            color: white; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            justify-content: center; 
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            padding: 2.5rem;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            border-radius: 1.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .logo-area {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-
-        .admin-badge {
-            background: rgba(239, 68, 68, 0.1);
-            color: #EF4444;
-            padding: 0.5rem 1rem;
-            border-radius: 99px;
-            font-size: 0.875rem;
-            font-weight: 700;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            margin-bottom: 1.5rem;
-            display: inline-block;
-        }
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin: 0 0 0.5rem 0;
-            text-align: center;
-        }
-
-        p {
-            color: #94A3B8;
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            color: #94A3B8;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 0.75rem;
-            color: white;
-            font-family: inherit;
-            outline: none;
-            transition: all 0.3s;
-            box-sizing: border-box;
-        }
-
-        .form-input:focus {
-            border-color: #EF4444;
-            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
-        }
-
-        .btn-submit {
-            width: 100%;
-            background: #EF4444;
-            color: white;
-            border: none;
-            padding: 1rem;
-            border-radius: 0.75rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 1rem;
-        }
-
-        .btn-submit:hover {
-            background: #DC2626;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px -10px rgba(239, 68, 68, 0.5);
-        }
-
-        .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: #EF4444;
-            padding: 1rem;
-            border-radius: 0.75rem;
-            margin-bottom: 1.5rem;
-            display: none;
-            font-size: 0.875rem;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/admin_login.css">
 </head>
 <body>
 
     <div class="login-container">
-        <div style="text-align: center;">
+        <div class="text-center">
             <div class="admin-badge">ADMINISTRATION PORTAL</div>
-            <h1>System Access</h1>
-            <p>Enter your credentials to access the admin dashboard.</p>
+            <h1 class="auth-header-title">System Access</h1>
+            <p class="auth-header-subtitle">Enter your credentials to access the admin dashboard.</p>
         </div>
 
-        <div id="error-box" class="error-message"></div>
+        <div id="error-box" class="error-message hide"></div>
 
         <form id="admin-login-form" onsubmit="handleAdminLogin(event)">
             <div class="form-group">
-                <label class="form-label">Admin Email</label>
-                <input type="email" name="email" class="form-input" placeholder="admin@fintech.pro" required>
+                <label for="adminEmail" class="form-label">Admin Email</label>
+                <input type="email" id="adminEmail" name="email" class="form-input" placeholder="admin@fintech.pro" required>
             </div>
             
             <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+                <label for="adminPass" class="form-label">Password</label>
+                <input type="password" id="adminPass" name="password" class="form-input" placeholder="••••••••" required>
             </div>
 
             <button type="submit" class="btn-submit" id="btn-text">Authenticate</button>
         </form>
 
-        <div style="text-align: center; margin-top: 2rem;">
-            <a href="/" style="color: #64748B; text-decoration: none; font-size: 0.875rem; transition: color 0.3s;">← Return to Homepage</a>
+        <div class="text-center margin-t-2">
+            <a href="/" class="return-link">← Return to Homepage</a>
         </div>
     </div>
 
@@ -173,10 +50,11 @@
             const errorBox = document.getElementById('error-box');
 
             // Reset state
-            errorBox.style.display = 'none';
+            errorBox.classList.add('hide');
+            errorBox.classList.remove('show-block');
             btn.innerHTML = 'Verifying...';
             btn.disabled = true;
-            btn.style.opacity = '0.7';
+            btn.classList.add('btn-disabled');
 
             try {
                 const response = await fetch('/api/auth/login', {
@@ -200,7 +78,7 @@
 
                     // Store session
                     localStorage.setItem('fintech_token', result.data.token);
-                    localStorage.setItem('fintech_user', JSON.stringify(result.data));
+                    localStorage.setItem('fintech_logged_in_user', JSON.stringify(result.data));
 
                     // Redirect
                     window.location.href = '/views/admin.html'; // Assuming this exists or will correspond to dashboard
@@ -210,10 +88,11 @@
             } catch (err) {
                 console.error(err);
                 errorBox.textContent = err.message;
-                errorBox.style.display = 'block';
+                errorBox.classList.add('show-block');
+                errorBox.classList.remove('hide');
                 btn.innerHTML = 'Authenticate';
                 btn.disabled = false;
-                btn.style.opacity = '1';
+                btn.classList.remove('btn-disabled');
             }
         }
     </script>

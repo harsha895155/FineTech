@@ -10,277 +10,674 @@
     <link rel="stylesheet" href="/css/variables.css">
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/animations.css">
     <style>
-        body { font-family: 'Outfit', sans-serif; margin: 0; }
-        .sidebar {
-            width: 260px;
-            background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255,255,255,0.08);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 2rem 1.25rem;
-            position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 10;
-        }
-        .nav-item {
+        /* --- Premium Input Styling --- */
+        .simple-form-input {
             width: 100%;
-            height: 54px;
-            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            padding: 1rem 1.25rem;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            box-sizing: border-box;
+            display: block;
+        }
+
+        .simple-form-input:focus {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .input-group-premium {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .label-creative {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #94A3B8;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-with-icon {
+            position: relative;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            padding: 0 1.25rem;
-            margin-bottom: 0.75rem;
-            color: #94A3B8;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            gap: 1rem;
-            box-sizing: border-box;
         }
-        .nav-item:hover, .nav-item.active {
-            background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF);
-            color: white;
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
-            transform: translateX(5px);
+
+        .input-with-icon .input-icon {
+            position: absolute;
+            left: 1.25rem;
+            color: #64748B;
+            font-size: 1.1rem;
+            pointer-events: none;
+            z-index: 5;
         }
-        .content {
-            margin-left: 260px;
-            padding: 4rem;
-            min-height: 100vh;
+
+        .input-with-icon input {
+            padding-left: 3.25rem !important;
         }
-        .simple-form-input {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 1rem;
-            padding: 1rem;
-            color: white;
-            width: 100%;
-            outline: none;
-            margin-bottom: 1.25rem;
-            font-family: inherit;
-        }
-        .simple-form-input:focus {
-            border-color: #6366F1;
-        }
-        
-        /* Dark Theme Select Dropdown */
-        select.simple-form-input {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236366F1' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            padding-right: 3rem;
-            cursor: pointer;
-        }
-        
-        select.simple-form-input option {
-            background: #1e293b;
-            color: white;
-            padding: 0.75rem;
-        }
-        
-        select.simple-form-input option:hover,
-        select.simple-form-input option:checked {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
-            color: #a5b4fc;
+
+        .amount-highlight {
+            font-size: 1.5rem !important;
+            font-weight: 900 !important;
+            color: #6366f1 !important;
         }
     </style>
+    <link rel="stylesheet" href="/css/expenses.css">
 </head>
 <body class="creative-mode">
-    <div class="sidebar">
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 4rem; padding-left: 0.5rem;">
-            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF); border-radius: 10px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center;">
-                <span style="transform: rotate(-45deg); color: white; font-weight: 800;">F</span>
+    <button class="mobile-nav-toggle" id="sidebarToggle" onclick="toggleSidebar()">
+        ☰
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo-wrapper">
+            <div class="logo-icon">
+                <span class="logo-icon-inner">F</span>
             </div>
-            <span style="font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em;">FINTECH<span class="text-gradient-creative">PRO</span></span>
+            <span class="logo-text">FINTECH<span class="text-gradient-creative">PRO</span></span>
         </div>
         
         <a href="/views/dashboard.html" class="nav-item">
-            <span style="font-size: 1.25rem;">🏠</span>
+            <span class="nav-icon">🏠</span>
             <span>Dashboard</span>
         </a>
         <a href="/views/expenses.html" class="nav-item active">
-            <span style="font-size: 1.25rem;">💸</span>
+            <span class="nav-icon">💸</span>
             <span>Expenses</span>
         </a>
+        <a href="/views/transfer.html" class="nav-item">
+            <span class="nav-icon">📤</span>
+            <span>Transfer</span>
+        </a>
         <a href="/views/transactions.html" class="nav-item">
-            <span style="font-size: 1.25rem;">📋</span>
+            <span class="nav-icon">📋</span>
             <span>Transactions</span>
         </a>
         <a href="/views/reports.html" class="nav-item">
-            <span style="font-size: 1.25rem;">📊</span>
+            <span class="nav-icon">📊</span>
             <span>Reports</span>
         </a>
         <a href="/views/admin.html" id="adminNavItem" class="nav-item">
-            <span style="font-size: 1.25rem;">👤</span>
+            <span class="nav-icon">🛡️</span>
             <span>Admin</span>
         </a>
         <a href="/views/profile.html" class="nav-item">
-            <span style="font-size: 1.25rem;">👤</span>
+            <span class="nav-icon">👤</span>
             <span>Profile</span>
         </a>
         <a href="/views/settings.html" class="nav-item">
-            <span style="font-size: 1.25rem;">⚙️</span>
+            <span class="nav-icon">⚙️</span>
             <span>Settings</span>
         </a>
         <a href="/views/support.html" class="nav-item">
-            <span style="font-size: 1.25rem;">🎧</span>
+            <span class="nav-icon">🎧</span>
             <span>Support</span>
         </a>
         
-        <div style="flex: 1;"></div>
+        <div class="flex-1"></div>
         
-        <a href="/index.html" class="nav-item" style="margin-bottom: 0;">
-            <span style="font-size: 1.25rem;">🚪</span>
+        <a href="#" onclick="handleLogout()" class="nav-item margin-b-0">
+            <span class="nav-icon">🚪</span>
             <span>Logout</span>
         </a>
     </div>
 
     <main class="content">
-        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
-            <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0;">Track <span class="text-gradient-creative">Expenses</span></h1>
+        <header class="header-main">
+            <div>
+                <h1 class="header-title">Record <span class="text-gradient">Transactions</span></h1>
+                <p class="header-description">Track every rupee. Seamlessly manage your cash flow.</p>
+            </div>
             <a href="/views/profile.html">
-            <div id="headerAvatar" style="width: 50px; height: 50px; background: linear-gradient(135deg, #6366F1, #D946EF); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; color: white; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.08);">U</div>
+                <div id="headerAvatar" class="sidebar-user-avatar">U</div>
             </a>
         </header>
         
-        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 4rem;">
+        <div class="expenses-container">
             <div>
-                <div class="glass-card" style="padding: 2.5rem; position: sticky; top: 4rem;">
-                    <h2 style="font-weight: 800; margin-bottom: 2rem; font-size: 1.25rem;">New Expense</h2>
-                    <form id="expenseForm">
-                        <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">AMOUNT (₹)</label>
-                        <input type="number" id="expAmount" class="simple-form-input" placeholder="0.00" required>
+                <div class="glass-card form-sticky-wrapper">
+                    <div class="tab-container">
+                        <button id="tabExpense" class="btn-creative tab-btn active">Expense</button>
+                        <button id="tabIncome" class="btn-creative tab-btn">Income</button>
+                    </div>
+
+                    <h2 id="formTitle" class="section-title">New Expense</h2>
+                    <form id="transactionForm">
+                        <div id="standardFields">
+                            <div class="input-group-premium">
+                                <label class="label-creative">AMOUNT (₹)</label>
+                                <div class="input-with-icon">
+                                    <span class="input-icon">💰</span>
+                                    <input type="number" id="transAmount" class="simple-form-input amount-highlight" placeholder="0.00" required>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group-premium">
+                                <label id="descLabel" class="label-creative">MERCHANT / SOURCE</label>
+                                <div class="input-with-icon">
+                                    <span class="input-icon">🏢</span>
+                                    <input type="text" id="transDesc" class="simple-form-input" placeholder="e.g. Starbucks or Salary" required>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group-premium">
+                                <label class="label-creative">CATEGORY</label>
+                                <select id="transCategory" class="simple-form-input" title="Transaction Category">
+                                    <!-- Dynamic Categories -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Transfer Mode Container -->
+                        <div id="transferModeContainer">
+                            <label class="label-creative margin-b-1">TRANSFER MODE ⚡</label>
+                            <div class="mode-selector">
+                                <div class="mode-opt active" onclick="setMode('phonepe', this)">
+                                    <span>📱</span><label>PhonePe</label>
+                                </div>
+                                <div class="mode-opt" onclick="setMode('upi', this)">
+                                    <span>🆔</span><label>UPI ID</label>
+                                </div>
+                                <div class="mode-opt" onclick="setMode('bank', this)">
+                                    <span>🏦</span><label>Bank</label>
+                                </div>
+                                <div class="mode-opt" onclick="setMode('qr', this)">
+                                    <span>🔍</span><label>Scan</label>
+                                </div>
+                            </div>
+
+                            <!-- Mode Specific Fields -->
+                            <div id="field-phonepe" class="dynamic-field show">
+                                <div class="input-with-icon">
+                                    <span class="input-icon">📱</span>
+                                    <input type="text" class="simple-form-input" placeholder="Enter PhonePe Number">
+                                </div>
+                            </div>
+                            <div id="field-upi" class="dynamic-field">
+                                <div class="input-with-icon">
+                                    <span class="input-icon">🆔</span>
+                                    <input type="text" class="simple-form-input" placeholder="Enter UPI ID (e.g. user@ybl)">
+                                </div>
+                            </div>
+                            <div id="field-bank" class="dynamic-field">
+                                <input type="text" class="simple-form-input margin-b-0-75" placeholder="Account Number">
+                                <input type="text" class="simple-form-input" placeholder="IFSC Code">
+                            </div>
+                            <div id="field-qr" class="dynamic-field qr-camera-frame">
+                                <p class="camera-text">📸 Camera ready. Align QR in frame.</p>
+                            </div>
+                        </div>
+
+                        <!-- Income Details Container (Hidden by default) -->
+                        <div id="incomeDetailsContainer" class="income-qr-container">
+                            <div class="qr-display-container">
+                                <p class="qr-title">Receive Payment 📥</p>
+                                <div class="qr-mock">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=FINTECHPRO_REQUEST" alt="QR" class="qr-image">
+                                </div>
+                                <p id="incomeUpiDisplay" class="qr-upi-text">user@fintechpro</p>
+                                <p id="incomeBankDisplay" class="qr-bank-text">No bank connected</p>
+                            </div>
+                        </div>
                         
-                        <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">MERCHANT</label>
-                        <input type="text" id="expMerchant" class="simple-form-input" placeholder="e.g. Starbucks" required>
-                        
-                        <label style="font-size: 0.75rem; font-weight: 800; color: #6366F1; display: block; margin-bottom: 0.5rem;">CATEGORY</label>
-                        <select id="expCategory" class="simple-form-input">
-                            <option>Food & Drink</option>
-                            <option>Transport</option>
-                            <option>Shopping</option>
-                            <option>Bills</option>
-                        </select>
-                        
-                        <button type="submit" class="btn-creative btn-primary-creative w-full" style="padding: 1.125rem; font-size: 1rem; border-radius: 1rem;">Save Expense</button>
+                        <div class="display-flex gap-1 margin-t-1-5">
+                            <button type="submit" id="submitBtn" class="btn-creative btn-primary-creative flex-1 btn-record-transaction">Save Expense</button>
+                            <button type="button" class="btn-creative flex-1 btn-cancel" onclick="resetTransactionForm()">Cancel</button>
+                        </div>
                     </form>
-                    <button id="clearBtn" class="w-full" style="margin-top: 1rem; background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #94A3B8; padding: 0.5rem; border-radius: 0.5rem; cursor: pointer; font-size: 0.8rem;">Clear All History</button>
+                    <button id="clearBtn" class="btn-creative btn-export w-full margin-t-1">Clear All History</button>
                 </div>
             </div>
             
             <div>
-                <h2 style="font-weight: 800; margin-bottom: 2rem; font-size: 1.25rem;">Recent History</h2>
-                <div class="glass-card" style="border-radius: 1.5rem; overflow: hidden;">
-                    <table style="width: 100%; border-collapse: collapse; text-align: left;" id="expenseTable">
-                        <thead>
-                            <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05);">
-                                <th style="padding: 1.5rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">DESCRIPTION</th>
-                                <th style="padding: 1.5rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800;">CATEGORY</th>
-                                <th style="padding: 1.5rem; color: #94A3B8; font-size: 0.75rem; font-weight: 800; text-align: right;">AMOUNT</th>
-                            </tr>
-                        </thead>
-                        <tbody id="expenseBody">
-                            <!-- Rows loaded from localStorage -->
-                        </tbody>
-                    </table>
+                <h2 class="section-title">Recharge & Bill Payments</h2>
+                <div class="bill-grid">
+                    <div class="bill-card" onclick="selectBill('Mobile Recharge', '📱', 'Enter Mobile Number')">
+                        <span class="bill-icon">📱</span>
+                        <span class="bill-name">Mobile</span>
+                        <span class="bill-desc">Prepaid/Postpaid</span>
+                    </div>
+                    <div class="bill-card" onclick="selectBill('Electricity Bill', '⚡', 'Enter Consumer ID')">
+                        <span class="bill-icon">⚡</span>
+                        <span class="bill-name">Electricity</span>
+                        <span class="bill-desc">Utility Payment</span>
+                    </div>
+                    <div class="bill-card" onclick="selectBill('DTH Recharge', '📺', 'Enter Subscriber ID')">
+                        <span class="bill-icon">📺</span>
+                        <span class="bill-name">DTH</span>
+                        <span class="bill-desc">TV Channels</span>
+                    </div>
+                    <div class="bill-card" onclick="selectBill('Water Bill', '💧', 'Enter RR Number')">
+                        <span class="bill-icon">💧</span>
+                        <span class="bill-name">Water</span>
+                        <span class="bill-desc">Utility Payment</span>
+                    </div>
+                    <div class="bill-card" onclick="selectBill('Gas Booking', '🔥', 'Enter Customer ID')">
+                        <span class="bill-icon">🔥</span>
+                        <span class="bill-name">Gas</span>
+                        <span class="bill-desc">Cylinder/Pipeline</span>
+                    </div>
+                    <div class="bill-card" onclick="selectBill('Broadband', '🌐', 'Enter Account ID')">
+                        <span class="bill-icon">🌐</span>
+                        <span class="bill-name">Broadband</span>
+                        <span class="bill-desc">Wifi & Fiber</span>
+                    </div>
+                    <div class="bill-card" onclick="selectBill('Insurance', '🛡️', 'Enter Policy Number')">
+                        <span class="bill-icon">🛡️</span>
+                        <span class="bill-name">Insurance</span>
+                        <span class="bill-desc">LIC & Health</span>
+                    </div>
+                    <div class="bill-card" onclick="selectBill('Credit Card', '💳', 'Enter Card Number')">
+                        <span class="bill-icon">💳</span>
+                        <span class="bill-name">Card Bill</span>
+                        <span class="bill-desc">Any Bank CC</span>
+                    </div>
+                    <div class="bill-card" onclick="selectBill('FasTag', '🛣️', 'Enter Vehicle No')">
+                        <span class="bill-icon">🛣️</span>
+                        <span class="bill-name">FasTag</span>
+                        <span class="bill-desc">NHAI Tolls</span>
+                    </div>
+                    <div class="bill-card" onclick="selectBill('Loan Repayment', '🏦', 'Enter Loan Account')">
+                        <span class="bill-icon">🏦</span>
+                        <span class="bill-name">Loan</span>
+                        <span class="bill-desc">EMI Payments</span>
+                    </div>
+                </div>
+
+                <div class="history-section">
+                    <h2 class="section-title">Transactions <span class="text-gradient">Hub</span></h2>
+                    <div class="glass-card table-glass-container">
+                        <table class="table-main" id="transactionTable">
+                            <thead>
+                                <tr class="table-head-row">
+                                    <th class="table-head-cell">DATE</th>
+                                    <th class="table-head-cell">DESCRIPTION</th>
+                                    <th class="table-head-cell">CATEGORY</th>
+                                    <th class="table-head-cell text-right">AMOUNT</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionBody">
+                                <!-- Transactions loaded from localStorage -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        const expenseBody = document.getElementById('expenseBody');
+        const transactionBody = document.getElementById('transactionBody');
+        const formTitle = document.getElementById('formTitle');
+        const descLabel = document.getElementById('descLabel');
+        const transCategory = document.getElementById('transCategory');
+        const submitBtn = document.getElementById('submitBtn');
+        const transAmount = document.getElementById('transAmount');
+        const transDesc = document.getElementById('transDesc');
         
+        const categories = {
+            expense: ['Food & Drink', 'Transport', 'Shopping', 'Bills', 'Healthcare', 'Entertainment'],
+            income: ['Salary', 'Freelance', 'Investment', 'Dividends', 'Gift', 'Other']
+        };
+
+        let currentType = 'expense';
+
         // Load data
-        window.addEventListener('load', () => {
-            renderExpenses();
-            
+        window.addEventListener('load', async () => {
             const loggedInUser = JSON.parse(localStorage.getItem('fintech_logged_in_user'));
+            if (!loggedInUser) {
+                window.location.href = '/views/portal.html';
+                return;
+            }
+
+            updateFormUI();
+            await renderHistory();
             
             // Avatar Logic
             const avatar = document.getElementById('headerAvatar');
             const savedPhoto = localStorage.getItem('fintech_profile_pic');
-            const userInitial = (loggedInUser && loggedInUser.name ? loggedInUser.name.charAt(0) : 'U').toUpperCase();
+            const userInitial = (loggedInUser.fullName || loggedInUser.name || 'U').charAt(0).toUpperCase();
 
             if (savedPhoto && savedPhoto.startsWith('data:image')) {
                 avatar.style.backgroundImage = `url(${savedPhoto})`;
+                avatar.classList.add('has-photo');
                 avatar.textContent = '';
             } else {
+                avatar.classList.remove('has-photo');
+                avatar.style.backgroundImage = 'none';
                 avatar.textContent = userInitial;
             }
 
-            // RBAC: Show Admin only for administrators
-            const userRole = (loggedInUser && loggedInUser.role) ? loggedInUser.role.toLowerCase() : '';
-            const adminLink = document.getElementById('adminNavItem');
+            // RBAC
             if (adminLink) {
-                if (userRole === 'administrator') {
-                    adminLink.style.display = 'flex';
+                if (userRole === 'administrator' || userRole === 'admin') {
+                    adminLink.classList.remove('hide');
                 } else {
-                    adminLink.style.display = 'none';
+                    adminLink.classList.add('hide');
                 }
+            }
+
+            // Prime income details
+            fetchIncomeDetails();
+        });
+
+        transAmount.addEventListener('input', () => {
+            if (currentType === 'income') {
+                updateQrWithAmount();
             }
         });
 
-        function renderExpenses() {
-            const expenses = JSON.parse(localStorage.getItem('fintech_expenses')) || [
-                { merchant: 'Netflix Subscription', category: 'Bills', amount: 899 },
-                { merchant: 'Gas Station', category: 'Transport', amount: 3500 }
-            ];
+        function updateFormUI() {
+            const isExp = currentType === 'expense';
+            formTitle.textContent = isExp ? 'New Expense' : 'New Income';
+            descLabel.textContent = isExp ? 'MERCHANT' : 'SOURCE';
+            transDesc.placeholder = isExp ? 'e.g. Starbucks' : 'e.g. Monthly Salary';
+            submitBtn.textContent = isExp ? 'Save Expense' : 'Save Income';
             
-            expenseBody.innerHTML = '';
-            expenses.forEach(exp => {
-                const formatted = new Intl.NumberFormat('en-IN', {
-                    style: 'currency',
-                    currency: 'INR'
-                }).format(exp.amount);
-
-                const row = `
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.02);">
-                        <td style="padding: 1.5rem;"><p style="font-weight: 700; margin: 0;">${exp.merchant}</p></td>
-                        <td style="padding: 1.5rem;"><span style="color: #6366F1; font-weight: 700; font-size: 0.75rem;">${exp.category}</span></td>
-                        <td style="padding: 1.5rem; text-align: right; font-weight: 800;">-₹${exp.amount.toLocaleString('en-IN')}</td>
-                    </tr>
-                `;
-                expenseBody.insertAdjacentHTML('beforeend', row);
+            // Update Categories
+            transCategory.innerHTML = '';
+            categories[currentType].forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat;
+                transCategory.appendChild(opt);
             });
         }
 
-        document.getElementById('expenseForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const amount = parseFloat(document.getElementById('expAmount').value);
-            const merchant = document.getElementById('expMerchant').value;
-            const category = document.getElementById('expCategory').value;
-            
-            const expenses = JSON.parse(localStorage.getItem('fintech_expenses')) || [
-                { merchant: 'Netflix Subscription', category: 'Bills', amount: 899 },
-                { merchant: 'Gas Station', category: 'Transport', amount: 3500 }
-            ];
-            
-            expenses.unshift({ merchant, category, amount });
-            localStorage.setItem('fintech_expenses', JSON.stringify(expenses));
-            
-            // Subtract from balance
-            let balance = parseFloat(localStorage.getItem('fintech_balance')) || 452200;
-            balance -= amount;
-            localStorage.setItem('fintech_balance', balance);
+        document.getElementById('tabExpense').addEventListener('click', () => {
+            currentType = 'expense';
+            document.getElementById('tabExpense').classList.add('active');
+            document.getElementById('tabIncome').classList.remove('active');
+            document.getElementById('transferModeContainer').classList.add('show-block');
+            document.getElementById('transferModeContainer').classList.remove('hide');
+            document.getElementById('standardFields').classList.add('show-block');
+            document.getElementById('standardFields').classList.remove('hide');
+            document.getElementById('submitBtn').classList.add('show-block');
+            document.getElementById('submitBtn').classList.remove('hide');
+            document.getElementById('incomeDetailsContainer').classList.add('hide');
+            document.getElementById('incomeDetailsContainer').classList.remove('show-block');
+            updateFormUI();
+        });
 
-            renderExpenses();
-            this.reset();
-            alert('Expense saved and synchronized!');
+        document.getElementById('tabIncome').addEventListener('click', () => {
+            currentType = 'income';
+            document.getElementById('tabIncome').classList.add('active');
+            document.getElementById('tabExpense').classList.remove('active');
+            document.getElementById('transferModeContainer').classList.add('hide');
+            document.getElementById('transferModeContainer').classList.remove('show-block');
+            document.getElementById('standardFields').classList.remove('hide'); // Keep fields visible for logging
+            document.getElementById('standardFields').classList.add('show-block');
+            document.getElementById('submitBtn').classList.remove('hide'); // Keep submit visible
+            document.getElementById('submitBtn').classList.add('show-block');
+            document.getElementById('incomeDetailsContainer').classList.add('show-block');
+            document.getElementById('incomeDetailsContainer').classList.remove('hide');
+            updateFormUI();
+            fetchIncomeDetails();
+        });
+
+        function setMode(mode, el) {
+            document.querySelectorAll('.mode-opt').forEach(opt => opt.classList.remove('active'));
+            el.classList.add('active');
+            
+            document.querySelectorAll('.dynamic-field').forEach(field => {
+                field.classList.add('hide');
+                field.classList.remove('show-block');
+            });
+            const targetField = document.getElementById(`field-${mode}`);
+            targetField.classList.add('show-block');
+            targetField.classList.remove('hide');
+        }
+
+        function selectBill(name, icon, placeholder) {
+            // Switch to Expense tab if in Income
+            if (currentType !== 'expense') {
+                document.getElementById('tabExpense').click();
+            }
+            
+            // Set Merchant
+            transDesc.value = name;
+            
+            // Set Category to Bills (at index 3 in expense categories)
+            transCategory.value = 'Bills';
+            
+            // Show specific field or at least guide the user
+            const phoneField = document.querySelector('#field-phonepe input');
+            phoneField.placeholder = placeholder;
+            
+            // Focus on amount for immediate payment entry
+            transAmount.focus();
+            
+            // Highlight selected bill card
+            document.querySelectorAll('.bill-card').forEach(card => card.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Scroll to form smoothly
+            document.getElementById('transactionForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function resetTransactionForm() {
+            document.getElementById('transactionForm').reset();
+            currentMode = 'phonepe';
+            const opts = document.querySelectorAll('.mode-opt');
+            if (opts.length > 0) setMode('phonepe', opts[0]);
+            console.log('🧹 Transaction form reset');
+        }
+
+        async function fetchIncomeDetails() {
+            console.log('📡 Fetching live income details for QR...');
+            const token = localStorage.getItem('fintech_token');
+            const upiEl = document.getElementById('incomeUpiDisplay');
+            const bankEl = document.getElementById('incomeBankDisplay');
+            const qrImg = document.querySelector('.qr-image');
+
+            try {
+                // Fetch connected apps (UPI)
+                const appRes = await fetch('/api/payment/apps', { headers: { 'Authorization': `Bearer ${token}` } });
+                const appResult = await appRes.json();
+                
+                let upiId = 'user@fintechpro';
+                let userName = localStorage.getItem('fintech_name') || 'FintechPro User';
+
+                if (appResult.success && appResult.data.length > 0) {
+                    // Use the first linked UPI app as primary
+                    upiId = appResult.data[0].identifier;
+                    upiEl.textContent = upiId;
+                    console.log('✅ Found linked UPI:', upiId);
+                }
+
+                // Initial QR update with default/app UPI
+                let qrUri = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(userName)}&mode=02&purpose=00`;
+                
+                // Fetch connected banks to see if we can use a bank-specific name
+                const bankRes = await fetch('/api/banks/connections', { headers: { 'Authorization': `Bearer ${token}` } });
+                const bankResult = await bankRes.json();
+
+                if (bankResult.success && bankResult.data.length > 0) {
+                    const bank = bankResult.data[0];
+                    bankEl.textContent = `${bank.bankName} (•••• ${bank.accountNumberMasked.slice(-4)})`;
+                    // Refine URI for bank connection if available
+                    qrUri = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(bank.accHolderName || userName)}&mode=02&purpose=00`;
+                } else {
+                    bankEl.textContent = 'No bank linked';
+                }
+
+                if (qrImg) {
+                    const finalQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(qrUri)}&margin=10`;
+                    qrImg.src = finalQrUrl;
+                    qrImg.dataset.baseUri = qrUri; // Store base URI
+                    console.log('✨ QR Code updated successfully');
+                }
+            } catch (err) {
+                console.error('Failed to load income details:', err);
+            }
+        }
+
+        function updateQrWithAmount() {
+            const qrImg = document.querySelector('.qr-image');
+            if (!qrImg || !qrImg.dataset.baseUri) return;
+
+            const amt = transAmount.value;
+            let uri = qrImg.dataset.baseUri;
+            
+            if (amt && !isNaN(amt)) {
+                // Add amount parameter to UPI URI
+                uri += `&am=${amt}&cu=INR`;
+            }
+
+            const finalQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(uri)}&margin=10`;
+            qrImg.src = finalQrUrl;
+        }
+
+        async function renderHistory() {
+            const token = localStorage.getItem('fintech_token');
+            if (!token) return;
+
+            try {
+                const [expRes, incRes] = await Promise.all([
+                    fetch('/api/expenses', { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch('/api/income', { headers: { 'Authorization': `Bearer ${token}` } })
+                ]);
+
+                const expResult = await expRes.json();
+                const incResult = await incRes.json();
+
+                if (expResult.success && incResult.success) {
+                    const expenses = expResult.data;
+                    const incomes = incResult.data;
+                    
+                    // Process into a combined list and sort by date (newest first)
+                    const history = [
+                        ...expenses.map(e => ({ ...e, type: 'expense', name: e.title })),
+                        ...incomes.map(i => ({ ...i, type: 'income', name: i.source })) 
+                    ].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                    transactionBody.innerHTML = '';
+                    history.forEach(item => {
+                        const isExp = item.type === 'expense';
+                        const sign = isExp ? '-' : '+';
+                        const typeClass = isExp ? 'type-expense' : 'type-income';
+                        const amountClass = isExp ? 'text-expense' : 'text-income';
+
+                        const date = item.date ? new Date(item.date).toLocaleDateString('en-IN', {day:'2-digit', month:'short'}) : 'N/A';
+                        const row = `
+                            <tr class="expense-row">
+                                <td class="expense-cell"><span class="expense-date-text">${date}</span></td>
+                                <td class="expense-cell">
+                                    <div class="expense-details-wrapper">
+                                        <span class="type-indicator ${typeClass}"></span>
+                                        <p class="expense-name">${item.name}</p>
+                                    </div>
+                                </td>
+                                <td class="expense-cell"><span class="expense-category-text">${item.category}</span></td>
+                                <td class="expense-cell expense-amount-text ${amountClass}">${sign}₹${item.amount.toLocaleString('en-IN')}</td>
+                            </tr>
+                        `;
+                        transactionBody.insertAdjacentHTML('beforeend', row);
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to render history:', err);
+            }
+        }
+
+        document.getElementById('transactionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const token = localStorage.getItem('fintech_token');
+            if (!token) return;
+
+            const amount = parseFloat(transAmount.value);
+            const description = transDesc.value;
+            const category = transCategory.value;
+            
+            const endpoint = currentType === 'expense' ? '/api/expenses' : '/api/income';
+            // Match backend model field names: 'title' for expense, 'source' for income
+            const body = currentType === 'expense' 
+                ? { title: description, amount, category, date: new Date().toISOString() }
+                : { source: description, amount, category, date: new Date().toISOString() };
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    await renderHistory();
+                    this.reset();
+                    alert(`${currentType === 'expense' ? 'Expense' : 'Income'} recorded successfully!`);
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (err) {
+                console.error('Submission Error:', err);
+                alert('Connection error. Failed to save transaction.');
+            }
         });
 
         document.getElementById('clearBtn').addEventListener('click', () => {
-            if(confirm('Clear all data?')) {
+            if(confirm('Clear all transaction history?')) {
                 localStorage.removeItem('fintech_expenses');
+                localStorage.removeItem('fintech_income');
                 localStorage.setItem('fintech_balance', 452200);
-                renderExpenses();
+                renderHistory();
+            }
+        });
+        function handleLogout() {
+            // Check if this is an admin-impersonated session
+            const adminToken = localStorage.getItem('fintech_admin_token');
+            const adminUser = localStorage.getItem('fintech_admin_user');
+            
+            if (adminToken && adminUser) {
+                // Restore admin session
+                localStorage.setItem('fintech_token', adminToken);
+                localStorage.setItem('fintech_logged_in_user', adminUser);
+                localStorage.removeItem('fintech_admin_token');
+                localStorage.removeItem('fintech_admin_user');
+                window.location.href = '/views/admin.html';
+            } else {
+                localStorage.removeItem('fintech_token');
+                localStorage.removeItem('fintech_logged_in_user');
+                localStorage.removeItem('fintech_current_prefix');
+                window.location.href = '/index.html';
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar) return;
+            sidebar.classList.toggle('active');
+            const btn = document.getElementById('sidebarToggle');
+            if (btn) btn.innerHTML = sidebar.classList.contains('active') ? '✕' : '☰';
+        }
+
+        // Close components when clicking outside
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarBtn = document.getElementById('sidebarToggle');
+            
+            if (window.innerWidth <= 1024 && 
+                sidebar && sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                sidebarBtn && !sidebarBtn.contains(e.target)) {
+                toggleSidebar();
             }
         });
     </script>

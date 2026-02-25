@@ -1,0 +1,362 @@
+@import url('variables.css');
+@import url('layout.css');
+@import url('components.css');
+
+/* Admin Panel Specific Styles */
+
+.admin-header-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.05em;
+    color: white;
+}
+
+.admin-header-subtitle {
+    color: #64748B;
+    margin: 0.5rem 0 0 0;
+    font-weight: 600;
+}
+
+.admin-header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.role-section {
+    margin-bottom: 4rem;
+}
+
+.role-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.section-indicator {
+    width: 6px;
+    height: 24px;
+    border-radius: 3px;
+}
+
+.indicator-team { background: #8B5CF6; }
+.indicator-admin { background: #6366F1; }
+.indicator-business { background: #D946EF; }
+.indicator-org { background: #06B6D4; }
+.indicator-bank { background: var(--gradient-creative); }
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.glass-table-container {
+    border-radius: var(--radius-futuristic);
+    overflow-x: auto;
+    background: var(--color-glass-card);
+    border: 1px solid var(--color-glass-border);
+}
+
+.glass-table-container table {
+    min-width: 800px;
+}
+
+/* Table Specifics */
+.admin-table-row {
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+
+.admin-table-cell {
+    padding: calc(1rem * var(--spacing-multi)) calc(1.5rem * var(--spacing-multi));
+}
+
+.admin-user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.admin-user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.avatar-admin { background: #6366F1; }
+.avatar-business { background: #D946EF; }
+.avatar-org { background: #06B6D4; }
+
+.admin-user-name {
+    font-weight: 800;
+    margin: 0;
+}
+
+.admin-user-email {
+    font-size: 0.7rem;
+    color: #64748B;
+    margin: 0;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 99px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.status-active { background: rgba(16, 185, 129, 0.1); color: #10B981; }
+.status-pending { background: rgba(245, 158, 11, 0.1); color: #F59E0B; }
+
+.admin-actions-cell {
+    padding: calc(1rem * var(--spacing-multi)) calc(1.5rem * var(--spacing-multi));
+    text-align: right;
+}
+
+.btn-table-action {
+    padding: 0.5rem 1rem;
+    font-size: 0.7rem;
+    margin-right: 0.5rem;
+}
+
+.btn-login-as {
+    background: rgba(99, 102, 241, 0.1);
+    color: #818CF8;
+    border-color: rgba(99, 102, 241, 0.2);
+}
+
+.btn-delete {
+    background: rgba(244, 63, 94, 0.1);
+    color: #F43F5E;
+    border: none;
+}
+
+.table-empty-row {
+    padding: 3rem;
+    text-align: center;
+    color: #64748B;
+}
+
+/* Modal Specifics */
+.admin-modal-title {
+    font-weight: 800;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+}
+
+.admin-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #6366F1;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.admin-input {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: calc(1rem * var(--spacing-multi)) calc(1.25rem * var(--spacing-multi));
+    color: white;
+    font-family: inherit;
+    font-size: calc(0.95rem * var(--spacing-multi));
+    margin-bottom: calc(1.5rem * var(--spacing-multi));
+    outline: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.admin-input:focus {
+    border-color: #6366F1;
+    background: rgba(255,255,255,0.06);
+}
+
+.bank-link-section {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.bank-link-title {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 1.5rem;
+}
+
+.label-secondary {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #94A3B8;
+    letter-spacing: 0.05rem;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.selected-bank-card {
+    align-items: center;
+    gap: 1rem;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    padding: 1.25rem;
+    border-radius: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.bank-sync-feedback {
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: rgba(16, 185, 129, 0.05);
+    border-radius: 12px;
+}
+
+.show-flex {
+    display: flex !important;
+}
+
+.loader-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top: 3px solid #10B981;
+    border-radius: 50%;
+    animation: admin-spin 0.8s linear infinite;
+}
+
+@keyframes admin-spin {
+    to { transform: rotate(360deg); }
+}
+
+.btn-pass-toggle {
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 12px;
+    padding: 0.75rem 1.25rem;
+    color: #818CF8;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-pass-toggle-cancel {
+    background: rgba(244, 63, 94, 0.1) !important;
+    border-color: rgba(244, 63, 94, 0.3) !important;
+    color: #F43F5E !important;
+}
+
+.otp-prompt {
+    color: #94A3B8;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.otp-huge-input {
+    text-align: center;
+    font-size: 2rem;
+    letter-spacing: 12px;
+    font-weight: 800;
+}
+
+.impersonate-prompt {
+    color: #94A3B8;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+.team-modal-actions {
+    margin-top: 2rem;
+}
+
+.team-submit-btn {
+    padding: 1.25rem;
+}
+
+.search-icon-modal {
+    position: absolute; 
+    left: 1.25rem; 
+    top: 1.15rem; 
+    font-size: 1.2rem; 
+    opacity: 0.5;
+}
+
+.no-padding-btn {
+    padding: 1rem !important;
+}
+
+.btn-outline-indigo-soft { background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); color: #818CF8; }
+.btn-outline-violet-soft { background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.2); color: #A78BFA; }
+.btn-small { padding: 0.5rem 1rem; font-size: 0.75rem; }
+.bank-search-input-padding { padding-left: 2.5rem; }
+.team-search-input-padding { padding-left: 3rem; }
+.bg-white-soft { background: rgba(255, 255, 255, 0.05); }
+/* Team Management */
+.team-user-item {
+    display: flex; align-items: center; gap: 1rem; padding: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05); transition: background 0.3s ease;
+}
+.team-user-item:hover { background: rgba(255,255,255,0.02); }
+.team-user-checkbox { width: 18px; height: 18px; accent-color: #6366F1; cursor: pointer; }
+.team-user-name-small { margin: 0; font-weight: 700; font-size: 0.9rem; }
+.team-user-email-small { margin: 0; font-size: 0.75rem; color: #94A3B8; }
+.team-role-badge { 
+    font-size: 0.65rem; padding: 0.2rem 0.5rem; background: rgba(99, 102, 241, 0.1); 
+    color: #818CF8; border-radius: 4px; text-transform: uppercase; font-weight: 800; 
+}
+
+/* Team Table Rows */
+.team-row { border-bottom: 1px solid rgba(255,255,255,0.02); }
+.team-name-cell { font-weight: 800; margin: 0; color: #8B5CF6; }
+.team-desc-cell { font-size: 0.7rem; color: #64748B; margin: 0.2rem 0 0 0; }
+.team-member-count { font-size: 0.7rem; color: #94A3B8; margin: 0 0 0.5rem 0; font-weight: 800; }
+.team-member-item { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.2rem; }
+.team-member-dot { font-size: 0.6rem; color: #64748B; }
+.team-member-name { font-size: 0.75rem; font-weight: 600; }
+.team-creator-name { font-size: 0.8rem; font-weight: 700; margin: 0; }
+.team-created-date { font-size: 0.65rem; color: #64748B; margin: 0; }
+
+/* Bank Selection */
+.bank-item {
+    padding: 0.75rem 1rem; background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05); border-radius: 10px;
+    cursor: pointer; display: flex; align-items: center; gap: 0.75rem;
+    transition: all 0.2s;
+}
+.bank-item:hover { background: rgba(99, 102, 241, 0.1); border-color: rgba(99, 102, 241, 0.2); }
+.bank-item-icon { font-size: 1.2rem; }
+.bank-item-name { font-weight: 700; font-size: 0.8rem; }
+
+/* btn-discard and btn-cancel styles are now in components.css */
+
+.bank-list-scroll {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+    max-height: 200px; overflow-y: auto; padding-right: 0.5rem;
+}
+
+.team-members-scroll {
+    max-height: 300px; overflow-y: auto; padding-right: 0.5rem;
+    border: 1px solid rgba(255,255,255,0.05); border-radius: 12px;
+}
+
+.impersonate-highlight { color: #6366F1; font-weight: 700; }

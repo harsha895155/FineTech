@@ -105,8 +105,7 @@ const UserSchema = new mongoose.Schema({
     },
     databaseName: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     isEmailVerified: {
         type: Boolean,
@@ -127,6 +126,11 @@ const UserSchema = new mongoose.Schema({
     otpExpiry: {
         type: Date,
         select: false
+    },
+    balance: {
+        type: Number,
+        default: 10000.00, // Starting balance for demo/new users
+        min: [0, 'Balance cannot be negative']
     },
     createdAt: {
         type: Date,

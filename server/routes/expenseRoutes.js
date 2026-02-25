@@ -46,7 +46,13 @@ router.post('/', async (req, res) => {
             createdBy: req.user._id
         });
 
-        // Create transaction notification (no email for transactions — just in-app)
+        // Update Master User Balance (Deduct Expense)
+        const masterDb = await connectMasterDB();
+        const { createModel: createUserModel } = require('../models/master/User');
+        const User = createUserModel(masterDb);
+        await User.findByIdAndUpdate(req.user._id, { $inc: { balance: -amount } });
+
+        // Create transaction notification
         await createNotification({
             userId: req.user._id,
             type: 'transaction',

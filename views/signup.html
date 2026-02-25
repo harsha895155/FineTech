@@ -25,6 +25,7 @@
             width: 100%;
             max-width: 520px;
             background: rgba(255, 255, 255, 0.85);
+            -webkit-backdrop-filter: blur(20px);
             backdrop-filter: blur(20px);
             padding: var(--spacing-12);
             border-radius: var(--radius-xl);
@@ -62,13 +63,34 @@
             -webkit-text-fill-color: transparent;
             display: inline-block;
         }
+        .signup-header-title {
+            margin-bottom: var(--spacing-2);
+        }
+        .role-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .role-label {
+            font-size: 0.875rem;
+        }
+        .btn-signup-action {
+            padding: 1rem;
+            font-size: 1.125rem;
+        }
+        .signup-footer {
+            margin-top: var(--spacing-10);
+            text-align: center;
+        }
+        .signup-footer a {
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
     <div class="auth-container">
         <div class="auth-card">
             <div class="text-center mb-10">
-                <h1 class="font-bold text-3xl gradient-text" style="margin-bottom: var(--spacing-2);">Create Account</h1>
+                <h1 class="font-bold text-3xl gradient-text signup-header-title">Create Account</h1>
                 <p class="text-sm text-slate-500">Experience the world's most colorful finance tool.</p>
             </div>
 
@@ -77,16 +99,16 @@
                     <label class="form-label">Pick Your Identity</label>
                     <div class="role-selector">
                         <div class="role-btn active">
-                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">👑</div>
-                            <strong style="font-size: 0.875rem;">Enterprise</strong>
+                            <div class="role-icon">👑</div>
+                            <strong class="role-label">Enterprise</strong>
                         </div>
                         <div class="role-btn">
-                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🎨</div>
-                            <strong style="font-size: 0.875rem;">Creative</strong>
+                            <div class="role-icon">🎨</div>
+                            <strong class="role-label">Creative</strong>
                         </div>
                         <div class="role-btn">
-                            <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🚀</div>
-                            <strong style="font-size: 0.875rem;">Startup</strong>
+                            <div class="role-icon">🚀</div>
+                            <strong class="role-label">Startup</strong>
                         </div>
                     </div>
                 </div>
@@ -109,12 +131,12 @@
                     <input type="password" class="form-input" placeholder="password" required>
                 </div>
                 
-                <button type="submit" class="btn btn-primary w-full mt-4" style="padding: 1rem; font-size: 1.125rem;">Scale My Business Now</button>
-                <button type="cancel" class="btn btn-primary w-full mt-4" style="padding: 1rem; font-size: 1.125rem;">Cancel</button>
+                <button type="submit" class="btn btn-primary w-full mt-4 btn-signup-action">Scale My Business Now</button>
+                <button type="button" class="btn btn-primary w-full mt-4 btn-signup-action">Cancel</button>
             </form>
 
-            <div style="margin-top: var(--spacing-10); text-align: center;">
-                <p class="text-sm text-slate-600">Already part of the vibrant community? <a href="/views/login.html" class="font-bold text-primary" style="text-decoration: none;">Sign in</a></p>
+            <div class="signup-footer">
+                <p class="text-sm text-slate-600">Already part of the vibrant community? <a href="/views/login.html" class="font-bold text-primary">Sign in</a></p>
             </div>
         </div>
     </div>

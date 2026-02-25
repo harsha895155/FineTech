@@ -146,9 +146,35 @@ const markAllAsRead = async (req, res) => {
     }
 };
 
+/**
+ * @desc    Delete a single notification
+ * @route   DELETE /api/notifications/:id
+ * @access  Protected
+ */
+const deleteNotification = async (req, res) => {
+    try {
+        const masterDb = await connectMasterDB();
+        const Notification = masterDb.models.Notification || createNotificationModel(masterDb);
+
+        const notification = await Notification.findOneAndDelete({
+            _id: req.params.id,
+            userId: req.user._id
+        });
+
+        if (!notification) {
+            return res.status(404).json({ success: false, message: 'Notification not found' });
+        }
+
+        res.json({ success: true, message: 'Notification deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+};
+
 module.exports = {
     createNotification,
     getNotifications,
     markAsRead,
-    markAllAsRead
+    markAllAsRead,
+    deleteNotification
 };

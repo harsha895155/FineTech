@@ -1,488 +1,1219 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up | FintechPro</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/variables.css">
-    <link rel="stylesheet" href="/css/layout.css">
-    <link rel="stylesheet" href="/css/components.css">
-    <style>
-        body { font-family: 'Outfit', sans-serif; margin: 0; }
-        .auth-bg {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #030712;
-            background-image: var(--mesh-gradient);
-            padding: 3rem 1.5rem;
-        }
-        .signup-box {
-            width: 100%;
-            max-width: 500px;
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(40px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 2.5rem;
-            padding: 3.5rem;
-            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.5);
-        }
-        .input-group {
-            margin-bottom: 1.25rem;
-        }
-        .input-label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #94A3B8;
-            margin-bottom: 0.6rem;
-        }
-        .simple-input {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 1rem;
-            padding: 1rem;
-            color: white;
-            width: 100%;
-            outline: none;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: all 0.3s ease;
-        }
-        .simple-input:focus {
-            border-color: #6366F1;
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
-        }
-        
-        /* Dark Theme Select Dropdown */
-        select.simple-input option {
-            background: #1e293b;
-            color: white;
-            padding: 0.75rem;
-        }
-        
-        select.simple-input option:hover,
-        select.simple-input option:checked {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
-            color: #a5b4fc;
-        }
-    </style>
-</head>
-<body class="creative-mode">
-    <div class="auth-bg">
-        <div class="signup-box">
-            <div style="text-align: center; margin-bottom: 2.5rem;">
-                <div style="width: 50px; height: 50px; background: var(--aurora-gradient); border-radius: 12px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
-                    <span style="transform: rotate(-45deg); color: white; font-weight: 800; font-size: 1.25rem;">F</span>
-                </div>
-                <h1 style="font-size: 2.25rem; font-weight: 800; color: white;">Create Account</h1>
-                <p style="color: #94A3B8; margin-top: 0.5rem;">Start your financial journey today.</p>
-            </div>
-
-            <form id="signupForm">
-                <div id="registrationFields">
-                    <div class="input-group">
-                        <label class="input-label">Full Name</label>
-                        <input type="text" id="signupName" class="simple-input" placeholder="e.g. John Doe" required>
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">Email Address</label>
-                        <input type="email" id="signupEmail" class="simple-input" placeholder="e.g. john@example.com" required>
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">Phone Number</label>
-                        <input type="text" id="signupPhone" class="simple-input" placeholder="e.g. +1234567890" required>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="input-group">
-                            <label class="input-label">Password</label>
-                            <input type="password" id="signupPass" class="simple-input" placeholder="••••••••" required>
-                        </div>
-                        <div class="input-group">
-                            <label class="input-label">Confirm Pass</label>
-                            <input type="password" id="signupConfirm" class="simple-input" placeholder="••••••••" required>
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">Target Role</label>
-                        <select id="signupRole" class="simple-input" style="appearance: none; background: rgba(255,255,255,0.05) url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394A3B8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E') no-repeat right 1rem center; background-size: 1.25rem;" required>
-                            <option value="" disabled selected>Select your role</option>
-                            <option value="business">Business</option>
-                            <option value="organization">Organization</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn-creative btn-primary-creative w-full" style="padding: 1.125rem; font-size: 1rem; border-radius: 1rem; margin-top: 1.5rem;">Create My Account</button>
-                </div>
-
-                <div id="otpFields" style="display: none;">
-                    <div style="text-align: center; margin-bottom: 2rem;">
-                        <p style="color: #10B981; font-weight: 600;">Verification Code Sent!</p>
-                        <p style="color: #94A3B8; font-size: 0.875rem;">Please enter the 6-digit OTP sent to your email.</p>
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">Enter OTP</label>
-                        <input type="text" id="otpInput" class="simple-input" placeholder="000000" maxlength="6" style="text-align: center; font-size: 2rem; letter-spacing: 0.5rem;">
-                    </div>
-                    <button type="button" id="verifyOtpBtn" class="btn-creative btn-primary-creative w-full" style="padding: 1.125rem; font-size: 1rem; border-radius: 1rem; margin-top: 1.5rem;">Verify & Complete</button>
-                    <p style="text-align: center; margin-top: 1rem;">
-                        <a href="#" onclick="location.reload()" style="color: #94A3B8; font-size: 0.875rem; text-decoration: none;">Back to Signup</a>
-                    </p>
-                </div>
-            </form>
-
-            <div id="authFooter" style="margin-top: 2.5rem; text-align: center;">
-                <p style="color: #94A3B8; font-size: 0.875rem;">Already have an account? <a href="/views/login.html" style="color: white; font-weight: 700; text-decoration: none;">Login here</a></p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const signupForm = document.getElementById('signupForm');
-        const registrationFields = document.getElementById('registrationFields');
-        const otpFields = document.getElementById('otpFields');
-        const authFooter = document.getElementById('authFooter');
-        
-        let userEmail = '';
-
-        signupForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const fullName = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const phoneNumber = document.getElementById('signupPhone').value;
-            const password = document.getElementById('signupPass').value;
-            const confirm = document.getElementById('signupConfirm').value;
-            const role = document.getElementById('signupRole').value.toLowerCase();
-            const btn = e.target.querySelector('button');
-
-            if (password !== confirm) {
-                alert('ERROR: Passwords do not match.');
-                return;
-            }
-
-            btn.textContent = 'Creating Account...';
-            btn.disabled = true;
-
-            try {
-                const response = await fetch('/api/auth/signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ fullName, email, phoneNumber, password, role })
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    userEmail = email;
-                    registrationFields.style.display = 'none';
-                    otpFields.style.display = 'block';
-                    authFooter.style.display = 'none';
-                    alert(result.message);
-                } else {
-                    alert('Signup Failed: ' + result.message);
-                    btn.textContent = 'Create My Account';
-                    btn.disabled = false;
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Server Error block! Please try again later.');
-                btn.textContent = 'Create My Account';
-                btn.disabled = false;
-            }
-        });
-
-        document.getElementById('verifyOtpBtn').addEventListener('click', async function() {
-            const otpCode = document.getElementById('otpInput').value;
-            const btn = this;
-
-            if (otpCode.length !== 6) {
-                alert('Please enter a valid 6-digit OTP.');
-                return;
-            }
-
-            btn.textContent = 'Verifying...';
-            btn.disabled = true;
-
-            try {
-                const response = await fetch('/api/auth/verify-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: userEmail, otp: otpCode })
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    // Store token and user info
-                    localStorage.setItem('fintech_token', result.data.token);
-                    localStorage.setItem('fintech_logged_in_user', JSON.stringify(result.data));
-                    localStorage.setItem('fintech_name', result.data.fullName);
-                    localStorage.setItem('fintech_email', result.data.email);
-
-                    alert('Verification Successful! Welcome to FintechPro.');
-                    window.location.href = '/views/dashboard.html';
-                } else {
-                    alert('Verification Failed: ' + result.message);
-                    btn.textContent = 'Verify & Complete';
-                    btn.disabled = false;
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Verification Error. Please try again.');
-                btn.textContent = 'Verify & Complete';
-                btn.disabled = false;
-            }
-        });
-    </script>
-</body>
-</html> -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up | FintechPro</title>
+    <meta name="description" content="Create your free FintechPro account and start tracking your finances today.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/variables.css">
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/auth.css">
+    <link rel="stylesheet" href="/css/animations.css">
     <style>
-        body { font-family: 'Outfit', sans-serif; margin: 0; }
-        .auth-bg {
+        /* ── SIGNUP SPLIT LAYOUT ─────────────────────── */
+        html, body {
+            font-family: 'Outfit', sans-serif;
             min-height: 100vh;
+            background: #030712;
+            margin: 0;
+            padding: 0;
+        }
+
+        .signup-split {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* ── LEFT PANEL ──────────────────────────────── */
+        .signup-left {
+            width: 55%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-height: 100vh;
+            background: #030712;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 3rem;
+            overflow: hidden;
+            z-index: 10;
+        }
+        .signup-right {
+            margin-left: 55%;
+            width: 45%;
+            min-height: 100vh;
+            background: #030712;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 3.5rem 3.5rem 8rem 3.5rem;
+            position: relative;
+        }
+
+        /* Aurora mesh background layers - Full Screen */
+        .signup-split::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99,102,241,0.28) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 80%, rgba(217,70,239,0.22) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 60% 40%, rgba(6,182,212,0.12) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            animation: aurora-shift 12s ease-in-out infinite alternate;
+        }
+        .signup-left::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes aurora-shift {
+            0%   { opacity: 1; transform: scale(1) rotate(0deg); }
+            50%  { opacity: 0.85; transform: scale(1.04) rotate(1deg); }
+            100% { opacity: 1; transform: scale(1.08) rotate(-1deg); }
+        }
+
+        /* Floating glowing particles */
+        .left-particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            animation: particle-float linear infinite;
+        }
+        @keyframes particle-float {
+            0%   { transform: translateY(0) scale(1);   opacity: 0.6; }
+            50%  { opacity: 1; }
+            100% { transform: translateY(-120px) scale(0.5); opacity: 0; }
+        }
+
+        /* Centred column inside left panel */
+        .left-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            max-width: 440px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Glowing divider between benefits and card */
+        .left-divider {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.25rem 0;
+        }
+        .left-divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(99,102,241,0.4), rgba(217,70,239,0.4), transparent);
+            position: relative;
+            overflow: hidden;
+        }
+        .left-divider-line::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -60%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: shimmer-line 2.4s ease-in-out infinite;
+        }
+        @keyframes shimmer-line {
+            0%   { left: -60%; }
+            100% { left: 160%; }
+        }
+        .left-divider-icon {
+            font-size: 1rem;
+            background: rgba(99,102,241,0.12);
+            border: 1px solid rgba(99,102,241,0.25);
+            border-radius: 50%;
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Mini stat row between divider and card */
+        .left-stats-row {
+            display: flex;
+            gap: 0;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 1rem;
+            overflow: hidden;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+        .left-stat {
+            flex: 1;
+            padding: 0.75rem 0.5rem;
+            text-align: center;
+            border-right: 1px solid rgba(255,255,255,0.06);
+        }
+        .left-stat:last-child { border-right: none; }
+        .left-stat-val {
+            font-size: 1rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #6366F1, #D946EF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.03em;
+        }
+        .left-stat-lbl { font-size: 0.62rem; color: #475569; font-weight: 600; margin-top: 0.15rem; }
+        .signup-left-brand {
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #030712;
-            background-image: var(--mesh-gradient);
-            padding: 3rem 1.5rem;
-        }
-        .signup-box {
+            gap: 0.75rem;
+            margin-bottom: 1.75rem;
             width: 100%;
-            max-width: 500px;
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(40px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 2.5rem;
-            padding: 3.5rem;
-            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.5);
         }
-        .input-group {
+        .signup-left-brand .logo-icon { width: 44px; height: 44px; font-size: 1.1rem; flex-shrink: 0; }
+        .signup-left-brand .logo-text  { font-size: 1.25rem; }
+
+        .signup-left-headline {
+            font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+            font-weight: 900;
+            color: white;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            margin-bottom: 0.75rem;
+            width: 100%;
+        }
+        .signup-left-sub {
+            font-size: 0.9rem;
+            color: #64748B;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+        .signup-benefits {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.65rem;
+            margin-bottom: 0;
+            width: 100%;
+        }
+        .signup-benefit {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 0.875rem;
+            padding: 0.6rem 0.75rem;
+            text-align: left;
+        }
+        .benefit-icon {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .benefit-icon.indigo { background: rgba(99,102,241,0.15); }
+        .benefit-icon.purple { background: rgba(139,92,246,0.15); }
+        .benefit-icon.pink   { background: rgba(217,70,239,0.15); }
+        .benefit-icon.cyan   { background: rgba(6,182,212,0.15); }
+        .benefit-text { font-size: 0.78rem; color: #94A3B8; font-weight: 600; line-height: 1.4; }
+
+        .signup-testimonial {
+            position: relative;
+            z-index: 2;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            max-width: 420px;
+        }
+        .testi-stars-sm { color: #FBBF24; font-size: 0.85rem; letter-spacing: 0.1em; margin-bottom: 0.6rem; }
+        .testi-quote { font-size: 0.88rem; color: #CBD5E1; line-height: 1.7; font-style: italic; margin-bottom: 1rem; }
+        .testi-person { display: flex; align-items: center; gap: 0.75rem; }
+        .testi-av {
+            width: 34px; height: 34px; border-radius: 50%;
+            background: linear-gradient(135deg, #6366F1, #D946EF);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.9rem; color: white; flex-shrink: 0;
+        }
+        .testi-pname { font-size: 0.82rem; font-weight: 700; color: white; }
+        .testi-prole { font-size: 0.72rem; color: #475569; margin-top: 0.15rem; }
+
+        /* ── 3D PREVIEW CARD ─────────────────────────── */
+        .signup-3d-preview {
+            position: relative;
+            z-index: 2;
+            perspective: 1200px;
+            width: 100%;
+        }
+        .preview-card-3d {
+            background: rgba(15,23,42,0.85);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow:
+                0 40px 80px -20px rgba(0,0,0,0.8),
+                0 0 0 1px rgba(255,255,255,0.05) inset,
+                0 0 60px rgba(99,102,241,0.15);
+            transform: perspective(1000px) rotateY(-8deg) rotateX(4deg);
+            transition: transform 0.6s cubic-bezier(0.23,1,0.32,1);
+            animation: card-float 6s ease-in-out infinite;
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            max-width: 420px;
+        }
+        .preview-card-3d:hover {
+            transform: perspective(1000px) rotateY(-3deg) rotateX(1deg) translateY(-8px);
+        }
+        @keyframes card-float {
+            0%, 100% { transform: perspective(1000px) rotateY(-8deg) rotateX(4deg) translateY(0px); }
+            50%       { transform: perspective(1000px) rotateY(-8deg) rotateX(4deg) translateY(-12px); }
+        }
+        .preview-card-3d:hover { animation: none; }
+        .p3d-titlebar {
+            display: flex; align-items: center; gap: 0.4rem;
+            padding: 0.65rem 1rem;
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .p3d-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .p3d-url { margin-left: 0.6rem; font-size: 0.65rem; color: #334155;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 5px; padding: 0.2rem 0.6rem; }
+        .p3d-body { display: flex; height: 310px; }
+        .p3d-sidebar {
+            width: 110px; background: rgba(0,0,0,0.4);
+            border-right: 1px solid rgba(255,255,255,0.06);
+            padding: 0.85rem 0.65rem; display: flex; flex-direction: column; gap: 0.3rem;
+        }
+        .p3d-logo { width: 28px; height: 28px; border-radius: 7px;
+            background: linear-gradient(135deg,#6366F1,#D946EF);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 0.8rem; color: white; margin-bottom: 0.85rem; }
+        .p3d-nav { font-size: 0.58rem; color: #334155; padding: 0.35rem 0.5rem;
+            border-radius: 5px; font-weight: 600; }
+        .p3d-nav.active { background: linear-gradient(135deg,#6366F1,#8B5CF6); color: white; }
+        .p3d-content { flex: 1; padding: 0.85rem; min-width: 0; }
+        .p3d-greeting { font-size: 0.58rem; font-weight: 700; color: white; margin-bottom: 0.6rem; }
+        .p3d-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.4rem; margin-bottom: 0.6rem; }
+        .p3d-card { border-radius: 7px; padding: 0.5rem; border: 1px solid rgba(255,255,255,0.06); }
+        .p3d-card.g { background: rgba(34,197,94,0.1); }
+        .p3d-card.p { background: rgba(139,92,246,0.1); }
+        .p3d-card.b { background: rgba(99,102,241,0.1); }
+        .p3d-clabel { font-size: 0.45rem; color: #475569; font-weight: 600; margin-bottom: 0.2rem; }
+        .p3d-cval   { font-size: 0.62rem; font-weight: 800; color: white; }
+        .p3d-cchg   { font-size: 0.42rem; color: #34D399; font-weight: 700; margin-top: 0.15rem; }
+        .p3d-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+        .p3d-chart, .p3d-txs {
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 7px; padding: 0.5rem;
+        }
+        .p3d-sec-label { font-size: 0.45rem; color: #475569; font-weight: 700; margin-bottom: 0.4rem; }
+        .p3d-bars { display: flex; align-items: flex-end; gap: 2px; height: 40px; }
+        .p3d-bar { flex: 1; border-radius: 2px 2px 0 0; background: rgba(99,102,241,0.3); }
+        .p3d-bar.hi { background: linear-gradient(to top,#6366F1,#D946EF); }
+        .p3d-tx { display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.3rem; font-size: 0.5rem; }
+        .p3d-tx-name { flex:1; color: #64748B; font-weight: 600; }
+        .p3d-tx-amt  { font-weight: 800; }
+        .p3d-tx-amt.r { color: #F87171; }
+        .p3d-tx-amt.g { color: #34D399; }
+        /* Glow behind card */
+        .preview-card-glow {
+            position: absolute;
+            width: 300px; height: 200px;
+            background: radial-gradient(ellipse, rgba(99,102,241,0.35) 0%, transparent 70%);
+            filter: blur(40px);
+            bottom: -30px; left: 50%; transform: translateX(-50%);
+            z-index: 1;
+            pointer-events: none;
+            animation: glow-pulse 4s ease-in-out infinite alternate;
+        }
+        @keyframes glow-pulse {
+            from { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            to   { opacity: 1;   transform: translateX(-50%) scale(1.2); }
+        }
+
+        /* ── RIGHT PANEL (FORM) ──────────────────────── */
+        .signup-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 3.5rem;
+            background: #030712;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+        .signup-form-wrap {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        /* Back link */
+        .signup-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #475569;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: color 0.2s;
+        }
+        .signup-back:hover { color: #818CF8; }
+
+        /* Form header */
+        .signup-form-header { margin-bottom: 2.25rem; }
+        .signup-step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(99,102,241,0.1);
+            border: 1px solid rgba(99,102,241,0.2);
+            color: #818CF8;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.3rem 0.9rem;
+            border-radius: 99px;
+            margin-bottom: 1rem;
+        }
+        .signup-form-title {
+            font-size: 2rem;
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.04em;
+            margin-bottom: 0.4rem;
+        }
+        .signup-form-sub { font-size: 0.88rem; color: #475569; }
+
+        /* Step indicator */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 2rem;
+        }
+        .step-dot {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 800; color: #475569;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        .step-dot.active {
+            background: linear-gradient(135deg, #6366F1, #8B5CF6);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 0 16px rgba(99,102,241,0.4);
+        }
+        .step-dot.done {
+            background: rgba(34,197,94,0.15);
+            border-color: rgba(34,197,94,0.3);
+            color: #34D399;
+        }
+        .step-line {
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.07);
+            margin: 0 0.4rem;
+        }
+        .step-line.active { background: linear-gradient(90deg, #6366F1, #8B5CF6); }
+
+        /* Floating label input */
+        .su-field {
+            position: relative;
+            margin-bottom: 1.1rem;
+        }
+        .su-field label {
+            position: absolute;
+            top: 50%; left: 1.1rem;
+            transform: translateY(-50%);
+            font-size: 0.88rem;
+            color: #475569;
+            font-weight: 600;
+            pointer-events: none;
+            transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+            background: transparent;
+            padding: 0 0.25rem;
+            z-index: 2;
+        }
+        .su-field input:focus ~ label,
+        .su-field input:not(:placeholder-shown) ~ label,
+        .su-field select:focus ~ label,
+        .su-field select:not([value=""]) ~ label {
+            top: 0;
+            font-size: 0.68rem;
+            color: #6366F1;
+            background: #030712;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .su-input {
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 0.875rem;
+            padding: 1rem 1.1rem;
+            color: white;
+            font-size: 0.92rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            outline: none;
+            box-sizing: border-box;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .su-input::placeholder { color: transparent; }
+        .su-input:focus {
+            border-color: rgba(99,102,241,0.5);
+            background: rgba(99,102,241,0.05);
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+        }
+        .su-input option { background: #0f172a; color: white; }
+
+        /* Field icon */
+        .su-field-icon {
+            position: absolute;
+            top: 50%; right: 1.1rem;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Two-col grid */
+        .su-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+        /* Password strength bar */
+        .pass-strength {
+            margin-top: 0.4rem;
+            height: 3px;
+            border-radius: 99px;
+            background: rgba(255,255,255,0.06);
+            overflow: hidden;
+        }
+        .pass-strength-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 99px;
+            transition: width 0.4s ease, background 0.4s ease;
+        }
+        .pass-strength-text { font-size: 0.68rem; color: #475569; margin-top: 0.35rem; font-weight: 600; }
+
+        /* Bank section */
+        .bank-section {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 1.1rem;
+            padding: 1.25rem;
+            margin-bottom: 1.1rem;
+        }
+        .bank-section-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #6366F1;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .bank-list-wrapper {
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            max-height: 140px;
+            overflow-y: auto;
+            margin-top: 0.5rem;
+            background: rgba(0,0,0,0.2);
+        }
+        .bank-item {
+            padding: 0.65rem 1rem;
+            font-size: 0.85rem;
+            color: #94A3B8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            transition: all 0.15s;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .bank-item:last-child { border-bottom: none; }
+        .bank-item:hover { background: rgba(99,102,241,0.1); color: white; }
+
+        .selected-bank-display {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: rgba(99,102,241,0.08);
+            border: 1px solid rgba(99,102,241,0.2);
+            border-radius: 0.75rem;
+            margin: 0.5rem 0;
+        }
+
+        /* Link bank button */
+        .btn-link-bank {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(99,102,241,0.1);
+            border: 1px solid rgba(99,102,241,0.25);
+            border-radius: 0.875rem;
+            color: #818CF8;
+            font-size: 0.88rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.75rem;
+            text-align: center;
+        }
+        .btn-link-bank:hover {
+            background: rgba(99,102,241,0.18);
+            border-color: rgba(99,102,241,0.4);
+            color: white;
+        }
+        .btn-success-green {
+            background: rgba(34,197,94,0.1) !important;
+            border-color: rgba(34,197,94,0.3) !important;
+            color: #34D399 !important;
+        }
+
+        /* Primary submit button */
+        .su-btn-primary {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #6366F1, #8B5CF6, #D946EF);
+            border: none;
+            border-radius: 0.875rem;
+            color: white;
+            font-size: 1rem;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 8px 32px rgba(99,102,241,0.3);
+            letter-spacing: 0.01em;
+            background-size: 200% 200%;
+            background-position: 0% 50%;
+        }
+        .su-btn-primary:hover {
+            background-position: 100% 50%;
+            transform: translateY(-2px);
+            box-shadow: 0 16px 48px rgba(99,102,241,0.45);
+        }
+        .su-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        /* Cancel / secondary button */
+        .su-btn-cancel {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.875rem;
+            color: #475569;
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.65rem;
+        }
+        .su-btn-cancel:hover { background: rgba(255,255,255,0.05); color: white; border-color: rgba(255,255,255,0.2); }
+
+        /* OTP input */
+        .otp-box {
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+        .otp-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+        .otp-heading { font-size: 1.25rem; font-weight: 800; color: white; margin-bottom: 0.5rem; }
+        .otp-desc { font-size: 0.85rem; color: #475569; margin-bottom: 1.5rem; line-height: 1.6; }
+        .otp-input-big {
+            text-align: center;
+            font-size: 2.5rem;
+            letter-spacing: 0.5em;
+            font-weight: 800;
+            padding: 1rem;
+            padding-right: 0;
+        }
+
+        /* Login link */
+        .signup-login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+        .signup-login-link a { color: #818CF8; font-weight: 700; text-decoration: none; }
+        .signup-login-link a:hover { color: white; }
+
+        /* Privacy note */
+        .signup-privacy {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            background: rgba(34,197,94,0.05);
+            border: 1px solid rgba(34,197,94,0.12);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
             margin-bottom: 1.25rem;
         }
-        .input-label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #94A3B8;
-            margin-bottom: 0.6rem;
+        .privacy-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.05rem; }
+        .privacy-text { font-size: 0.75rem; color: #475569; line-height: 1.6; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .signup-left { display: none; }
+            .signup-right { padding: 2rem 1.5rem 8rem 1.5rem; margin-left: 0; width: 100%; background: #030712; }
         }
-        .simple-input {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 1rem;
-            padding: 1rem;
-            color: white;
-            width: 100%;
-            outline: none;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: all 0.3s ease;
-        }
-        .simple-input:focus {
-            border-color: #6366F1;
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
-        }
-        
-        /* Dark Theme Select Dropdown */
-        select.simple-input option {
-            background: #1e293b;
-            color: white;
-            padding: 0.75rem;
-        }
-        
-        select.simple-input option:hover,
-        select.simple-input option:checked {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3));
-            color: #a5b4fc;
+        @media (max-width: 480px) {
+            .su-grid-2 { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body class="creative-mode">
-    <div class="auth-bg">
-        <div class="signup-box">
-            <div style="text-align: center; margin-bottom: 2.5rem;">
-                <div style="width: 50px; height: 50px; background: var(--aurora-gradient); border-radius: 12px; transform: rotate(45deg); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
-                    <span style="transform: rotate(-45deg); color: white; font-weight: 800; font-size: 1.25rem;">F</span>
+<div class="signup-split">
+
+    <!-- ───── LEFT PANEL ───── -->
+    <div class="signup-left" id="signupLeft">
+        <!-- Floating particles (JS adds them) -->
+
+        <div class="left-col">
+
+            <!-- Brand -->
+            <div class="signup-left-brand animate-fade-in">
+                <div class="logo-icon"><span class="logo-icon-inner">F</span></div>
+                <span class="logo-text">FINTECH<span class="text-gradient-creative">PRO</span></span>
+            </div>
+
+            <!-- Headline -->
+            <h1 class="signup-left-headline animate-slide-up">Your Finances,<br><span class="text-gradient-creative">Finally Organised.</span></h1>
+            <p class="signup-left-sub animate-fade-in delay-200ms opacity-0">Join thousands who've taken control of their money with FintechPro's beautiful platform.</p>
+
+            <!-- 2×2 benefit grid -->
+            <div class="signup-benefits">
+                <div class="signup-benefit">
+                    <div class="benefit-icon indigo">📊</div>
+                    <span class="benefit-text">Real-time dashboard insights</span>
                 </div>
-                <h1 style="font-size: 2.25rem; font-weight: 800; color: white;">Create Account</h1>
-                <p style="color: #94A3B8; margin-top: 0.5rem;">Start your financial journey today.</p>
+                <div class="signup-benefit">
+                    <div class="benefit-icon purple">💸</div>
+                    <span class="benefit-text">One-click expense tracking</span>
+                </div>
+                <div class="signup-benefit">
+                    <div class="benefit-icon pink">🏦</div>
+                    <span class="benefit-text">Secure bank linking via AA</span>
+                </div>
+                <div class="signup-benefit">
+                    <div class="benefit-icon cyan">📈</div>
+                    <span class="benefit-text">PDF &amp; CSV report export</span>
+                </div>
+            </div>
+
+            <!-- ✦ DIVIDER ✦ -->
+            <div class="left-divider">
+                <div class="left-divider-line"></div>
+                <div class="left-divider-icon">✦</div>
+                <div class="left-divider-line"></div>
+            </div>
+
+            <!-- Mini stat strip -->
+            <div class="left-stats-row">
+                <div class="left-stat">
+                    <div class="left-stat-val">10K+</div>
+                    <div class="left-stat-lbl">Users</div>
+                </div>
+                <div class="left-stat">
+                    <div class="left-stat-val">4.9★</div>
+                    <div class="left-stat-lbl">Rating</div>
+                </div>
+                <div class="left-stat">
+                    <div class="left-stat-val">Free</div>
+                    <div class="left-stat-lbl">Forever</div>
+                </div>
+                <div class="left-stat">
+                    <div class="left-stat-val">256-bit</div>
+                    <div class="left-stat-lbl">Encrypted</div>
+                </div>
+            </div>
+
+        <!-- ── 3D Dashboard Preview ── -->
+        <div class="signup-3d-preview animate-float">
+            <div class="preview-card-glow"></div>
+            <div class="preview-card-3d" id="card3d">
+                <!-- Titlebar -->
+                <div class="p3d-titlebar">
+                    <span class="p3d-dot dot-red"></span>
+                    <span class="p3d-dot dot-yellow"></span>
+                    <span class="p3d-dot dot-green"></span>
+                    <span class="p3d-url">fintechpro.app/dashboard</span>
+                </div>
+                <!-- Body -->
+                <div class="p3d-body">
+                    <!-- Mini sidebar -->
+                    <div class="p3d-sidebar">
+                        <div class="p3d-logo">F</div>
+                        <div class="p3d-nav active">📊 Dashboard</div>
+                        <div class="p3d-nav">💸 Expenses</div>
+                        <div class="p3d-nav">📈 Reports</div>
+                        <div class="p3d-nav">👥 Team</div>
+                        <div class="p3d-nav">⚙️ Settings</div>
+                    </div>
+                    <!-- Content area -->
+                    <div class="p3d-content">
+                        <div class="p3d-greeting">Good morning, Harsha 👋</div>
+                        <!-- Stat cards -->
+                        <div class="p3d-cards">
+                            <div class="p3d-card g">
+                                <div class="p3d-clabel">Balance</div>
+                                <div class="p3d-cval">₹1,24,500</div>
+                                <div class="p3d-cchg">↑ 12.4%</div>
+                            </div>
+                            <div class="p3d-card p">
+                                <div class="p3d-clabel">Spent</div>
+                                <div class="p3d-cval">₹32,800</div>
+                                <div class="p3d-cchg text-danger-soft">↓ 3.1%</div>
+                            </div>
+                            <div class="p3d-card b">
+                                <div class="p3d-clabel">Savings</div>
+                                <div class="p3d-cval">₹91,700</div>
+                                <div class="p3d-cchg">↑ 8.6%</div>
+                            </div>
+                        </div>
+                        <!-- Chart + Transactions -->
+                        <div class="p3d-bottom">
+                            <div class="p3d-chart">
+                                <div class="p3d-sec-label">Spending Trend</div>
+                                <div class="p3d-bars">
+                                    <div class="p3d-bar h-35"></div>
+                                    <div class="p3d-bar h-55"></div>
+                                    <div class="p3d-bar h-45"></div>
+                                    <div class="p3d-bar hi h-85"></div>
+                                    <div class="p3d-bar h-65"></div>
+                                    <div class="p3d-bar h-40"></div>
+                                    <div class="p3d-bar h-70"></div>
+                                </div>
+                            </div>
+                            <div class="p3d-txs">
+                                <div class="p3d-sec-label">Recent</div>
+                                <div class="p3d-tx">
+                                    <span>🛒</span>
+                                    <span class="p3d-tx-name">Groceries</span>
+                                    <span class="p3d-tx-amt r">-₹1,200</span>
+                                </div>
+                                <div class="p3d-tx">
+                                    <span>🏠</span>
+                                    <span class="p3d-tx-name">Rent</span>
+                                    <span class="p3d-tx-amt r">-₹15K</span>
+                                </div>
+                                <div class="p3d-tx">
+                                    <span>💼</span>
+                                    <span class="p3d-tx-name">Salary</span>
+                                    <span class="p3d-tx-amt g">+₹60K</span>
+                                </div>
+                                <div class="p3d-tx">
+                                    <span>☕</span>
+                                    <span class="p3d-tx-name">Coffee</span>
+                                    <span class="p3d-tx-amt r">-₹320</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div><!-- end .left-col -->
+    </div>
+
+    <!-- ───── RIGHT PANEL (FORM) ───── -->
+    <div class="signup-right">
+        <div class="signup-form-wrap">
+
+            <a href="/" class="signup-back">← Back to Home</a>
+
+            <div class="signup-form-header">
+                <span class="signup-step-badge">✦ Free Forever</span>
+                <h1 class="signup-form-title">Create Account</h1>
+                <p class="signup-form-sub">Start your financial journey in under 2 minutes.</p>
+            </div>
+
+            <!-- Step indicator -->
+            <div class="step-indicator">
+                <div class="step-dot active" id="stepDot1">1</div>
+                <div class="step-line" id="stepLine1"></div>
+                <div class="step-dot" id="stepDot2">2</div>
+                <div class="step-line" id="stepLine2"></div>
+                <div class="step-dot" id="stepDot3">✓</div>
             </div>
 
             <form id="signupForm">
+                <!-- ── STEP 1: Registration Fields ── -->
                 <div id="registrationFields">
-                    <div class="input-group">
-                        <label class="input-label">Full Name</label>
-                        <input type="text" id="signupName" class="simple-input" placeholder="Full Name" required>
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">Email Address</label>
-                        <input type="email" id="signupEmail" class="simple-input" placeholder="@gmail.com" required>
-                    </div>
-                    <div class="input-group">
-                        <label class="input-label">Phone Number</label>
-                        <input type="text" id="signupPhone" class="simple-input" placeholder="phoneNumber" required>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="input-group">
-                            <label class="input-label">Password</label>
-                            <input type="password" id="signupPass" class="simple-input" placeholder="password" required>
+
+                    <div class="su-grid-2">
+                        <div class="su-field">
+                            <input type="text" id="signupName" class="su-input" placeholder="Full Name" required autocomplete="name">
+                            <label for="signupName">Full Name</label>
+                            <span class="su-field-icon">👤</span>
                         </div>
-                        <div class="input-group">
-                            <label class="input-label">Confirm Password</label>
-                            <input type="password" id="signupConfirm" class="simple-input" placeholder="confirm password" required>
+                        <div class="su-field">
+                            <input type="text" id="signupPhone" class="su-input" placeholder="Phone Number" required autocomplete="tel">
+                            <label for="signupPhone">Phone Number</label>
+                            <span class="su-field-icon">📱</span>
                         </div>
                     </div>
-                    <div class="input-group">
-                        <label class="input-label">User Role</label>
-                        <select id="signupRole" class="simple-input" style="appearance: none; background: rgba(255,255,255,0.05) url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394A3B8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E') no-repeat right 1rem center; background-size: 1.25rem;" required>
-                            <option value="" disabled selected>Select your role</option>
-                            <option value="business">Business</option>
-                            <option value="organization">Organization</option>
+
+                    <div class="su-field">
+                        <input type="email" id="signupEmail" class="su-input" placeholder="Email Address" required autocomplete="email">
+                        <label for="signupEmail">Email Address</label>
+                        <span class="su-field-icon">✉️</span>
+                    </div>
+
+                    <div class="su-grid-2">
+                        <div class="su-field">
+                            <input type="password" id="signupPass" class="su-input" placeholder="Password" required autocomplete="new-password" oninput="checkStrength(this.value)">
+                            <label for="signupPass">Password</label>
+                            <span class="su-field-icon">🔒</span>
+                            <div class="pass-strength">
+                                <div class="pass-strength-fill" id="strengthFill"></div>
+                            </div>
+                            <div class="pass-strength-text" id="strengthText"></div>
+                        </div>
+                        <div class="su-field">
+                            <input type="password" id="signupConfirm" class="su-input" placeholder="Confirm Password" required autocomplete="new-password">
+                            <label for="signupConfirm">Confirm Password</label>
+                            <span class="su-field-icon">🔑</span>
+                        </div>
+                    </div>
+
+                    <div class="su-field">
+                        <select id="signupRole" class="su-input" required>
+                            <option value="" disabled selected></option>
+                            <option value="business">Business Owner</option>
+                            <option value="organization">Organisation Account</option>
                         </select>
+                        <label for="signupRole">Account Type</label>
+                        <span class="su-field-icon">🏢</span>
                     </div>
-                    <button type="submit" class="btn-creative btn-primary-creative w-full" style="padding: 1rem; font-size: 1rem; width: 190px; height: 60px; border-radius: 5rem; width: 190px; height: 60px; margin-top: 1.5rem;">Create</button>
-                <a href="/index.html" class="btn-creative btn-primary-creative w-full" style="font-size: 1rem; background:(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3)); width: 190px; height: 60px; color: white; text-decoration: none;">Cancel</a>
+
+                    <!-- Bank Link -->
+                    <div class="bank-section">
+                        <div class="bank-section-title">🏦 Link Bank Account (Optional)</div>
+                        <div class="su-field su-field-margin">
+                            <input type="text" id="bankSearch" class="su-input" placeholder="Search bank..." onkeyup="filterBanks()" autocomplete="off">
+                            <label for="bankSearch">Search Bank (HDFC, SBI…)</label>
+                            <span class="su-field-icon">🔍</span>
+                            <div id="bankList" class="bank-list-wrapper"></div>
+                        </div>
+                        <div id="selectedBankDisplay" class="selected-bank-display hide">
+                            <span id="targetBankIcon">🏛️</span>
+                            <p id="targetBankName" class="signup-bank-label"></p>
+                        </div>
+                        <div class="su-field su-field-margin">
+                            <input type="number" id="signupInitialBalance" class="su-input" placeholder="Balance" readonly>
+                            <label for="signupInitialBalance">Fetched Balance (₹)</label>
+                            <span class="su-field-icon">💰</span>
+                        </div>
+                        <button type="button" id="btnLinkBank" class="btn-link-bank" onclick="simulateBankConnection()">
+                            🔗 Link via Account Aggregator
+                        </button>
+                    </div>
+
+                    <div class="signup-privacy">
+                        <span class="privacy-icon">🔒</span>
+                        <span class="privacy-text">Your data is encrypted with 256-bit AES and never shared with third parties. We take your privacy seriously.</span>
+                    </div>
+
+                    <button type="submit" class="su-btn-primary" id="createBtn">🚀 Create My Account</button>
+                    <button type="button" class="su-btn-cancel" onclick="window.location.href='/views/portal.html'">Already have an account? Login</button>
                 </div>
 
-                <div id="otpFields" style="display: none;">
-                    <div style="text-align: center; margin-bottom: 2rem;">
-                        <p style="color: #10B981; font-weight: 600;">Verification Code Sent!</p>
-                        <p style="color: #94A3B8; font-size: 0.875rem;">Please enter the 6-digit OTP sent to your email.</p>
+                <!-- ── STEP 2: OTP Verification ── -->
+                <div id="otpFields" class="hide">
+                    <div class="otp-box">
+                        <span class="otp-icon">📩</span>
+                        <div class="otp-heading">Check Your Email</div>
+                        <p class="otp-desc">We've sent a 6-digit verification code to your email address. Enter it below to complete your account setup.</p>
                     </div>
-                    <div class="input-group">
-                        <label class="input-label">Enter OTP</label>
-                        <input type="text" id="otpInput" class="simple-input" placeholder="Enter OTP" maxlength="6" style="text-align: center; font-size: 2rem; letter-spacing: 0.5rem;">
+                    <div class="su-field">
+                        <input type="text" id="otpInput" class="su-input otp-input-big" placeholder="000000" maxlength="6" title="OTP Code">
+                        <label for="otpInput">Enter 6-Digit OTP</label>
                     </div>
-                    <button type="button" id="verifyOtpBtn" class="btn-creative btn-primary-creative w-full" style="padding: 1.125rem; font-size: 1rem; border-radius: 5rem; margin-top: 1.5rem;width: 160px; height: 60px;">Verify & Complete</button>
-                    <a href="/signup.html" class="btn-creative btn-primary-creative w-full" style="font-size: 1rem; background:(135deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3)); width: 160px; height: 60px; color: white; text-decoration: none;">Cancel</a>
-                    <p style="text-align: center; margin-top: 1rem;">
-                        <a href="#" onclick="location.reload()" style="color: #94A3B8; font-size: 0.875rem; text-decoration: none;">Back to Signup</a>
-                    </p>
+                    <button type="button" id="verifyOtpBtn" class="su-btn-primary btn-verification">✅ Verify & Complete Setup</button>
+                    <button type="button" class="su-btn-cancel" onclick="goBackToForm()">← Re-enter Details</button>
                 </div>
             </form>
 
-            <div id="authFooter" style="margin-top: 2.5rem; text-align: center;">
-                <p style="color: #94A3B8; font-size: 0.875rem;">Already have an account? <a href="/views/portal.html" style="color: white; padding: 1rem; font-weight: 700; text-decoration: none;">Login here</a></p>
+            <div class="signup-login-link">
+                <p>By signing up you agree to our <a href="#">Terms of Service</a> &amp; <a href="#">Privacy Policy</a></p>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        const signupForm = document.getElementById('signupForm');
-        const registrationFields = document.getElementById('registrationFields');
-        const otpFields = document.getElementById('otpFields');
-        const authFooter = document.getElementById('authFooter');
-        
-        let userEmail = '';
+<script>
+    /* ── Bank data ── */
+    const allBanks = [
+        { id: 'HDFC',     name: 'HDFC Bank',              icon: '🔵' },
+        { id: 'ICICI',    name: 'ICICI Bank',             icon: '🟠' },
+        { id: 'SBI',      name: 'State Bank of India',    icon: '💙' },
+        { id: 'AXIS',     name: 'Axis Bank',              icon: '🔴' },
+        { id: 'KOTAK',    name: 'Kotak Mahindra Bank',    icon: '🟥' },
+        { id: 'PNB',      name: 'Punjab National Bank',   icon: '🟡' },
+        { id: 'DBS',      name: 'DBS Bank',               icon: '⚫' },
+        { id: 'GRAMMPAY', name: 'GRAMMPAY (Virtual)',     icon: '⭐' }
+    ];
 
-        signupForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const fullName = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const phoneNumber = document.getElementById('signupPhone').value;
-            const password = document.getElementById('signupPass').value;
-            const confirm = document.getElementById('signupConfirm').value;
-            const role = document.getElementById('signupRole').value.toLowerCase();
-            const btn = e.target.querySelector('button');
+    let selectedBankId = null;
+    let simulatedBankData = null;
 
-            if (password !== confirm) {
-                alert('ERROR: Passwords do not match.');
-                return;
-            }
+    function filterBanks() {
+        const query = document.getElementById('bankSearch').value.toLowerCase();
+        const list  = document.getElementById('bankList');
+        list.innerHTML = '';
+        if (!query) { list.style.display = 'none'; return; }
+        list.style.display = 'block';
+        const filtered = allBanks.filter(b => b.name.toLowerCase().includes(query));
+        filtered.forEach(bank => {
+            const item = document.createElement('div');
+            item.className = 'bank-item';
+            item.innerHTML = `<span>${bank.icon}</span><span>${bank.name}</span>`;
+            item.onclick = () => selectBank(bank);
+            list.appendChild(item);
+        });
+        if (!filtered.length) {
+            list.innerHTML = '<div class="bank-item bank-item-empty">No banks found</div>';
+        }
+    }
 
-            btn.textContent = 'Creating Account...';
-            btn.disabled = true;
+    function selectBank(bank) {
+        selectedBankId = bank.id;
+        document.getElementById('bankList').style.display = 'none';
+        document.getElementById('bankSearch').value = bank.name;
+        const display = document.getElementById('selectedBankDisplay');
+        display.classList.remove('hide');
+        display.classList.add('show-flex');
+        document.getElementById('targetBankIcon').textContent = bank.icon;
+        document.getElementById('targetBankName').textContent = bank.name;
+    }
 
-            try {
-                const response = await fetch('/api/auth/signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ fullName, email, phoneNumber, password, role })
-                });
+    function simulateBankConnection() {
+        const phone = document.getElementById('signupPhone').value;
+        if (!selectedBankId) { alert('Please select a bank first!'); return; }
+        if (!phone || phone.length < 10) { alert('Please enter a valid phone number first!'); return; }
+        const btn = document.getElementById('btnLinkBank');
+        btn.textContent = '🔄 Connecting securely…';
+        btn.disabled = true;
+        setTimeout(() => {
+            document.getElementById('signupInitialBalance').value = 0;
+            simulatedBankData = { balance: 0, expenses: [], income: [] };
+            btn.textContent = '✅ Linked Successfully';
+            btn.classList.add('btn-success-green');
+        }, 2000);
+    }
 
-                const result = await response.json();
+    /* ── Password strength ── */
+    function checkStrength(val) {
+        const fill = document.getElementById('strengthFill');
+        const text = document.getElementById('strengthText');
+        let score = 0;
+        if (val.length >= 8)  score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+        const levels = [
+            { pct: '0%',   color: 'transparent', label: '' },
+            { pct: '25%',  color: '#F87171',      label: 'Weak' },
+            { pct: '50%',  color: '#FB923C',      label: 'Fair' },
+            { pct: '75%',  color: '#FBBF24',      label: 'Good' },
+            { pct: '100%', color: '#34D399',       label: 'Strong 💪' },
+        ];
+        fill.style.width      = levels[score].pct;
+        fill.style.background = levels[score].color;
+        text.textContent      = (val && score > 0) ? levels[score].label : '';
+        text.style.color      = levels[score].color;
+    }
 
-                if (result.success) {
-                    userEmail = email;
-                    registrationFields.style.display = 'none';
-                    otpFields.style.display = 'block';
-                    authFooter.style.display = 'none';
-                    alert(result.message);
-                } else {
-                    alert('Signup Failed: ' + result.message);
-                    btn.textContent = 'Create My Account';
-                    btn.disabled = false;
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Server Error block! Please try again later.');
-                btn.textContent = 'Create My Account';
+    /* ── Step indicator helpers ── */
+    function setStep(n) {
+        [1,2,3].forEach(i => {
+            document.getElementById('stepDot' + i)?.classList.remove('active','done');
+        });
+        [1,2].forEach(i => {
+            document.getElementById('stepLine' + i)?.classList.remove('active');
+        });
+        for (let i = 1; i < n; i++) {
+            const d = document.getElementById('stepDot' + i);
+            if (d) { d.classList.add('done'); }
+            const l = document.getElementById('stepLine' + i);
+            if (l) l.classList.add('active');
+        }
+        const active = document.getElementById('stepDot' + n);
+        if (active) active.classList.add('active');
+    }
+
+    function goBackToForm() {
+        document.getElementById('otpFields').classList.add('hide');
+        document.getElementById('registrationFields').classList.remove('hide');
+        setStep(1);
+    }
+
+    /* ── Form submit ── */
+    const signupForm         = document.getElementById('signupForm');
+    const registrationFields = document.getElementById('registrationFields');
+    const otpFields          = document.getElementById('otpFields');
+    let userEmail = '';
+
+    signupForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const fullName    = document.getElementById('signupName').value;
+        const email       = document.getElementById('signupEmail').value;
+        const phoneNumber = document.getElementById('signupPhone').value;
+        const password    = document.getElementById('signupPass').value;
+        const confirm     = document.getElementById('signupConfirm').value;
+        const role        = document.getElementById('signupRole').value.toLowerCase();
+        const btn         = document.getElementById('createBtn');
+        if (password !== confirm) { alert('Passwords do not match.'); return; }
+        btn.textContent = '⏳ Creating your account…';
+        btn.disabled = true;
+        try {
+            const response = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fullName, email, phoneNumber, password, role })
+            });
+            const result = await response.json();
+            if (result.success) {
+                userEmail = email;
+                registrationFields.classList.add('hide');
+                otpFields.classList.remove('hide');
+                setStep(2);
+                alert(result.message);
+            } else {
+                alert('Signup Failed: ' + result.message);
+                btn.textContent = '🚀 Create My Account';
                 btn.disabled = false;
             }
-        });
+        } catch (err) {
+            console.error(err);
+            alert('Server Error! Please try again later.');
+            btn.textContent = '🚀 Create My Account';
+            btn.disabled = false;
+        }
+    });
 
-        document.getElementById('verifyOtpBtn').addEventListener('click', async function() {
-            const otpCode = document.getElementById('otpInput').value;
-            const btn = this;
-
-            if (otpCode.length !== 6) {
-                alert('Please enter a valid 6-digit OTP.');
-                return;
-            }
-
-            btn.textContent = 'Verifying...';
-            btn.disabled = true;
-
-            try {
-                const response = await fetch('/api/auth/verify-otp', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: userEmail, otp: otpCode })
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    // Store token and user info
-                    localStorage.setItem('fintech_token', result.data.token);
-                    localStorage.setItem('fintech_logged_in_user', JSON.stringify(result.data));
-                    localStorage.setItem('fintech_name', result.data.fullName);
-                    localStorage.setItem('fintech_email', result.data.email);
-
-                    alert('Verification Successful! Welcome to FintechPro.');
-                    window.location.href = '/views/dashboard.html';
-                } else {
-                    alert('Verification Failed: ' + result.message);
-                    btn.textContent = 'Verify & Complete';
-                    btn.disabled = false;
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Verification Error. Please try again.');
-                btn.textContent = 'Verify & Complete';
+    document.getElementById('verifyOtpBtn').addEventListener('click', async function() {
+        const otpCode = document.getElementById('otpInput').value;
+        const btn = this;
+        if (otpCode.length !== 6) { alert('Please enter a valid 6-digit OTP.'); return; }
+        btn.textContent = '⏳ Verifying…';
+        btn.disabled = true;
+        setStep(3);
+        try {
+            const response = await fetch('/api/auth/verify-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: userEmail, otp: otpCode })
+            });
+            const result = await response.json();
+            if (result.success) {
+                localStorage.setItem('fintech_token', result.data.token);
+                localStorage.setItem('fintech_logged_in_user', JSON.stringify(result.data));
+                alert('✅ Verification Successful! Welcome to FintechPro.');
+                window.location.href = '/views/dashboard.html';
+            } else {
+                alert('Verification Failed: ' + result.message);
+                btn.textContent = '✅ Verify & Complete Setup';
                 btn.disabled = false;
+                setStep(2);
             }
+        } catch (err) {
+            console.error(err);
+            alert('Verification Error. Please try again.');
+            btn.textContent = '✅ Verify & Complete Setup';
+            btn.disabled = false;
+            setStep(2);
+        }
+    });
+
+    // Init bank list hidden
+    document.getElementById('bankList').style.display = 'none';
+
+    /* ── Floating Particles ── */
+    const leftPanel = document.getElementById('signupLeft');
+    const colors = ['rgba(99,102,241,0.6)', 'rgba(217,70,239,0.5)', 'rgba(6,182,212,0.5)', 'rgba(139,92,246,0.5)'];
+    function spawnParticle() {
+        if (!leftPanel) return;
+        const p = document.createElement('div');
+        p.className = 'left-particle';
+        const size = Math.random() * 8 + 4;
+        p.style.cssText = `
+            width:${size}px; height:${size}px;
+            background:${colors[Math.floor(Math.random()*colors.length)]};
+            left:${Math.random()*100}%;
+            bottom:${Math.random()*20}%;
+            filter:blur(${size/3}px);
+            animation-duration:${Math.random()*5+5}s;
+            animation-delay:${Math.random()*3}s;
+        `;
+        leftPanel.appendChild(p);
+        setTimeout(() => p.remove(), 10000);
+    }
+    setInterval(spawnParticle, 600);
+
+    /* ── 3D Card Mouse Tilt ── */
+    const card3d = document.getElementById('card3d');
+    if (card3d) {
+        card3d.addEventListener('mousemove', e => {
+            const rect = card3d.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width  - 0.5;
+            const y = (e.clientY - rect.top)  / rect.height - 0.5;
+            card3d.style.transition = 'transform 0.1s ease';
+            card3d.style.transform  = `perspective(1000px) rotateY(${x * 18}deg) rotateX(${-y * 12}deg) translateY(-8px)`;
         });
-    </script>
+        card3d.addEventListener('mouseleave', () => {
+            card3d.style.transition = 'transform 0.8s cubic-bezier(0.23,1,0.32,1)';
+            card3d.style.animation  = 'card-float 6s ease-in-out infinite';
+            card3d.style.transform  = '';
+        });
+        card3d.addEventListener('mouseenter', () => {
+            card3d.style.animation = 'none';
+        });
+    }
+
+</script>
 </body>
 </html>

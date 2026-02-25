@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package",
   "name": "expense-tracker-root",
   "version": "1.0.0",
   "description": "MERN Stack Expense Tracker",
@@ -31,7 +32,7 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^5.1.1",
     "concurrently": "^8.2.2",
-    "gh": "^2.8.9",
+    "gh": "^1.17.5",
     "nodemon": "^3.0.3",
     "vite": "^7.3.1"
   }

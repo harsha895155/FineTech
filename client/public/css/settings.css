@@ -1,0 +1,429 @@
+@import url('variables.css');
+@import url('layout.css');
+@import url('components.css');
+
+/* Settings Page Specific Styles */
+.settings-container {
+    max-width: 900px;
+    padding-bottom: 12rem; /* Content doesn't get hidden under the fixed save bar, extra space for clarity */
+}
+
+.settings-section {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+}
+
+
+.settings-section:hover {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.1);
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-info {
+    flex: 1;
+}
+
+.setting-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.setting-desc {
+    font-size: 0.85rem;
+    color: #64748B;
+}
+
+.setting-control {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 52px;
+    height: 28px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-switch.active {
+    background: #6366F1;
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: white;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    transition: all 0.3s ease;
+}
+
+.toggle-switch.active::after {
+    left: 27px;
+}
+
+.setting-select {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: white;
+    font-family: inherit;
+    min-width: 180px;
+    cursor: pointer;
+}
+
+.setting-select:focus {
+    outline: none;
+    border-color: #6366F1;
+}
+
+.setting-input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: white;
+    font-family: inherit;
+    min-width: 200px;
+}
+
+.setting-input:focus {
+    outline: none;
+    border-color: #6366F1;
+    background: rgba(255,255,255,0.08);
+}
+
+.btn-setting {
+    padding: 0.625rem 1.5rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: white;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-setting:hover {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: #6366F1;
+}
+
+.btn-danger {
+    background: rgba(244, 63, 94, 0.15);
+    border-color: rgba(244, 63, 94, 0.3);
+    color: #F43F5E;
+}
+
+.btn-danger:hover {
+    background: rgba(244, 63, 94, 0.25);
+    border-color: #F43F5E;
+}
+
+.admin-only {
+    display: none;
+}
+
+.badge-premium {
+    padding: 0.25rem 0.75rem;
+    background: linear-gradient(135deg, #6366F1, #D946EF);
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/* Settings Modals use global .modal-overlay and .modal-content from components.css */
+/* Uses global .modal-content styles */
+
+/* Internal modal parts use global workflow styles from components.css */
+
+.bank-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    max-height: 280px; overflow-y: auto; padding-right: 5px;
+}
+
+.bank-option {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    padding: 1rem; border-radius: 16px; cursor: pointer;
+    transition: all 0.3s ease; display: flex; align-items: center; gap: 1rem;
+}
+
+.bank-option:hover {
+    background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15);
+    transform: translateY(-2px);
+}
+
+.bank-option.selected {
+    border-color: #6366F1; background: rgba(99,102,241,0.1);
+    box-shadow: 0 0 15px rgba(99,102,241,0.2);
+}
+
+.bank-logo-placeholder {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+}
+
+.input-creative {
+    width: 100%; background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+    padding: 1rem; color: white; margin-bottom: 1.5rem;
+    font-family: inherit; font-size: 0.95rem; outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-creative:focus {
+    border-color: #6366F1; background: rgba(255,255,255,0.05);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.bank-modal-footer {
+    margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end;
+}
+
+.otp-container {
+    display: flex; gap: 0.75rem; justify-content: center; margin-bottom: 2rem;
+}
+
+.otp-box {
+    width: 45px; height: 55px; background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+    text-align: center; font-size: 1.5rem; font-weight: 800; color: white;
+    outline: none; transition: all 0.3s ease;
+}
+
+.otp-box:focus {
+    border-color: #6366F1; background: rgba(255,255,255,0.05);
+    box-shadow: 0 0 15px rgba(99,102,241,0.2);
+}
+
+.modal-error {
+    background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.2);
+    color: #F43F5E; padding: 0.75rem; border-radius: 12px;
+    font-size: 0.8rem; font-weight: 600; margin-bottom: 1.5rem;
+    display: none; text-align: center;
+}
+
+.btn-unlink {
+    background: rgba(244, 63, 94, 0.1);
+    color: #F43F5E; border: 1px solid rgba(244, 63, 94, 0.2);
+    padding: 0.5rem 1rem; border-radius: 10px;
+    font-size: 0.75rem; font-weight: 700; cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-unlink:hover {
+    background: #F43F5E; color: white; transform: scale(1.05);
+}
+
+@media (max-width: 540px) {
+    .bank-modal-content { width: 95% !important; padding: 1.5rem !important; }
+    .bank-grid { grid-template-columns: 1fr !important; }
+}
+
+.settings-header {
+    margin-bottom: 5rem;
+}
+
+.settings-title {
+    font-size: 3.5rem; 
+    font-weight: 900; 
+    margin: 0; 
+    letter-spacing: -0.05em;
+}
+
+.settings-subtitle {
+    color: #94A3B8; 
+    font-size: 1.1rem; 
+    font-weight: 500; 
+    margin-top: 0.5rem;
+}
+
+.section-icon {
+    font-size: 1.75rem;
+}
+
+.section-title-sm {
+    font-weight: 800; 
+    margin-bottom: 0.5rem;
+}
+
+.section-desc-sm {
+    color: #64748B; 
+    font-size: 0.9rem; 
+    margin-bottom: 1.5rem;
+}
+
+.export-format-select {
+    width: 120px;
+}
+
+.settings-save-footer {
+    position: fixed; 
+    bottom: 0; 
+    left: var(--sidebar-width); 
+    right: 0;
+    background: rgba(15, 23, 42, 0.7); /* Slightly more transparent to see content behind */
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    padding: 1.25rem 4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    z-index: 1000;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s ease;
+}
+
+@media (max-width: 768px) {
+    .settings-save-footer {
+        left: 0;
+        padding: 1rem 2rem;
+    }
+}
+
+.btn-save-settings {
+    padding: 1rem 3rem; 
+    font-size: 0.9rem; 
+    box-shadow: 0 20px 50px rgba(99, 102, 241, 0.4);
+}
+
+.bank-scroll-container {
+    max-height: 320px; 
+    overflow-y: auto; 
+    padding-right: 5px;
+}
+
+.bank-group-label {
+    font-size: 0.7rem; 
+    font-weight: 800; 
+    color: #6366F1; 
+    letter-spacing: 0.05rem; 
+    margin-bottom: 0.75rem; 
+    text-transform: uppercase;
+}
+
+.bank-transfer-form-header {
+    margin-bottom: 2rem;
+}
+
+.bank-transfer-form-title {
+    font-size: 1.25rem; 
+    font-weight: 800; 
+    margin: 0;
+}
+
+.bank-transfer-form-desc {
+    color: #64748B; 
+    font-size: 0.85rem; 
+    margin-top: 0.25rem;
+}
+
+.btn-danger-sm {
+    background: rgba(244, 63, 94, 0.1); 
+    border-color: rgba(244, 63, 94, 0.2); 
+    color: #F43F5E;
+}
+
+.btn-danger-sm:hover {
+    background: #F43F5E; 
+    color: white;
+}
+
+/* Modal and Utility Extensions */
+.bank-group-intl { margin-top: 1.5rem; }
+.bank-group-label-intl { font-size: 0.7rem; font-weight: 800; color: #D946EF; letter-spacing: 0.05rem; margin-bottom: 0.75rem; text-transform: uppercase; }
+.bank-group-label-local { font-size: 0.7rem; font-weight: 800; color: #94A3B8; letter-spacing: 0.05rem; margin-bottom: 0.75rem; text-transform: uppercase; }
+.no-banks-found { display: none; text-align: center; padding: 2rem; color: #64748B; }
+.btn-proceed { background: #6366F1; color: white; padding: 0.8rem 2rem; }
+.selected-bank-highlight { color: #6366F1; font-weight: 800; }
+.bank-label-mini { margin-bottom: 0.5rem; font-size: 0.8rem; font-weight: 700; color: #94A3B8; }
+.input-readonly { background: rgba(255,255,255,0.02); color: #64748B; }
+.grid-2-1 { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1rem; }
+.otp-method-container { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; }
+.otp-method-label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+.otp-method-text { font-size: 0.85rem; font-weight: 600; }
+.btn-primary-full { width: 100%; background: linear-gradient(135deg, #6366F1, #8B5CF6); color: white; padding: 1rem; border: none; font-weight: 800; margin-top: 1rem; }
+.center-margin-t-1 { text-align: center; margin-top: 1rem; }
+.btn-text-back { background: none; border: none; color: #64748B; cursor: pointer; font-size: 0.85rem; }
+.timer-text { color: #6366F1; font-weight: 700; font-size: 0.9rem; }
+.margin-b-2 { margin-bottom: 2rem; }
+.btn-confirm-success { width: 100%; background: linear-gradient(135deg, #10B981, #059669); color: white; padding: 1rem; border: none; font-weight: 800; }
+.success-icon-anim { width: 80px; height: 80px; background: rgba(16, 185, 129, 0.1); color: #10B981; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1.5rem; }
+.success-bank-name { color: #E2E8F0; font-weight: 700; }
+.security-badge-container { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; position: relative; overflow: hidden; }
+.security-badge-text { color: #10B981; font-weight: 700; font-size: 0.9rem; position: relative; z-index: 2; }
+.security-sweep { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(16,185,129,0.05), transparent); animation: sweep 2s infinite; }
+.modal-width-sm { width: 440px; }
+.hide { display: none; }
+.flex-column-start { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+.flex-between-center { display: flex; justify-content: space-between; width: 100%; align-items: center; }
+.profile-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 2.5rem;
+    height: calc(var(--vh-full) - 180px);
+    overflow-y: auto;
+    padding-bottom: 5rem; /* Space for action bar */
+}
+.connected-account-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 1rem; border-radius: 14px; display: flex; align-items: center; gap: 1rem; }
+.account-name { margin: 0; font-weight: 700; font-size: 0.85rem; }
+.account-details { margin: 0; color: #64748B; font-size: 0.75rem; }
+.span-all { grid-column: 1 / -1; }
+.empty-state { color: #475569; font-size: 0.85rem; text-align: center; padding: 1rem; border: 1px dashed rgba(255,255,255,0.05); border-radius: 12px; margin: 0; }
+.modal-close-btn { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: #64748B; cursor: pointer; font-size: 1.25rem; }
+.flex-1-min { flex: 1; min-width: 0; }
+.account-details-ellipsis { margin: 0; color: #64748B; font-size: 0.7rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bank-name-text { font-weight: 600; font-size: 0.9rem; }
+.btn-unlink-mini { padding: 0.4rem 0.8rem !important; }
+.bank-icon-lg { font-size: 1.25rem; }
+
+@keyframes sweep { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+.shake { animation: shake 0.4s ease-in-out; }
+
+.btn-resend-otp {
+    background: none;
+    border: none;
+    color: #6366F1;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.step-panel-centered {
+    text-align: center;
+}
+
+.text-indigo-bold {
+    color: #6366F1;
+    font-weight: 800;
+}
