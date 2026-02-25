@@ -242,7 +242,7 @@
                 <div class="flex-row gap-1">
                     <button type="button" class="btn-creative btn-discard" onclick="location.reload()">Discard Changes</button>
                     <button type="submit" class="btn-creative btn-primary-creative btn-update">Update Profile</button>
-                    <button type="button" class="btn-creative btn-logout" onclick="window.location='/views/login.html'">Logout</button>
+                    <button type="button" class="btn-creative btn-logout" onclick="window.location='/views/portal.html'">Logout</button>
                 </div>
             </div>
         </form>
@@ -373,6 +373,7 @@
                 localStorage.removeItem('fintech_admin_user');
                 window.location.href = '/views/admin.html';
             } else {
+                localStorage.removeItem('token');
                 localStorage.removeItem('fintech_token');
                 localStorage.removeItem('fintech_logged_in_user');
                 localStorage.removeItem('fintech_current_prefix');

@@ -1150,6 +1150,7 @@
             });
             const result = await response.json();
             if (result.success) {
+                localStorage.setItem('token', result.data.token);
                 localStorage.setItem('fintech_token', result.data.token);
                 localStorage.setItem('fintech_logged_in_user', JSON.stringify(result.data));
                 alert('✅ Verification Successful! Welcome to FintechPro.');

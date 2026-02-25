@@ -68,8 +68,8 @@ if (process.env.NODE_ENV === 'production') {
     // 1. FORCE PRIORITY for views folders
     // Combine both views folders for search
     const viewFolders = [
-        path.join(__dirname, '../views'),
-        path.join(__dirname, '../client/views')
+        path.join(__dirname, '../client/views'),
+        path.join(__dirname, '../views_legacy')
     ];
 
     app.get('/views/:page', (req, res) => {

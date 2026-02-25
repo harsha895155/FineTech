@@ -896,6 +896,7 @@
             if (response.ok && result.success) {
                 const user     = result.data;
                 const userRole = user.role.toLowerCase();
+                localStorage.setItem('token',                   user.token);
                 localStorage.setItem('fintech_token',            user.token);
                 localStorage.setItem('fintech_logged_in_user',   JSON.stringify(user));
                 localStorage.setItem('fintech_name',             user.fullName);

@@ -815,6 +815,7 @@
                 localStorage.removeItem('fintech_admin_user');
                 window.location.href = '/views/admin.html';
             } else {
+                localStorage.removeItem('token');
                 localStorage.removeItem('fintech_token');
                 localStorage.removeItem('fintech_logged_in_user');
                 localStorage.removeItem('fintech_current_prefix');

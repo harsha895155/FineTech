@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const checkLoggedIn = async () => {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('token') || localStorage.getItem('fintech_token');
             if (token) {
                 try {
                     const res = await api.get('/auth/me');
@@ -33,9 +33,12 @@ export const AuthProvider = ({ children }) => {
         try {
             setError(null);
             const res = await api.post('/auth/login', { email, password });
-            localStorage.setItem('token', res.data.data.token);
-            setUser(res.data.data);
-            return res.data.data;
+            const data = res.data.data;
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('fintech_token', data.token);
+            localStorage.setItem('fintech_logged_in_user', JSON.stringify(data));
+            setUser(data);
+            return data;
         } catch (err) {
             setError(err.response?.data?.message || 'Login failed');
             throw err;
@@ -50,9 +53,12 @@ export const AuthProvider = ({ children }) => {
             if (res.data.data && res.data.data.needsVerification) {
                 return res.data;
             }
-            localStorage.setItem('token', res.data.data.token);
-            setUser(res.data.data);
-            return res.data.data;
+            const data = res.data.data;
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('fintech_token', data.token);
+            localStorage.setItem('fintech_logged_in_user', JSON.stringify(data));
+            setUser(data);
+            return data;
         } catch (err) {
             setError(err.response?.data?.message || 'Registration failed');
             throw err;
@@ -63,9 +69,12 @@ export const AuthProvider = ({ children }) => {
         try {
             setError(null);
             const res = await api.post('/auth/verify-otp', { email, otp });
-            localStorage.setItem('token', res.data.data.token);
-            setUser(res.data.data);
-            return res.data.data;
+            const data = res.data.data;
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('fintech_token', data.token);
+            localStorage.setItem('fintech_logged_in_user', JSON.stringify(data));
+            setUser(data);
+            return data;
         } catch (err) {
             setError(err.response?.data?.message || 'Verification failed');
             throw err;
