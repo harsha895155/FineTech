@@ -50,22 +50,32 @@ app.use('/api/transfer', require('./routes/transferRoutes'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
-    // 1. Serve root views folder (legacy HTML files)
-    app.use('/views', express.static(path.join(__dirname, '../views')));
-    
-    // 2. Serve root public and client public for CSS/Assets
+    console.log('📦 [Server] Setting up production assets...');
+
+    // 1. FORCE PRIORITY for views folder (Signup/Login/Dashboard HTMLs)
+    app.get('/views/:page', (req, res) => {
+        const viewPath = path.resolve(__dirname, '../views', req.params.page);
+        console.log(`📄 [Server] Serving view: ${viewPath}`);
+        res.sendFile(viewPath, (err) => {
+            if (err) {
+                console.error(`❌ [Server] Could not find view: ${req.params.page}`);
+                res.status(404).json({ error: 'View not found' });
+            }
+        });
+    });
+
+    // 2. Serve static assets (CSS, JS, Uploads)
     app.use('/public', express.static(path.join(__dirname, '../public')));
     app.use('/css', express.static(path.join(__dirname, '../client/public/css')));
     app.use('/js', express.static(path.join(__dirname, '../client/public/js')));
-
-    // 3. Serve Vite build output
     app.use(express.static(path.join(__dirname, '../client/dist')));
 
-    // 4. SPA Fallback (Only if not a views/api/public request)
+    // 3. SPA Fallback (Only for routes that don't match files)
     app.get('*', (req, res) => {
-        if (!req.path.startsWith('/api') && !req.path.startsWith('/views')) {
-            res.sendFile(path.resolve(__dirname, '../client', 'dist', 'index.html'));
-        }
+        // Skip API and Views (handled above)
+        if (req.path.startsWith('/api') || req.path.startsWith('/views')) return next();
+        
+        res.sendFile(path.resolve(__dirname, '../client', 'dist', 'index.html'));
     });
 }
 
