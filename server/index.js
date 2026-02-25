@@ -52,22 +52,41 @@ app.use('/api/transfer', require('./routes/transferRoutes'));
 if (process.env.NODE_ENV === 'production') {
     console.log('📦 [Server] Setting up production assets...');
 
-    // 1. FORCE PRIORITY for views folder (Signup/Login/Dashboard HTMLs)
+    // 1. FORCE PRIORITY for views folders
+    // Combine both views folders for search
+    const viewFolders = [
+        path.join(__dirname, '../views'),
+        path.join(__dirname, '../client/views')
+    ];
+
     app.get('/views/:page', (req, res) => {
-        const viewPath = path.resolve(__dirname, '../views', req.params.page);
-        console.log(`📄 [Server] Serving view: ${viewPath}`);
-        res.sendFile(viewPath, (err) => {
-            if (err) {
-                console.error(`❌ [Server] Could not find view: ${req.params.page}`);
-                res.status(404).json({ error: 'View not found' });
+        const page = req.params.page;
+        let found = false;
+
+        for (const folder of viewFolders) {
+            const viewPath = path.resolve(folder, page);
+            if (require('fs').existsSync(viewPath)) {
+                console.log(`📄 [Server] Serving view: ${viewPath}`);
+                res.sendFile(viewPath);
+                found = true;
+                break;
             }
-        });
+        }
+
+        if (!found) {
+            console.error(`❌ [Server] Could not find view: ${page}`);
+            // Fallback for case-insensitive or common typos
+            res.status(404).json({ error: 'View not found' });
+        }
     });
 
-    // 2. Serve static assets (CSS, JS, Uploads)
+    // 2. Serve static assets (CSS, JS, Uploads, Public)
     app.use('/public', express.static(path.join(__dirname, '../public')));
     app.use('/css', express.static(path.join(__dirname, '../client/public/css')));
     app.use('/js', express.static(path.join(__dirname, '../client/public/js')));
+    
+    // Explicitly serve client/public for nested assets if needed
+    app.use(express.static(path.join(__dirname, '../client/public')));
     app.use(express.static(path.join(__dirname, '../client/dist')));
 
     // 3. SPA Fallback (Only for routes that don't match files)
