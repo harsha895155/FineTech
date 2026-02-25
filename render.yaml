@@ -3,7 +3,7 @@ services:
     name: sampleproject-fullstack
     env: node
     plan: free
-    buildCommand: npm install && cd server && npm install && cd .. && npm run build
+    buildCommand: npm install --legacy-peer-deps && cd server && npm install --legacy-peer-deps && cd .. && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV

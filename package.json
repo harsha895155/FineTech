@@ -8,7 +8,7 @@
     "server": "node server/index.js",
     "client": "cd client && npx vite --host --port 5173 --no-open",
     "dev": "node dev.js",
-    "build": "cd client && npm install && npm run build"
+    "build": "cd client && npm install --legacy-peer-deps && npm run build"
   },
   "keywords": [],
   "author": "",
