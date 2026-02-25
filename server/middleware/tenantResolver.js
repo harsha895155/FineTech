@@ -1,6 +1,10 @@
 const { getTenantConnection } = require('../config/tenantDb');
 const { createModel: createExpenseModel } = require('../models/tenant/Expense');
 const { createModel: createIncomeModel } = require('../models/tenant/Income');
+const { createModel: createAuditLogModel } = require('../models/tenant/AuditLog');
+const { createModel: createCategoryModel } = require('../models/tenant/Category');
+const { createModel: createReportModel } = require('../models/tenant/Report');
+const { createModel: createSettingsModel } = require('../models/tenant/Settings');
 
 /**
  * Middleware to resolve tenant database connection and models
@@ -23,7 +27,11 @@ const tenantResolver = async (req, res, next) => {
         // This allows controllers to use req.tenantModels.Expense.find() etc.
         req.tenantModels = {
             Expense: createExpenseModel(tenantConnection),
-            Income: createIncomeModel(tenantConnection)
+            Income: createIncomeModel(tenantConnection),
+            AuditLog: createAuditLogModel(tenantConnection),
+            Category: createCategoryModel(tenantConnection),
+            Report: createReportModel(tenantConnection),
+            Settings: createSettingsModel(tenantConnection)
         };
 
         next();

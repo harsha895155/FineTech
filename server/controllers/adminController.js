@@ -8,8 +8,10 @@ const { createModel: createTeamModel } = require('../models/master/Team');
 
 const LOG_FILE = path.join(__dirname, 'admin_debug.log');
 const debugLog = (msg) => {
-    const logMsg = `[${new Date().toISOString()}] ${msg}\n`;
-    fs.appendFileSync(LOG_FILE, logMsg);
+    try {
+        const logMsg = `[${new Date().toISOString()}] ${msg}\n`;
+        fs.appendFileSync(LOG_FILE, logMsg);
+    } catch (e) {} // Ignore logging errors to prevent request failure
     console.log(msg);
 };
 
