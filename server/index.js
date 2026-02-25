@@ -7,12 +7,25 @@ const connectMasterDB = require('./config/masterDb');
 // Load environment variables relative to this file
 dotenv.config({ path: path.join(__dirname, '.env') });
 
+const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 5011; 
-// Initialize Master Database Connection
+
+// Initial database selection
+const DB_URI = process.env.MASTER_DB_URI || process.env.MONGO_URI;
+
+// Initialize Global Database Connection (satisfies default models)
+if (DB_URI) {
+    console.log('🚀 [Server] Establishing Global Mongoose Connection...');
+    mongoose.connect(DB_URI)
+        .then(() => console.log('✅ [Server] Global Mongoose connected'))
+        .catch(err => console.error('❌ [Server] Global Mongoose connection error:', err.message));
+} else {
+    console.warn('⚠️ [Server] No DB_URI found! Mongoose might default to localhost.');
+}
+
+// Initialize Master Database Connection (Multi-tenant)
 console.log('🚀 [Server] Target Port:', PORT);
-// Tiny comment to trigger restart
-console.log('🚀 [Server] Initializing Master Database Connection...');
 connectMasterDB()
     .then(conn => {
         console.log('✅ [Server] Master Database connected successfully:', conn.name);
