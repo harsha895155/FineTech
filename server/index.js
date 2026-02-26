@@ -12,16 +12,24 @@ const app = express();
 const PORT = process.env.PORT || 5011; 
 
 // Initial database selection
+// PRIORITIZE MASTER_DB_URI and MONGO_URI from system environment
 const DB_URI = process.env.MASTER_DB_URI || process.env.MONGO_URI;
 
-// Initialize Global Database Connection (satisfies default models)
+// Initialize Global Database Connection
 if (DB_URI) {
-    console.log('🚀 [Server] Establishing Global Mongoose Connection...');
+    const isLocal = DB_URI.includes('127.0.0.1') || DB_URI.includes('localhost');
+    console.log(`🚀 [Server] Establishing Global Mongoose Connection... ${isLocal ? '(LOCAL DB)' : '(REMOTE DB)'}`);
+    
     mongoose.connect(DB_URI)
-        .then(() => console.log('✅ [Server] Global Mongoose connected'))
-        .catch(err => console.error('❌ [Server] Global Mongoose connection error:', err.message));
+        .then(() => console.log('✅ [Server] Global Mongoose connected successfully'))
+        .catch(err => {
+            console.error('❌ [Server] Global Mongoose connection error:', err.message);
+            if (process.env.NODE_ENV === 'production' && isLocal) {
+                console.error('CRITICAL: Local database URI detected in production environment!');
+            }
+        });
 } else {
-    console.warn('⚠️ [Server] No DB_URI found! Mongoose might default to localhost.');
+    console.warn('⚠️ [Server] No DB_URI found! Environment variables MASTER_DB_URI or MONGO_URI are required.');
 }
 
 // Initialize Master Database Connection (Multi-tenant)
