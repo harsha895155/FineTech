@@ -20,7 +20,11 @@ if (DB_URI) {
     const isLocal = DB_URI.includes('127.0.0.1') || DB_URI.includes('localhost');
     console.log(`🚀 [Server] Establishing Global Mongoose Connection... ${isLocal ? '(LOCAL DB)' : '(REMOTE DB)'}`);
     
-    mongoose.connect(DB_URI)
+    mongoose.connect(DB_URI, {
+        serverSelectionTimeoutMS: 15000,
+        connectTimeoutMS: 15000,
+        socketTimeoutMS: 45000,
+    })
         .then(() => console.log('✅ [Server] Global Mongoose connected successfully'))
         .catch(err => {
             console.error('❌ [Server] Global Mongoose connection error:', err.message);
