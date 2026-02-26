@@ -358,16 +358,38 @@
         .signup-right {
             flex: 1;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
-            padding: 3rem 3.5rem;
+            padding: 3rem 2rem;
             background: #030712;
             overflow-y: auto;
             box-sizing: border-box;
+            gap: 2rem;
         }
         .signup-form-wrap {
             width: 100%;
             max-width: 480px;
+            flex: 1;
+        }
+        
+        /* Split view for signup and OTP */
+        .signup-right.split-view {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        .signup-right.split-view .signup-form-wrap {
+            max-width: 420px;
+        }
+        .otp-verification-panel {
+            flex: 1;
+            max-width: 420px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            position: sticky;
+            top: 3rem;
         }
 
         /* Back link */
@@ -668,6 +690,42 @@
             padding: 1rem;
             padding-right: 0;
         }
+        
+        /* OTP Panel States */
+        .otp-verification-panel.waiting {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .otp-verification-panel.active {
+            opacity: 1;
+            pointer-events: all;
+            animation: slideInRight 0.5s ease-out;
+        }
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .otp-waiting-message {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #475569;
+        }
+        .otp-waiting-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+        .otp-waiting-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
 
         /* Login link */
         .signup-login-link {
@@ -694,9 +752,28 @@
         .privacy-text { font-size: 0.75rem; color: #475569; line-height: 1.6; }
 
         /* Responsive */
+        @media (max-width: 1200px) {
+            .signup-right.split-view {
+                flex-direction: column;
+            }
+            .otp-verification-panel {
+                position: relative;
+                top: 0;
+                max-width: 100%;
+            }
+        }
         @media (max-width: 900px) {
             .signup-left { display: none; }
-            .signup-right { padding: 2rem 1.5rem 8rem 1.5rem; margin-left: 0; width: 100%; background: #030712; }
+            .signup-right { 
+                padding: 2rem 1.5rem 8rem 1.5rem; 
+                margin-left: 0; 
+                width: 100%; 
+                background: #030712;
+                flex-direction: column;
+            }
+            .signup-right.split-view {
+                flex-direction: column;
+            }
         }
         @media (max-width: 480px) {
             .su-grid-2 { grid-template-columns: 1fr; }
