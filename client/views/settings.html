@@ -1557,20 +1557,21 @@
             const adminToken = localStorage.getItem('fintech_admin_token');
             const adminUser = localStorage.getItem('fintech_admin_user');
             
-                if (adminToken && adminUser) {
-                    // Restore admin session
-                    localStorage.setItem('fintech_token', adminToken);
-                    localStorage.setItem('fintech_logged_in_user', adminUser);
-                    localStorage.removeItem('fintech_admin_token');
-                    localStorage.removeItem('fintech_admin_user');
-                    window.location.href = '/views/admin.html';
-                } else {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('fintech_token');
-                    localStorage.removeItem('fintech_logged_in_user');
-                    localStorage.removeItem('fintech_current_prefix');
-                    window.location.href = '/index.html';
-                }
+            if (adminToken && adminUser) {
+                // Restore admin session
+                localStorage.setItem('token', adminToken);
+                localStorage.setItem('fintech_token', adminToken);
+                localStorage.setItem('fintech_logged_in_user', adminUser);
+                localStorage.removeItem('fintech_admin_token');
+                localStorage.removeItem('fintech_admin_user');
+                window.location.href = '/views/admin.html';
+            } else {
+                localStorage.removeItem('token');
+                localStorage.removeItem('fintech_token');
+                localStorage.removeItem('fintech_logged_in_user');
+                localStorage.removeItem('fintech_current_prefix');
+                window.location.href = '/views/portal.html';
+            }
         }
 
         function toggleSidebar() {
