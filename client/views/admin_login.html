@@ -70,16 +70,17 @@
                 const result = await response.json();
 
                 if (response.ok && result.success) {
-                    // Double check (redundant but safe)
-                    const userRole = result.data.role.toLowerCase();
+                    const user = result.data || result.user || result;
+                    const token = result.token || (result.data ? result.data.token : null) || (result.user ? result.user.token : null) || user.token;
+                    
+                    const userRole = (user.role || '').toLowerCase();
                     if (userRole !== 'admin' && userRole !== 'administrator') {
                         throw new Error('Access Denied. Not an authorized administrator account.');
                     }
 
                     // Store session
-                    localStorage.setItem('token', result.data.token);
-                    localStorage.setItem('fintech_token', result.data.token);
-                    localStorage.setItem('fintech_logged_in_user', JSON.stringify(result.data));
+                    localStorage.setItem('fintech_token', token);
+                    localStorage.setItem('fintech_logged_in_user', JSON.stringify(user));
 
                     // Redirect
                     window.location.href = '/views/admin.html'; // Assuming this exists or will correspond to dashboard

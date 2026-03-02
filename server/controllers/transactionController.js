@@ -2,6 +2,9 @@ const Expense = require('../models/Expense');
 const Income = require('../models/Income');
 const AuditLog = require('../models/AuditLog');
 const mongoose = require('mongoose');
+const connectMasterDB = require('../config/masterDb');
+const { createModel: createUserModel } = require('../models/master/User');
+const { createModel: createTransferModel } = require('../models/master/InternalTransfer');
 
 // @desc    Get all transactions (Expense & Income)
 // @route   GET /api/transactions
@@ -35,10 +38,32 @@ exports.getTransactions = async (req, res) => {
             incomes = await Income.find(incQuery).sort({ incomeDate: -1 });
         }
 
+        // Fetch internal transfers
+        const masterDb = await connectMasterDB();
+        const Transfer = createTransferModel(masterDb);
+        const internalTransfers = await Transfer.find({
+            $or: [{ senderId: req.user.id }, { receiverId: req.user.id }]
+        }).populate('senderId receiverId', 'fullName email');
+
+        const formattedTransfers = internalTransfers.map(t => {
+            const isSender = String(t.senderId._id) === String(req.user.id);
+            return {
+                _id: t._id,
+                amount: t.amount,
+                type: isSender ? 'expense' : 'income',
+                category: isSender ? 'Transfer Sent' : 'Transfer Received',
+                description: t.description || (isSender ? `To: ${t.receiverId.fullName}` : `From: ${t.senderId.fullName}`),
+                date: t.createdAt,
+                paymentMode: 'bank',
+                isInternalTransfer: true
+            };
+        });
+
         // Combine and sort
         let all = [
             ...expenses.map(e => ({ ...e._doc, type: 'expense', date: e.expenseDate })),
-            ...incomes.map(i => ({ ...i._doc, type: 'income', date: i.incomeDate, category: i.source }))
+            ...incomes.map(i => ({ ...i._doc, type: 'income', date: i.incomeDate, category: i.source })),
+            ...formattedTransfers
         ].sort((a, b) => new Date(b.date) - new Date(a.date));
 
         res.status(200).json({
@@ -172,11 +197,31 @@ exports.getStats = async (req, res) => {
         const totalExpense = expenseTotal.length > 0 ? expenseTotal[0].total : 0;
         const totalIncome = incomeTotal.length > 0 ? incomeTotal[0].total : 0;
 
+        // Fetch User Balance and Transfer Summary from Master DB
+        const masterDb = await connectMasterDB();
+        const User = createUserModel(masterDb);
+        const Transfer = createTransferModel(masterDb);
+        
+        const masterUser = await User.findById(req.user.id);
+        const actualBalance = masterUser ? masterUser.balance : 0;
+
+        const transfersIn = await Transfer.aggregate([
+            { $match: { receiverId: uid, status: 'success' } },
+            { $group: { _id: null, total: { $sum: '$amount' } } }
+        ]);
+        const transfersOut = await Transfer.aggregate([
+            { $match: { senderId: uid, status: 'success' } },
+            { $group: { _id: null, total: { $sum: '$amount' } } }
+        ]);
+
+        const totalTransfersIn = transfersIn.length > 0 ? transfersIn[0].total : 0;
+        const totalTransfersOut = transfersOut.length > 0 ? transfersOut[0].total : 0;
+
         res.status(200).json({
             data: {
-                income: totalIncome,
-                expense: totalExpense,
-                balance: totalIncome - totalExpense
+                income: totalIncome + totalTransfersIn,
+                expense: totalExpense + totalTransfersOut,
+                balance: actualBalance
             }
         });
     } catch (err) {
@@ -218,6 +263,31 @@ exports.getCategoryStats = async (req, res) => {
                 { $group: { _id: '$source', amount: { $sum: '$amount' } } },
                 { $sort: { amount: -1 } }
             ]);
+        }
+
+        // Include Internal Transfers in category stats
+        const masterDb = await connectMasterDB();
+        const Transfer = createTransferModel(masterDb);
+        const transferQuery = { status: 'success' };
+        if (type === 'expense') {
+            transferQuery.senderId = uid;
+        } else {
+            transferQuery.receiverId = uid;
+        }
+
+        if (startDate || endDate) {
+            transferQuery.createdAt = {};
+            if (startDate) transferQuery.createdAt.$gte = new Date(startDate);
+            if (endDate) transferQuery.createdAt.$lte = new Date(endDate);
+        }
+
+        const transferStats = await Transfer.aggregate([
+            { $match: transferQuery },
+            { $group: { _id: type === 'expense' ? 'Transfer Sent' : 'Transfer Received', amount: { $sum: '$amount' } } }
+        ]);
+
+        if (transferStats.length > 0) {
+            results.push(transferStats[0]);
         }
 
         res.status(200).json({ data: results });

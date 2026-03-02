@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/authMiddleware');
 const tenantResolver = require('../middleware/tenantResolver');
-const connectMasterDB = require('../config/masterDb');
-const { createModel: createUserModel } = require('../models/master/User');
 
 router.use(protect);
 router.use(tenantResolver);

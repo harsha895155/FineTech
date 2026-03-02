@@ -32,6 +32,8 @@
 .simple-form-input:focus {
     border-color: #6366F1;
     background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.15);
+    transform: translateY(-2px);
 }
 
 /* Dark Theme Select Dropdown */
@@ -237,11 +239,17 @@ select.simple-form-input option {
 }
 
 .expense-row {
-    border-bottom: 1px solid rgba(255,255,255,0.02);
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    transition: all 0.3s ease;
+}
+
+.expense-row:hover {
+    background: rgba(255,255,255,0.03);
+    transform: scale(1.01) translateX(5px);
 }
 
 .expense-cell {
-    padding: 1.5rem;
+    padding: 1.25rem 1.5rem;
 }
 
 .expense-date-text {

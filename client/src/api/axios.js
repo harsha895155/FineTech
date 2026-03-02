@@ -1,7 +1,6 @@
 import axios from '../shims/axios';
 
-export const SERVER_URL = import.meta.env.VITE_API_URL || 
-                          (typeof window !== 'undefined' ? window.location.origin : 'http://127.0.0.1:5011');
+export const SERVER_URL = 'http://127.0.0.1:5011';
 
 const api = axios.create({
     baseURL: `${SERVER_URL}/api`,

@@ -46,7 +46,7 @@
             <span class="nav-icon">📊</span>
             <span>Reports</span>
         </a>
-        <a href="/views/admin.html" id="adminNavItem" class="nav-item">
+        <a href="/views/admin.html" id="adminNavItem" class="nav-item hide">
             <span class="nav-icon">🛡️</span>
             <span>Admin</span>
         </a>
@@ -1219,7 +1219,7 @@
             const userRole = (loggedInUser && loggedInUser.role) ? loggedInUser.role.toLowerCase() : '';
             
             // Show admin settings section if user is admin
-            if (userRole === 'administrator') {
+            if (userRole === 'administrator' || userRole === 'admin') {
                 const businessSettings = document.getElementById('businessSettings');
                 if (businessSettings) businessSettings.classList.remove('admin-only');
             }
@@ -1227,7 +1227,7 @@
             // Handle admin navigation link
             const adminLink = document.getElementById('adminNavItem');
             if (adminLink) {
-                if (userRole === 'administrator') {
+                if (userRole === 'administrator' || userRole === 'admin') {
                     adminLink.classList.remove('hide');
                 } else {
                     adminLink.classList.add('hide');
@@ -1316,12 +1316,11 @@
                     localStorage.removeItem('fintech_admin_user');
                     window.location.href = '/views/admin.html';
                 } else {
-                    localStorage.removeItem('token');
                     localStorage.removeItem('fintech_token');
                     localStorage.removeItem('fintech_logged_in_user');
                     localStorage.removeItem('fintech_name');
                     localStorage.removeItem('fintech_email');
-                    window.location.href = '/views/portal.html';
+                    window.location.href = '/views/login.html';
                 }
             }
         }
@@ -1432,11 +1431,10 @@
                     alert('✅ Returning to admin session.');
                     window.location.href = '/views/admin.html';
                 } else {
-                    localStorage.removeItem('token');
                     localStorage.removeItem('fintech_token');
                     localStorage.removeItem('fintech_logged_in_user');
                     alert('✅ Logged out successfully!');
-                    window.location.href = '/views/portal.html';
+                    window.location.href = '/views/login.html';
                 }
             }
         }
@@ -1559,18 +1557,16 @@
             
             if (adminToken && adminUser) {
                 // Restore admin session
-                localStorage.setItem('token', adminToken);
                 localStorage.setItem('fintech_token', adminToken);
                 localStorage.setItem('fintech_logged_in_user', adminUser);
                 localStorage.removeItem('fintech_admin_token');
                 localStorage.removeItem('fintech_admin_user');
                 window.location.href = '/views/admin.html';
             } else {
-                localStorage.removeItem('token');
                 localStorage.removeItem('fintech_token');
                 localStorage.removeItem('fintech_logged_in_user');
                 localStorage.removeItem('fintech_current_prefix');
-                window.location.href = '/views/portal.html';
+                window.location.href = '/index.html';
             }
         }
 

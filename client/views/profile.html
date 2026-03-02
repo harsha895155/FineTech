@@ -242,7 +242,7 @@
                 <div class="flex-row gap-1">
                     <button type="button" class="btn-creative btn-discard" onclick="location.reload()">Discard Changes</button>
                     <button type="submit" class="btn-creative btn-primary-creative btn-update">Update Profile</button>
-                    <button type="button" class="btn-creative btn-logout" onclick="window.location='/views/portal.html'">Logout</button>
+                    <button type="button" class="btn-creative btn-logout" onclick="window.location='/views/login.html'">Logout</button>
                 </div>
             </div>
         </form>
@@ -258,7 +258,7 @@
             // RBAC Logic
             const adminLink = document.getElementById('adminNavItem');
             if (adminLink) {
-                if (userRole === 'administrator') {
+                if (userRole === 'administrator' || userRole === 'admin') {
                     adminLink.classList.remove('hide');
                 } else {
                     adminLink.classList.add('hide');
@@ -291,7 +291,7 @@
 
             // Stats Simulation
             document.getElementById('createdDate').textContent = profileData.created || 'January 2024';
-            const bal = localStorage.getItem('fintech_balance') || '4,52,200';
+            const bal = localStorage.getItem('fintech_balance') || 0;
             document.getElementById('sumExpenses').textContent = '₹' + parseFloat(bal).toLocaleString('en-IN');
             document.getElementById('lastLogin').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
@@ -367,18 +367,16 @@
             
             if (adminToken && adminUser) {
                 // Restore admin session
-                localStorage.setItem('token', adminToken);
                 localStorage.setItem('fintech_token', adminToken);
                 localStorage.setItem('fintech_logged_in_user', adminUser);
                 localStorage.removeItem('fintech_admin_token');
                 localStorage.removeItem('fintech_admin_user');
                 window.location.href = '/views/admin.html';
             } else {
-                localStorage.removeItem('token');
                 localStorage.removeItem('fintech_token');
                 localStorage.removeItem('fintech_logged_in_user');
                 localStorage.removeItem('fintech_current_prefix');
-                window.location.href = '/views/portal.html';
+                window.location.href = '/index.html';
             }
         }
 

@@ -131,23 +131,21 @@ router.post('/signup', async (req, res) => {
         const masterDb = await connectMasterDB();
         const User = createUserModel(masterDb);
 
-        // Check if email exists
-        const emailExists = await User.findOne({ email });
-        if (emailExists) {
-            console.log(`❌ Signup Blocked: Email ${email} already exists`);
-            return res.status(400).json({ success: false, message: `Email ${email} is already registered.` });
-        }
+        // 1. Check if email exists for this SPECIFIC role
+        const targetRole = role || 'business';
+        const existingUser = await User.findOne({ email, role: targetRole });
 
-        // Check if phone exists (it should also be unique ideally)
-        const phoneExists = await User.findOne({ phoneNumber });
-        if (phoneExists) {
-            console.log(`❌ Signup Blocked: Phone ${phoneNumber} already exists`);
-            return res.status(400).json({ success: false, message: `Phone number ${phoneNumber} is already registered.` });
+        if (existingUser && existingUser.isEmailVerified) {
+            console.log(`❌ Signup Blocked: Email ${email} already exists for role ${targetRole}`);
+            return res.status(400).json({ 
+                success: false, 
+                message: `This email is already registered as a ${targetRole}. Please use a different email or role.` 
+            });
         }
 
         // Generate a unique database name based on user role and identity
         const uniqueSuffix = Math.random().toString(36).substring(2, 8);
-        const databaseName = `expense_${role || 'business'}_${uniqueSuffix}`;
+        const databaseName = `expense_${targetRole}_${uniqueSuffix}`;
 
         // Hash password
         const salt = await bcrypt.genSalt(10);
@@ -157,19 +155,32 @@ router.post('/signup', async (req, res) => {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
 
-        // Create user in Master Database
-        const user = await User.create({
-            fullName,
-            email,
-            phoneNumber,
-            password: hashedPassword,
-            role: role || 'business',
-            databaseName,
-            isEmailVerified: false,
-            isPhoneVerified: false,
-            verificationOTP: otp,
-            otpExpiry: otpExpiry
-        });
+        let user;
+        if (existingUser && !existingUser.isEmailVerified) {
+            // Update existing unverified account instead of creating a new one
+            console.log(`🔄 Updating existing unverified account: ${email} (${targetRole})`);
+            existingUser.fullName = fullName;
+            existingUser.phoneNumber = phoneNumber;
+            existingUser.password = hashedPassword;
+            existingUser.databaseName = databaseName;
+            existingUser.verificationOTP = otp;
+            existingUser.otpExpiry = otpExpiry;
+            user = await existingUser.save();
+        } else {
+            // Create user in Master Database
+            user = await User.create({
+                fullName,
+                email,
+                phoneNumber,
+                password: hashedPassword,
+                role: targetRole,
+                databaseName,
+                isEmailVerified: false,
+                isPhoneVerified: false,
+                verificationOTP: otp,
+                otpExpiry: otpExpiry
+            });
+        }
 
         if (user) {
             // SEND ACTUAL EMAIL
@@ -239,11 +250,15 @@ router.post('/signup', async (req, res) => {
  */
 router.post('/verify-otp', async (req, res) => {
     try {
-        const { email, otp } = req.body;
+        const { email, role, otp } = req.body;
         const masterDb = await connectMasterDB();
         const User = createUserModel(masterDb);
 
-        const user = await User.findOne({ email }).select('+verificationOTP +otpExpiry');
+        // Find user by email and role to ensure correct account verification
+        const query = { email };
+        if (role) query.role = role.toLowerCase();
+        
+        const user = await User.findOne(query).select('+verificationOTP +otpExpiry');
         
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not found' });
@@ -331,8 +346,19 @@ router.post('/login', async (req, res) => {
         const masterDb = await connectMasterDB();
         const User = createUserModel(masterDb);
 
-        // Find user by email and include password for verification
-        const user = await User.findOne({ email }).select('+password');
+        // Find user by email AND role to allow multiple accounts per email
+        const query = { email };
+        if (expectedRole) {
+            // Support admin/administrator interchangeability in query if needed,
+            // but usually we stick to the stored role. Let's handle admin aliasing.
+            if (expectedRole.toLowerCase() === 'admin' || expectedRole.toLowerCase() === 'administrator') {
+                query.role = { $in: ['admin', 'administrator'] };
+            } else {
+                query.role = expectedRole;
+            }
+        }
+
+        const user = await User.findOne(query).select('+password');
 
         // Role verification (Allow admin and administrator to be interchangeable)
         if (user && expectedRole) {

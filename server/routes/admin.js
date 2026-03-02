@@ -59,7 +59,7 @@ router.use('/platform', (req, res) => {
  * Accessible by business owners and organizations
  * These require the tenantResolver
  */
-router.use(authorize('administrator', 'organization', 'business'));
+router.use(authorize('administrator', 'admin'));
 router.use(tenantResolver);
 
 /**

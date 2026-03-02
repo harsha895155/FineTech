@@ -75,21 +75,22 @@
             z-index: 0;
             animation: aurora-breathe 10s ease-in-out infinite alternate;
         }
+
+        /* Subtle Sweep Animation */
         .portal-left::after {
             content: '';
             position: absolute;
             inset: 0;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 52px 52px;
+            background: linear-gradient(135deg, transparent 40%, rgba(99, 102, 241, 0.04) 50%, transparent 60%);
+            background-size: 200% 200%;
+            animation: grid-sweep 12s linear infinite;
             pointer-events: none;
-            z-index: 0;
+            z-index: 1;
         }
-        @keyframes aurora-breathe {
-            0%   { opacity: 1;    transform: scale(1) rotate(0deg); }
-            50%  { opacity: 0.82; transform: scale(1.05) rotate(1.5deg); }
-            100% { opacity: 1;    transform: scale(1.1) rotate(-1deg); }
+
+        @keyframes grid-sweep {
+            0% { background-position: 200% 200%; }
+            100% { background-position: -200% -200%; }
         }
 
         /* Floating particles */
@@ -894,15 +895,27 @@
             await new Promise(r => setTimeout(r, 800));
 
             if (response.ok && result.success) {
-                const user     = result.data;
-                const userRole = user.role.toLowerCase();
-                localStorage.setItem('token',                   user.token);
-                localStorage.setItem('fintech_token',            user.token);
-                localStorage.setItem('fintech_logged_in_user',   JSON.stringify(user));
-                localStorage.setItem('fintech_name',             user.fullName);
-                localStorage.setItem('fintech_email',            user.email);
+                // Extremely flexible extraction
+                const user = result.data || result.user || result;
+                const token = result.token || (result.data ? result.data.token : null) || (result.user ? result.user.token : null) || user.token;
+                
+                if (!user || user === result) console.warn('User data might be shallow in response', result);
+                if (!token) {
+                    console.error('Token missing from response:', result);
+                    throw new Error('Invalid response: Authentication token not found');
+                }
+
+                localStorage.setItem('fintech_token', token);
+                const userToStore = { ...user };
+                if (userToStore.token) delete userToStore.token;
+
+                localStorage.setItem('fintech_logged_in_user', JSON.stringify(userToStore));
+                localStorage.setItem('fintech_name', user.fullName || user.name || 'User');
+                localStorage.setItem('fintech_email', user.email || '');
+                
                 const userPrefix = `user_${user.email.replace(/[^a-zA-Z0-9]/g, '_')}_`;
-                localStorage.setItem('fintech_current_prefix',   userPrefix);
+                localStorage.setItem('fintech_current_prefix', userPrefix);
+                
                 window.location.href = '/views/dashboard.html';
             } else {
                 throw new Error(result.message || 'Login failed. Please check your credentials.');

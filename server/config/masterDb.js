@@ -21,15 +21,13 @@ const connectMasterDB = async () => {
         }
 
         // 3. Initiate new connection
-        const uri = process.env.MASTER_DB_URI;
-        if (!uri) {
+        console.log(`🔄 [MasterDB] Connecting to URI: ${process.env.MASTER_DB_URI ? 'AUTHENTICATED_URI_HIDDEN' : '⚠️ MISSING'}`);
+        
+        if (!process.env.MASTER_DB_URI) {
             throw new Error('MASTER_DB_URI is not defined in environment variables');
         }
 
-        const isLocal = uri.includes('127.0.0.1') || uri.includes('localhost');
-        console.log(`🔄 [MasterDB] Connecting to ${isLocal ? 'LOCAL' : 'REMOTE'} URI: ${isLocal ? uri : 'AUTHENTICATED_URI_HIDDEN'}`);
-        
-        connectionPromise = mongoose.createConnection(uri, {
+        connectionPromise = mongoose.createConnection(process.env.MASTER_DB_URI, {
             serverSelectionTimeoutMS: 15000,
             connectTimeoutMS: 15000,
             socketTimeoutMS: 45000,

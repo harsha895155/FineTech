@@ -3,8 +3,6 @@ const router = express.Router();
 const { protect } = require('../middleware/authMiddleware');
 const tenantResolver = require('../middleware/tenantResolver');
 const { createNotification } = require('../controllers/notificationController');
-const connectMasterDB = require('../config/masterDb');
-const { createModel: createUserModel } = require('../models/master/User');
 
 // All routes here require authentication and tenant resolution
 router.use(protect);

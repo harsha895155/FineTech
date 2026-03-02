@@ -7,37 +7,12 @@ const connectMasterDB = require('./config/masterDb');
 // Load environment variables relative to this file
 dotenv.config({ path: path.join(__dirname, '.env') });
 
-const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 5011; 
-
-// Initial database selection
-// PRIORITIZE MASTER_DB_URI and MONGO_URI from system environment
-const DB_URI = process.env.MASTER_DB_URI || process.env.MONGO_URI;
-
-// Initialize Global Database Connection
-if (DB_URI) {
-    const isLocal = DB_URI.includes('127.0.0.1') || DB_URI.includes('localhost');
-    console.log(`🚀 [Server] Establishing Global Mongoose Connection... ${isLocal ? '(LOCAL DB)' : '(REMOTE DB)'}`);
-    
-    mongoose.connect(DB_URI, {
-        serverSelectionTimeoutMS: 15000,
-        connectTimeoutMS: 15000,
-        socketTimeoutMS: 45000,
-    })
-        .then(() => console.log('✅ [Server] Global Mongoose connected successfully'))
-        .catch(err => {
-            console.error('❌ [Server] Global Mongoose connection error:', err.message);
-            if (process.env.NODE_ENV === 'production' && isLocal) {
-                console.error('CRITICAL: Local database URI detected in production environment!');
-            }
-        });
-} else {
-    console.warn('⚠️ [Server] No DB_URI found! Environment variables MASTER_DB_URI or MONGO_URI are required.');
-}
-
-// Initialize Master Database Connection (Multi-tenant)
+// Initialize Master Database Connection
 console.log('🚀 [Server] Target Port:', PORT);
+// Tiny comment to trigger restart
+console.log('🚀 [Server] Initializing Master Database Connection...');
 connectMasterDB()
     .then(conn => {
         console.log('✅ [Server] Master Database connected successfully:', conn.name);
@@ -72,56 +47,6 @@ app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/banks', require('./routes/bankRoutes'));
 app.use('/api/payment', require('./routes/paymentRoutes'));
 app.use('/api/transfer', require('./routes/transferRoutes'));
-
-// Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
-    console.log('📦 [Server] Setting up production assets...');
-
-    // 1. FORCE PRIORITY for views folders
-    // Combine both views folders for search
-    const viewFolders = [
-        path.join(__dirname, '../client/views'),
-        path.join(__dirname, '../views_legacy')
-    ];
-
-    app.get('/views/:page', (req, res) => {
-        const page = req.params.page;
-        let found = false;
-
-        for (const folder of viewFolders) {
-            const viewPath = path.resolve(folder, page);
-            if (require('fs').existsSync(viewPath)) {
-                console.log(`📄 [Server] Serving view: ${viewPath}`);
-                res.sendFile(viewPath);
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
-            console.error(`❌ [Server] Could not find view: ${page}`);
-            // Fallback for case-insensitive or common typos
-            res.status(404).json({ error: 'View not found' });
-        }
-    });
-
-    // 2. Serve static assets (CSS, JS, Uploads, Public)
-    app.use('/public', express.static(path.join(__dirname, '../public')));
-    app.use('/css', express.static(path.join(__dirname, '../client/public/css')));
-    app.use('/js', express.static(path.join(__dirname, '../client/public/js')));
-    
-    // Explicitly serve client/public for nested assets if needed
-    app.use(express.static(path.join(__dirname, '../client/public')));
-    app.use(express.static(path.join(__dirname, '../client/dist')));
-
-    // 3. SPA Fallback (Only for routes that don't match files)
-    app.get('*', (req, res) => {
-        // Skip API and Views (handled above)
-        if (req.path.startsWith('/api') || req.path.startsWith('/views')) return next();
-        
-        res.sendFile(path.resolve(__dirname, '../client', 'dist', 'index.html'));
-    });
-}
 
 
 // Health Check

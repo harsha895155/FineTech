@@ -53,11 +53,11 @@ exports.transferMoney = async (req, res) => {
         }
 
         // 2. Atomic Transaction
-        // We use mongoose session for atomicity
-        session = await masterDb.startSession();
-        session.startTransaction();
-
+        // Try to use transactions if supported (Replica Sets required)
         try {
+            session = await masterDb.startSession();
+            session.startTransaction();
+
             // Deduct from sender
             const updatedSender = await User.findByIdAndUpdate(
                 senderId, 
@@ -74,7 +74,7 @@ exports.transferMoney = async (req, res) => {
 
             // Create transaction record
             const transactionId = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
-            const transfer = await Transfer.create([{
+            await Transfer.create([{
                 transactionId,
                 senderId,
                 receiverId: receiver._id,
@@ -85,7 +85,7 @@ exports.transferMoney = async (req, res) => {
 
             await session.commitTransaction();
             
-            res.status(200).json({
+            return res.status(200).json({
                 success: true,
                 message: 'Transfer successful',
                 data: {
@@ -97,10 +97,56 @@ exports.transferMoney = async (req, res) => {
                 }
             });
         } catch (txnError) {
-            await session.abortTransaction();
+            if (session) {
+                await session.abortTransaction();
+                session.endSession();
+                session = null;
+            }
+
+            // Fallback for standalone MongoDB (No Transactions)
+            if (txnError.codeName === 'IllegalOperation' || txnError.message.includes('replica set') || txnError.code === 20) {
+                console.log('⚠️ Transactions not supported. Falling back to non-transactional transfer.');
+                
+                // Deduct from sender
+                const updatedSender = await User.findByIdAndUpdate(
+                    senderId, 
+                    { $inc: { balance: -transferAmount } }, 
+                    { new: true, runValidators: true }
+                );
+                
+                // Add to receiver
+                await User.findByIdAndUpdate(
+                    receiver._id, 
+                    { $inc: { balance: transferAmount } }, 
+                    { runValidators: true }
+                );
+
+                // Create transaction record
+                const transactionId = 'TXN' + Date.now() + Math.floor(Math.random() * 1000);
+                await Transfer.create({
+                    transactionId,
+                    senderId,
+                    receiverId: receiver._id,
+                    amount: transferAmount,
+                    description: description || 'Internal Transfer',
+                    status: 'success'
+                });
+
+                return res.status(200).json({
+                    success: true,
+                    message: 'Transfer successful',
+                    data: {
+                        transactionId,
+                        amount: transferAmount,
+                        updatedBalance: updatedSender.balance,
+                        receiverName: receiver.fullName,
+                        receiverEmail: receiver.email
+                    }
+                });
+            }
             throw txnError;
         } finally {
-            session.endSession();
+            if (session) session.endSession();
         }
 
     } catch (err) {

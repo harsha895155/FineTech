@@ -13,9 +13,10 @@ exports.registerUser = async (req, res) => {
     const { name, username, email, password, role, companyName, industry } = req.body;
 
     try {
-        let user = await User.findOne({ email });
-        if (user) {
-            return res.status(400).json({ msg: 'User already exists' });
+        const targetRole = role || 'individual';
+        let user = await User.findOne({ email, role: targetRole });
+        if (user && user.isEmailVerified) {
+            return res.status(400).json({ msg: 'User already registered for this role' });
         }
 
         let newCompany = null;
@@ -82,7 +83,17 @@ exports.loginUser = async (req, res) => {
         // 1. Try Master DB (New Multi-Tenant Architecture)
         const masterDb = await connectMasterDB();
         const MasterUser = masterDb.models.User || createUserModel(masterDb);
-        const masterUser = await MasterUser.findOne({ email }).select('+password');
+        const { role: expectedRole } = req.body;
+        
+        const query = { email };
+        if (expectedRole) {
+            if (expectedRole.toLowerCase() === 'admin' || expectedRole.toLowerCase() === 'administrator') {
+                query.role = { $in: ['admin', 'administrator'] };
+            } else {
+                query.role = expectedRole;
+            }
+        }
+        const masterUser = await MasterUser.findOne(query).select('+password');
 
         if (masterUser) {
             const isMatch = await bcrypt.compare(password, masterUser.password);
@@ -162,14 +173,17 @@ exports.loginUser = async (req, res) => {
 // @route   POST /api/auth/verify-otp
 // @access  Public
 exports.verifyOtp = async (req, res) => {
-    const { email, otp } = req.body;
+    const { email, role, otp } = req.body;
 
     try {
         const masterDb = await connectMasterDB();
         const MasterUser = masterDb.models.User || createUserModel(masterDb);
         
+        const query = { email };
+        if (role) query.role = role.toLowerCase();
+
         // Find user and include hidden OTP fields
-        const user = await MasterUser.findOne({ email }).select('+verificationOTP +otpExpiry');
+        const user = await MasterUser.findOne(query).select('+verificationOTP +otpExpiry');
 
         if (!user) {
             return res.status(400).json({ success: false, message: 'User not found' });

@@ -14,7 +14,7 @@ const net = require('net');
 const BACKEND_PORT = 5011;
 const FRONTEND_PORT = 5173;
 const MONGO_PORT = 27017;
-const MONGO_DB_PATH = path.join(__dirname, '.mongo_data'); // local DB folder
+const MONGO_DB_PATH = 'C:\\data\\db'; // use existing MongoDB data folder with historic data
 
 // ── Color helpers for console ────────────────────────────────
 const c = {
@@ -184,7 +184,8 @@ async function main() {
             console.log(`${MONGO_TAG} Created data directory: ${MONGO_DB_PATH}`);
         }
 
-        const mongoProc = spawnProcess('MongoDB', MONGO_TAG, 'mongod', [
+        // Use the existing data folder directly (no quoting needed)
+        const mongoProc = spawnProcess('MongoDB', MONGO_TAG, 'C:\\Program Files\\MongoDB\\Server\\8.2\\bin\\mongod.exe', [
             '--dbpath', MONGO_DB_PATH,
             '--port', String(MONGO_PORT),
             '--quiet'

@@ -24,7 +24,7 @@ const Layout = ({ children }) => {
         { name: 'Dashboard', path: '/', icon: LayoutDashboard },
         { name: 'Transactions', path: '/transactions', icon: Receipt },
         { name: 'Reports', path: '/reports', icon: PieChart },
-        ...(user?.role === 'admin' ? [{ name: 'Admin', path: '/admin', icon: Briefcase }] : []),
+        ...(['admin', 'administrator'].includes(user?.role) ? [{ name: 'Admin', path: '/admin', icon: Briefcase }] : []),
         { name: 'Settings', path: '/settings', icon: Settings },
     ];
 

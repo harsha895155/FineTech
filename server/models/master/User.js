@@ -82,7 +82,6 @@ const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         required: [true, 'Email is required'],
-        unique: true,
         trim: true,
         lowercase: true,
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please add a valid email']
@@ -100,7 +99,7 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['administrator', 'admin', 'business', 'organization'],
+        enum: ['administrator', 'admin', 'business', 'organization', 'employee'],
         default: 'business'
     },
     databaseName: {
@@ -139,6 +138,9 @@ const UserSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+// Enforce uniqueness only for (email + role)
+UserSchema.index({ email: 1, role: 1 }, { unique: true });
 
 // Since we are using dynamic connections, we export the schema
 // and a helper to get the model on a specific connection.

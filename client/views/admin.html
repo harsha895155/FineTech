@@ -14,10 +14,10 @@
             }
             try {
                 const user = JSON.parse(userData);
-                const role = user.role.toLowerCase();
-                if (!user || (role !== 'admin' && role !== 'administrator')) {
+                const role = user.role ? user.role.toLowerCase() : '';
+                if (role !== 'administrator' && role !== 'admin') {
                     console.warn('🚫 Unauthorised access attempt to Admin Dashboard');
-                    window.location.replace('/views/portal.html');
+                    window.location.replace('/views/dashboard.html'); // Redirect to dashboard if logged in
                 }
             } catch (e) {
                 window.location.replace('/views/portal.html');
@@ -107,34 +107,6 @@
         </header>
 
         <div id="adminTablesContainer">
-            <!-- Platform Teams Table -->
-            <div class="role-section margin-b-4">
-                <div class="role-section-header">
-                    <div class="flex-row align-center gap-1">
-                        <div class="section-indicator indicator-team"></div>
-                        <h2 class="section-title">Platform <span class="text-gradient-creative">Teams</span></h2>
-                    </div>
-                    <button class="btn-creative btn-small btn-outline-violet-soft" onclick="fetchTeams()" title="Refresh platform teams list">🔄 Refresh Teams</button>
-                </div>
-                <div class="glass-card glass-table-container">
-                    <table class="table-main">
-                        <thead>
-                            <tr class="table-head-row">
-                                <th class="table-head-cell">TEAM NAME</th>
-                                <th class="table-head-cell">MEMBERS</th>
-                                <th class="table-head-cell">CREATED BY</th>
-                                <th class="table-head-cell" class="text-right">ACTIONS</th>
-                            </tr>
-                        </thead>
-                        <tbody id="teamsTableBody">
-                            <!-- Teams will appear here -->
-                            <tr>
-                                <td colspan="4" class="table-empty-row">Loading teams...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
 
             <!-- Administrators Table -->
             <div class="role-section margin-b-4">
@@ -197,6 +169,34 @@
                         </thead>
                         <tbody id="orgTableBody">
                             <!-- Organization users will appear here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Platform Teams Table -->
+            <div class="role-section margin-b-4">
+                <div class="role-section-header">
+                    <div class="flex-row align-center gap-1">
+                        <div class="section-indicator indicator-team"></div>
+                        <h2 class="section-title">Platform <span class="text-gradient-creative">Teams</span></h2>
+                    </div>
+                    <button class="btn-creative btn-small btn-outline-violet-soft" onclick="fetchTeams()" title="Refresh platform teams list">🔄 Refresh Teams</button>
+                </div>
+                <div class="glass-card glass-table-container">
+                    <table class="table-main">
+                        <thead>
+                            <tr class="table-head-row">
+                                <th class="table-head-cell">TEAM NAME</th>
+                                <th class="table-head-cell">MEMBERS</th>
+                                <th class="table-head-cell">CREATED BY</th>
+                                <th class="table-head-cell" class="text-right">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teamsTableBody">
+                            <!-- Teams will appear here -->
+                            <tr>
+                                <td colspan="4" class="table-empty-row">Loading teams...</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -1271,18 +1271,16 @@
             
             if (adminToken && adminUser) {
                 // Restore admin session
-                localStorage.setItem('token', adminToken);
                 localStorage.setItem('fintech_token', adminToken);
                 localStorage.setItem('fintech_logged_in_user', adminUser);
                 localStorage.removeItem('fintech_admin_token');
                 localStorage.removeItem('fintech_admin_user');
                 window.location.href = '/views/admin.html';
             } else {
-                localStorage.removeItem('token');
                 localStorage.removeItem('fintech_token');
                 localStorage.removeItem('fintech_logged_in_user');
                 localStorage.removeItem('fintech_current_prefix');
-                window.location.href = '/views/portal.html';
+                window.location.href = '/index.html';
             }
         }
 

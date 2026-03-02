@@ -56,7 +56,7 @@ const Admin = () => {
         }
     };
 
-    const allowedRoles = ['admin', 'organization', 'business'];
+    const allowedRoles = ['administrator', 'admin'];
     if (!allowedRoles.includes(user?.role)) {
         return <div className="p-4 text-red-500">Access Denied. You do not have admin privileges.</div>;
     }
@@ -177,6 +177,7 @@ const Admin = () => {
                                         >
                                             <option value="employee">Employee</option>
                                             <option value="admin">Admin</option>
+                                            <option value="administrator">Administrator</option>
                                         </select>
                                     </div>
                                     <div className="md:col-span-2 lg:col-span-1">

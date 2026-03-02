@@ -548,6 +548,8 @@
             const userRole = (user.role) ? user.role.toLowerCase() : '';
             if (userRole === 'administrator' || userRole === 'admin') {
                 document.getElementById('adminNavItem').classList.remove('hide');
+            } else {
+                document.getElementById('adminNavItem').classList.add('hide');
             }
 
             await loadUserData();
@@ -810,7 +812,6 @@
         }
 
         function handleLogout() {
-            localStorage.removeItem('token');
             localStorage.removeItem('fintech_token');
             localStorage.removeItem('fintech_logged_in_user');
             window.location.href = '/views/portal.html';
