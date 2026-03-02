@@ -11,14 +11,17 @@ mailLog('--- Mailer Initialization ---');
 // Use a more robust configuration for Gmail
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // true for 465, false for 587
+    port: 587,
+    secure: false, // port 587 is STARTTLS
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     },
-    timeout: 10000,
-    connectionTimeout: 10000 
+    tls: {
+                rejectUnauthorized: false
+            },
+    timeout: 15000,
+    connectionTimeout: 15000 
 });
 
 // Verify transporter
